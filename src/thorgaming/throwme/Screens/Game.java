@@ -1,6 +1,7 @@
-package thorgaming.throwme;
+package thorgaming.throwme.Screens;
 
 import android.app.Activity;
+import android.graphics.Color;
 
 import org.jbox2d.collision.Shape;
 import org.jbox2d.common.Vec2;
@@ -8,14 +9,10 @@ import org.jbox2d.dynamics.ContactListener;
 import org.jbox2d.dynamics.contacts.ContactPoint;
 import org.jbox2d.dynamics.contacts.ContactResult;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.Window;
-import android.view.WindowManager;
+import thorgaming.throwme.Callback;
 import thorgaming.throwme.DevCard;
+import thorgaming.throwme.MouseCallback;
+import thorgaming.throwme.R;
 import thorgaming.throwme.DispObjs.Character;
 import thorgaming.throwme.DispObjs.Cloud;
 import thorgaming.throwme.DispObjs.DispGif;
@@ -24,12 +21,11 @@ import thorgaming.throwme.DispObjs.DispRes_Rel;
 import thorgaming.throwme.DispObjs.PhysCircle;
 import thorgaming.throwme.DispObjs.Rect;
 
-public class Game extends Activity {
+public class Game extends Screen {
 	
 	static { @SuppressWarnings("unused") byte dummy[] = new byte[ 8*1024*1024 ]; }    
 	int gr[][] = new int[9][3];
 	
-	DevCard d;
 	DispRes a, b;
 	DispRes_Rel box;
 	PhysCircle[] dj = new PhysCircle[7];
@@ -37,15 +33,8 @@ public class Game extends Activity {
 	Cloud c1;
 	
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		
-		setContentView(R.layout.main);
-		
-		d = (DevCard) findViewById(R.id.menu);
+    public void onCreate(DevCard _d, Activity _a) {
+		super.onCreate(_d, _a);
 		
 	    gr[0][0] = 255;
 	    gr[0][1] = 255;
@@ -89,23 +78,23 @@ public class Game extends Activity {
 	    
 	    d.t.setgrad(ng);
 	    
-	    a = new DispRes_Rel(d, R.drawable.bg, getResources(), 879, 240, 0, 300, 255, 0);
-		b = new DispRes_Rel(d, R.drawable.bg, getResources(), 879, 240, 800, 300, 255, 0);
+	    a = new DispRes_Rel(d, R.drawable.bg, ac.getResources(), 879, 240, 0, 300, 255, 0);
+		b = new DispRes_Rel(d, R.drawable.bg, ac.getResources(), 879, 240, 800, 300, 255, 0);
 		
 		for (int i = 0; i < 7; i++) {
 			dj[i] = new PhysCircle(d, (int) (Math.random() * 80) + 80, 0, (160 * i) + 80, 480, 255, d.world);
 		}
 		
-		box = new DispRes_Rel(d, R.drawable.box, getResources(), 150, 150, 325, 105, 255, 0);
+		box = new DispRes_Rel(d, R.drawable.box, ac.getResources(), 150, 150, 325, 105, 255, 0);
 		new Rect(d, 800, 480, 0, 0, 0).setMouseDownEvent(new boxsplode());
 		
-		c1 = new Cloud(getApplication(), d, d.world, 850, -120);
-		new Cloud(getApplication(), d, d.world, 150, -720);
-		new Cloud(getApplication(), d, d.world, 600, -620);
-		new Cloud(getApplication(), d, d.world, 900, -920);
-		new Cloud(getApplication(), d, d.world, 300, -1120);
-		new Cloud(getApplication(), d, d.world, 550, -1920);
-		new Cloud(getApplication(), d, d.world, 800, -1320);
+		c1 = new Cloud(ac.getApplicationContext(), d, d.world, 850, -120);
+		new Cloud(ac.getApplicationContext(), d, d.world, 150, -720);
+		new Cloud(ac.getApplicationContext(), d, d.world, 600, -620);
+		new Cloud(ac.getApplicationContext(), d, d.world, 900, -920);
+		new Cloud(ac.getApplicationContext(), d, d.world, 300, -1120);
+		new Cloud(ac.getApplicationContext(), d, d.world, 550, -1920);
+		new Cloud(ac.getApplicationContext(), d, d.world, 800, -1320);
 		
 		d.world.setContactListener(new hitListener());
 		
@@ -172,8 +161,8 @@ public class Game extends Activity {
 		public void sendCallback() {
 			if (c == null) {
 				box.destroy(d);
-				c = new Character(d, getResources(), R.drawable.eye, d.world, 400, 240);
-				new DispGif(getApplicationContext(), d, R.drawable.explosion, getResources(), 764, 556, 18, -38, 255, 0, 1, 4);
+				c = new Character(d, ac.getResources(), R.drawable.eye, d.world, 400, 240);
+				new DispGif(ac.getApplicationContext(), d, R.drawable.explosion, ac.getResources(), 764, 556, 18, -38, 255, 0, 1, 4);
 			} else {
 				c1.animate();
 			}
@@ -191,11 +180,11 @@ public class Game extends Activity {
 		@Override
 		public void sendCallback() {
 			if (c != null && c.end && ! ended) {
-				Intent intent = new Intent(Game.this, Highs.class);
+				/*Intent intent = new Intent(Game.this, Highs.class); Change screen
 				intent.putExtra("send", true);
 				intent.putExtra("score", d.ca.x / 10);
 		        startActivity(intent);
-		        finish();
+		        finish();*/
 		        ended = true;
 			}
 			
@@ -251,10 +240,9 @@ public class Game extends Activity {
 	
 	int sx, sy, x, y, mx, my;
 	
-    @Override
+    /*@Override
     public boolean onTouchEvent(MotionEvent event) {
     	d.sendtouch(event);
-    	
     	mx = (int) event.getX();
 		my = (int) event.getY();
     	
@@ -301,6 +289,6 @@ public class Game extends Activity {
     protected void onResume() {
     	super.onResume();
     	d.createThread();
-    }
+    }*/
 	
 }
