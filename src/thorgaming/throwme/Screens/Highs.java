@@ -1,7 +1,8 @@
-package thorgaming.throwme;
+package thorgaming.throwme.Screens;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,12 +10,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -25,16 +28,24 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import thorgaming.throwme.DevCard;
+import thorgaming.throwme.DispObj;
+import thorgaming.throwme.MouseCallback;
+import thorgaming.throwme.R;
+import thorgaming.throwme.logins;
+import thorgaming.throwme.score;
 import thorgaming.throwme.DispObjs.DispGif;
 import thorgaming.throwme.DispObjs.DispRes;
 import thorgaming.throwme.DispObjs.RoundRect;
 
-public class Highs extends Activity {
+public class Highs extends Screen {
 	
 	DevCard d;
 	DispObj loader, b1,b2,b3,b4,l1,l2,l3,l4;
 	RoundRect rrb, rb;
     Connection conn;
+    public static final String PREFS_NAME = "throwmedevicekey";
+    String deviceid = "";
+    SecureRandom gen = new SecureRandom();
     
     int scroll = 0;
     
@@ -42,14 +53,11 @@ public class Highs extends Activity {
     
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(DevCard d, Activity a) {
+        super.onCreate(d, a);
         
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        
-        setContentView(R.layout.main);
-        d = (DevCard) findViewById(R.id.menu);
+        SharedPreferences settings = ac.getSharedPreferences(PREFS_NAME, 0);
+        deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
         
 		int[] gr = new int[2];
         gr[0] = Color.rgb(0, 102, 204);
@@ -63,25 +71,25 @@ public class Highs extends Activity {
 		
         d.draw = null;
         
-        loader = new DispGif(getApplicationContext(), d, R.drawable.ajax, getResources(), 128, 128, 336, 176, 255, 0, -1, 1);
-        b1 = new DispRes(d, R.drawable.day_bw, getResources(), 150, 60, 645, 10, 255, 10);
+        loader = new DispGif(ac.getApplicationContext(), d, R.drawable.ajax, ac.getResources(), 128, 128, 336, 176, 255, 0, -1, 1);
+        b1 = new DispRes(d, R.drawable.day_bw, ac.getResources(), 150, 60, 645, 10, 255, 10);
         b1.setMouseDownEvent(new daysel());
-        b2 = new DispRes(d, R.drawable.week_bw, getResources(), 150, 44, 645, 90, 255, 10);
+        b2 = new DispRes(d, R.drawable.week_bw, ac.getResources(), 150, 44, 645, 90, 255, 10);
         b2.setMouseDownEvent(new weeksel());
-        b3 = new DispRes(d, R.drawable.month_bw, getResources(), 150, 33, 645, 154, 255, 10);
+        b3 = new DispRes(d, R.drawable.month_bw, ac.getResources(), 150, 33, 645, 154, 255, 10);
         b3.setMouseDownEvent(new monthsel());
-        b4 = new DispRes(d, R.drawable.time_bw, getResources(), 150, 25, 645, 207, 255, 10);
+        b4 = new DispRes(d, R.drawable.time_bw, ac.getResources(), 150, 25, 645, 207, 255, 10);
         b4.setMouseDownEvent(new timesel());
         
-        l1 = new DispRes(d, R.drawable.day, getResources(), 150, 60, 645, 10, 0, 0);
-        l2 = new DispRes(d, R.drawable.week, getResources(), 150, 44, 645, 90, 0, 0);
-        l3 = new DispRes(d, R.drawable.month, getResources(), 150, 33, 645, 154, 0, 0);
-        l4 = new DispRes(d, R.drawable.time, getResources(), 150, 25, 645, 207, 0, 0);
+        l1 = new DispRes(d, R.drawable.day, ac.getResources(), 150, 60, 645, 10, 0, 0);
+        l2 = new DispRes(d, R.drawable.week, ac.getResources(), 150, 44, 645, 90, 0, 0);
+        l3 = new DispRes(d, R.drawable.month, ac.getResources(), 150, 33, 645, 154, 0, 0);
+        l4 = new DispRes(d, R.drawable.time, ac.getResources(), 150, 25, 645, 207, 0, 0);
         
         new GetHighs().start();
-        if (getIntent().getBooleanExtra("send", false)) {
-        	final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-    		final EditText input = new EditText(this);
+        if (getIntent().getBooleanExtra("send", false) /*Could be interesting*/) {
+        	final AlertDialog.Builder alert = new AlertDialog.Builder(ac);
+    		final EditText input = new EditText(ac);
     		alert.setView(input);
     		alert.setMessage("Enter name:");
     		alert.setPositiveButton("Submit score", new DialogInterface.OnClickListener() {
@@ -92,13 +100,13 @@ public class Highs extends Activity {
     				MessageDigest digest;
 					try {
 						digest = java.security.MessageDigest.getInstance("MD5");
-						digest.update((value+score+"ZDbVEKAx5PAEe5Z").getBytes());
+						digest.update((value+score+"ZDbVEKAx5PAEe5Z"+deviceid).getBytes());
 						byte[] messageDigest = digest.digest();
 						StringBuffer hexString = new StringBuffer();
 						for (int i=0;i<messageDigest.length;i++) {
 							hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
 						}
-						insert("INSERT INTO scores VALUES (NULL, '" + value + "', " + score + ", NULL, '" + hexString + "')");
+						insert("INSERT INTO scores VALUES (NULL, '" + deviceid + "', '" + value + "', " + score + ", NULL, '" + hexString + "')");
 						new daysel().sendCallback();
 					} catch (NoSuchAlgorithmException e) {
 						e.printStackTrace();
@@ -325,7 +333,7 @@ public class Highs extends Activity {
     	}
     }
     
-    @Override
+    /*@Override
     public boolean onTouchEvent(MotionEvent event) {
     	d.sendtouch(event);
     	
@@ -365,15 +373,6 @@ public class Highs extends Activity {
 		return false;
     }
     
-    public static void waiting(int n){
-        long t0, t1;
-        t0 =  System.currentTimeMillis();
-        do{
-            t1 = System.currentTimeMillis();
-        }
-        while ((t1 - t0) < n);
-    }
-    
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
@@ -389,6 +388,15 @@ public class Highs extends Activity {
     protected void onResume() {
     	super.onResume();
     	d.createThread();
-    }
+    }*/
 
+    public static void waiting(int n){
+        long t0, t1;
+        t0 =  System.currentTimeMillis();
+        do{
+            t1 = System.currentTimeMillis();
+        }
+        while ((t1 - t0) < n);
+    }
+    
 }

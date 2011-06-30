@@ -7,9 +7,9 @@ import android.graphics.Canvas;
 
 public abstract class DispObj {
 	
-	protected int x = 0;
-	protected int y = 0;
-	protected int alpha = 255;
+	public int x = 0;
+	public int y = 0;
+	public int alpha = 255;
 	
 	protected MouseCallback c, d;
 	
