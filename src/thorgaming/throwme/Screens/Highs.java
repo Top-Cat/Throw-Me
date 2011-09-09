@@ -16,21 +16,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import thorgaming.throwme.DevCard;
 import thorgaming.throwme.DispObj;
 import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
+import thorgaming.throwme.ThrowMe;
 import thorgaming.throwme.logins;
 import thorgaming.throwme.score;
 import thorgaming.throwme.DispObjs.DispGif;
@@ -39,7 +36,6 @@ import thorgaming.throwme.DispObjs.RoundRect;
 
 public class Highs extends Screen {
 	
-	DevCard d;
 	DispObj loader, b1,b2,b3,b4,l1,l2,l3,l4;
 	RoundRect rrb, rb;
     Connection conn;
@@ -52,9 +48,8 @@ public class Highs extends Screen {
     List<score> highs = new ArrayList<score>();
     
     /** Called when the activity is first created. */
-    @Override
-    public void onCreate(DevCard d, Activity a) {
-        super.onCreate(d, a);
+    public Highs(DevCard d, Activity a, Object[] o) {
+        super(d, a, o);
         
         SharedPreferences settings = ac.getSharedPreferences(PREFS_NAME, 0);
         deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
@@ -87,14 +82,15 @@ public class Highs extends Screen {
         l4 = new DispRes(d, R.drawable.time, ac.getResources(), 150, 25, 645, 207, 0, 0);
         
         new GetHighs().start();
-        if (getIntent().getBooleanExtra("send", false) /*Could be interesting*/) {
+        boolean send = o != null && o[0] != null ? (Boolean) o[0] : false;
+        final int score = o != null && o[1] != null ? (Integer) o[1] : 0;
+        if (send) {
         	final AlertDialog.Builder alert = new AlertDialog.Builder(ac);
     		final EditText input = new EditText(ac);
     		alert.setView(input);
     		alert.setMessage("Enter name:");
     		alert.setPositiveButton("Submit score", new DialogInterface.OnClickListener() {
     			public void onClick(DialogInterface dialog, int whichButton) {
-    				int score = getIntent().getIntExtra("score", 0);
     				String value = input.getText().toString().trim();
     				System.out.println(value + " scored " + score);
     				MessageDigest digest;
@@ -256,7 +252,7 @@ public class Highs extends Screen {
 	    		if (!t) {
 	    			new GetHighs().start();
 	    		}
-	    		waiting(200);
+	    		ThrowMe.waiting(200);
 	    	}
 	        if (conn != null) {
 	            PreparedStatement pr;
@@ -295,7 +291,7 @@ public class Highs extends Screen {
 		    		if (!t) {
 		    			new GetHighs().start();
 		    		}
-		    		waiting(200);
+		    		ThrowMe.waiting(200);
 		    	}
 		        if (conn != null) {
 		            int a = 0;
@@ -333,10 +329,7 @@ public class Highs extends Screen {
     	}
     }
     
-    /*@Override
-    public boolean onTouchEvent(MotionEvent event) {
-    	d.sendtouch(event);
-    	
+    public boolean onTouch(MotionEvent event) {
     	mx = (int) event.getX();
 		my = (int) event.getY();
     	
@@ -362,7 +355,7 @@ public class Highs extends Screen {
     	    		i.setys(scroll);
     	    	}
     			
-    			waiting(10);
+    			ThrowMe.waiting(10);
     		}
     	}
     	
@@ -376,27 +369,9 @@ public class Highs extends Screen {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			Intent intent = new Intent(Highs.this, Main.class);
-			intent.putExtra("skipintro", true);
-	        startActivity(intent);
-	        finish();
+			new Main(d, ac, new Object[] {true});
 		}
 	    return super.onKeyDown(keyCode, event);
 	}
-    
-    @Override
-    protected void onResume() {
-    	super.onResume();
-    	d.createThread();
-    }*/
-
-    public static void waiting(int n){
-        long t0, t1;
-        t0 =  System.currentTimeMillis();
-        do{
-            t1 = System.currentTimeMillis();
-        }
-        while ((t1 - t0) < n);
-    }
     
 }

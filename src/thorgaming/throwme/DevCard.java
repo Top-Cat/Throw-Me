@@ -21,16 +21,15 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 
 	public Camera ca = new Camera();
 	
-    public void clear() {
-    	synchronized (objs) {
-	    	for (DispObj i : objs) {
-	    		i.destroy(this);
-	    	}
-		}
+    @SuppressWarnings("unchecked")
+	public void clear() {
+    	for (DispObj i : (ArrayList<DispObj>) objs.clone()) {
+    		i.destroy(this);
+    	}
     }
     
 	public List<Anim> anims = new ArrayList<Anim>();
-	public List<DispObj> objs = new ArrayList<DispObj>();
+	public ArrayList<DispObj> objs = new ArrayList<DispObj>();
 	private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GbR3FqjQIqFkxFBWoKqCmIXAEMwdK8E13+AQuMU4i0fVw8kLMFZbk7T1YPezQnBm6ozwJSBrQA+M4HOdKguqnGE+hDtFzWCq5/mZh7VM8/9Sow7EFvlbQll2DR/8OQE1aXGcRKEf51H9a7i5VswOsqwiTAP7BqtbGo/aujo1NxtwX/OYDGIIEx/V7r1lBQCfgNEM9+dn6Ahr4ETPVU9QLhyP2F99vKBhgJ4euQj0/zpaA0jjItMhrfTRAwPXVvWnh65+ECOlpQ6WNZZF2kHBjr5ocHH+zEJDGKrs0DOQ3WDiraoaqmBXRB85vHtQQRV/8KxJHpjtWC2k0eLrfoH4wIDAQAB";
 	
 	public DrawThread t;
@@ -67,12 +66,13 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 		mcache.add(event);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void touch(MotionEvent event) {
 		int x = (int) event.getX();
 		int y = (int) event.getY();
 		
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			for (DispObj i : objs) {
+			for (DispObj i : (ArrayList<DispObj>) objs.clone()) {
 				if (i.checkPress(x, y)) {
 					if (i.d != null) {
 						i.d.sendCallback(x, y);
@@ -81,7 +81,7 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 				}
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			for (DispObj i : objs) {
+			for (DispObj i : (ArrayList<DispObj>) objs.clone()) {
 				if (i.checkPress(x, y)) {
 					if (i.c != null) {
 						i.c.sendCallback(x, y);
@@ -93,6 +93,7 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 	}
 	
 	public Callback draw = null;
+	public boolean start = false;
 	
 	int[] gr = {Color.rgb(0, 0, 0), Color.rgb(0, 0, 0)};
 	
@@ -136,6 +137,8 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
                 	}
                     
                     if (c != null) {
+                    	start = true;
+                    	
 	                    GradientDrawable g = new GradientDrawable(Orientation.TOP_BOTTOM, gr);
 	                    g.setBounds(0, 0, w, h);
 	                    g.draw(c);

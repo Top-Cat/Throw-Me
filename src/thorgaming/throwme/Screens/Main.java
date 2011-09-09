@@ -1,16 +1,10 @@
 package thorgaming.throwme.Screens;
 
-import java.sql.Connection;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.Window;
-import android.view.WindowManager;
 import thorgaming.throwme.DevCard;
 import thorgaming.throwme.DispObj;
 import thorgaming.throwme.MouseCallback;
@@ -22,32 +16,35 @@ import thorgaming.throwme.DispObjs.DispRes;
 public class Main extends Screen {
 	
 	DispObj thorcard;
-    Connection conn;
-	
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(DevCard d, Activity a) {
-        super.onCreate(d, a);
+    Timer t = new Timer();
+    boolean si;
+    
+    public Main(DevCard d, Activity a, Object[] o) {
+        super(d, a, o);
         
-        boolean si = getIntent().getBooleanExtra("skipintro", true);
+        si = o != null && o[0] != null ? (Boolean) o[0] : false;
         thorcard = new DispRes(d, R.drawable.thorgamingcard, ac.getResources(), 800, 480, 0, 0, 0, 0);
-        if (si) {
-        	new showmenu2().run();
-        } else {
-        	new AlphaAnim(d, thorcard, 0, 255, null, 200);
-	        
-	        Timer t = new Timer();
-	        t.schedule(new showmenu(), 4000);
-        }
+        t.schedule(new waitforscreen(), 500);
     }
     
-    /*@Override
-    public boolean onTouchEvent(MotionEvent event) {
-    	if (!this.isFinishing()) {
-	    	d.sendtouch(event);
-    	}
-		return false;
-    }*/
+    public class waitforscreen extends TimerTask {
+
+		@Override
+		public void run() {
+			if (d.start == false) {
+				t.schedule(new waitforscreen(), 500);
+			} else {
+				if (si) {
+		        	new showmenu2().run();
+		        } else {
+		        	new AlphaAnim(d, thorcard, 0, 255, null, 200);
+			        
+			        t.schedule(new showmenu(), 4000);
+		        }
+			}
+		}
+    	
+    }
     
     public class showmenu2 extends TimerTask {
 
@@ -76,10 +73,7 @@ public class Main extends Screen {
 
 		@Override
 		public void sendCallback(int x, int y) {
-			/*System.out.println("Play game!");
-			Intent intent = new Intent(Main.this, Game.class);
-	        startActivity(intent);
-	        finish();*/
+			new Game(d, ac, null);
 		}
 
 		@Override
@@ -93,10 +87,7 @@ public class Main extends Screen {
 
 		@Override
 		public void sendCallback(int x, int y) {
-			/*System.out.println("Show scores!");
-			Intent intent = new Intent(Main.this, Highs.class);
-	        startActivity(intent);
-	        finish();*/
+			new Highs(d, ac, null);
 		}
 
 		@Override
@@ -113,16 +104,9 @@ public class Main extends Screen {
 			thorcard.destroy(d);
 			thorcard = new DispRes(d, R.drawable.box2dcard, ac.getResources(), 800, 480, 0, 0, 255, 0);
 			
-			Timer t = new Timer();
 	        t.schedule(new showmenu2(), 4000);
 		}
     	
     }
-    
-    /*@Override
-    protected void onResume() {
-    	super.onResume();
-    	d.createThread();
-    }*/
 
 }

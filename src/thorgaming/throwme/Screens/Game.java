@@ -2,6 +2,8 @@ package thorgaming.throwme.Screens;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 
 import org.jbox2d.collision.Shape;
 import org.jbox2d.common.Vec2;
@@ -32,9 +34,8 @@ public class Game extends Screen {
 	Character c;
 	Cloud c1;
 	
-	@Override
-    public void onCreate(DevCard _d, Activity _a) {
-		super.onCreate(_d, _a);
+    public Game(DevCard _d, Activity _a, Object[] o) {
+		super(_d, _a, o);
 		
 	    gr[0][0] = 255;
 	    gr[0][1] = 255;
@@ -180,11 +181,7 @@ public class Game extends Screen {
 		@Override
 		public void sendCallback() {
 			if (c != null && c.end && ! ended) {
-				/*Intent intent = new Intent(Game.this, Highs.class); Change screen
-				intent.putExtra("send", true);
-				intent.putExtra("score", d.ca.x / 10);
-		        startActivity(intent);
-		        finish();*/
+				new Highs(d, ac, new Object[] {true, d.ca.x / 10});
 		        ended = true;
 			}
 			
@@ -240,9 +237,8 @@ public class Game extends Screen {
 	
 	int sx, sy, x, y, mx, my;
 	
-    /*@Override
-    public boolean onTouchEvent(MotionEvent event) {
-    	d.sendtouch(event);
+    @Override
+    public boolean onTouch(MotionEvent event) {
     	mx = (int) event.getX();
 		my = (int) event.getY();
     	
@@ -277,18 +273,9 @@ public class Game extends Screen {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			Intent intent = new Intent(Game.this, Main.class);
-			intent.putExtra("skipintro", true);
-	        startActivity(intent);
-	        finish();
+			new Main(d, ac, new Object[]{true});
 		}
 	    return super.onKeyDown(keyCode, event);
 	}
-	
-    @Override
-    protected void onResume() {
-    	super.onResume();
-    	d.createThread();
-    }*/
 	
 }
