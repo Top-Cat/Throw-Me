@@ -45,161 +45,161 @@ public class Character extends DispObj {
 		head.density = (float) 0.5;
 		head.friction = (float) 0.5;
 		head.restitution = (float) 0.6;
-        head.userData = this;
+		head.userData = this;
 		
 		BodyDef headBodyDef = new BodyDef();
-        headBodyDef.position.set(new Vec2(_x / DevCard.ratio, _y / DevCard.ratio));
-        
-        h = w.createBody(headBodyDef);
-        h.createShape(head);
-        h.setMassFromShapes();
-        //bodies.put(h, 20);
-        
-        PolygonDef body = new PolygonDef();
-        body.setAsBox(15 / DevCard.ratio, 30 / DevCard.ratio);
-        body.filter.groupIndex = -1;
-        body.density = (float) 0.1;
-        body.friction = (float) 0.5;
-        body.restitution = (float) 0.6;
-        body.userData = this;
-        
-        BodyDef bodyBodyDef = new BodyDef();
-        bodyBodyDef.position.set(new Vec2(_x / DevCard.ratio, (_y + 60) / DevCard.ratio));
-        b = w.createBody(bodyBodyDef);
-        b.createShape(body);
-        b.setMassFromShapes();
-        
-        DistanceJointDef neck = new DistanceJointDef();
-        neck.initialize(h, b, new Vec2(_x / DevCard.ratio, _y / DevCard.ratio), new Vec2(_x / DevCard.ratio, (_y + 25) / DevCard.ratio));
-        w.createJoint(neck);
-        
-        CircleDef elbow = new CircleDef();
-        elbow.radius = (float) 3 / DevCard.ratio;
-        elbow.filter.groupIndex = -1;
-        elbow.density = (float) 0.5;
-        elbow.friction = (float) 0.5;
-        elbow.restitution = (float) 0.6;
-        elbow.userData = this;
-        
-        BodyDef elbowDef = new BodyDef();
-        elbowDef.position.set(new Vec2((_x + 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
-        e = w.createBody(elbowDef);
-        e.createShape(elbow);
-        e.setMassFromShapes();
-        bodies.put(e, 3);
-        
-        DistanceJointDef uarm1 = new DistanceJointDef();
-        uarm1.initialize(b, e, new Vec2((_x + 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x + 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
-        w.createJoint(uarm1);
-        
-        CircleDef hand = new CircleDef();
-        hand.radius = (float) 5 / DevCard.ratio;
-        hand.filter.groupIndex = -1;
-        hand.density = (float) 0.5;
-        hand.friction = (float) 0.5;
-        hand.restitution = (float) 0.6;
-        hand.userData = this;
-        
-        BodyDef handDef = new BodyDef();
-        handDef.position.set(new Vec2((_x + 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
-        ha = w.createBody(handDef);
-        ha.createShape(hand);
-        ha.setMassFromShapes();
-        bodies.put(ha, 5);
-        
-        DistanceJointDef larm1 = new DistanceJointDef();
-        larm1.initialize(b, ha, new Vec2((_x + 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
-        w.createJoint(larm1);
-        
-        DistanceJointDef arm1 = new DistanceJointDef();
-        arm1.initialize(e, ha, new Vec2((_x + 40) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
-        w.createJoint(arm1);
-        
-        
-        
-        
-        elbowDef.position.set(new Vec2((_x - 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
-        e2 = w.createBody(elbowDef);
-        e2.createShape(elbow);
-        e2.setMassFromShapes();
-        bodies.put(e2, 3);
-        
-        DistanceJointDef uarm2 = new DistanceJointDef();
-        uarm2.initialize(b, e2, new Vec2((_x - 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x - 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
-        w.createJoint(uarm2);
-        
-        handDef.position.set(new Vec2((_x - 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
-        ha2 = w.createBody(handDef);
-        ha2.createShape(hand);
-        ha2.setMassFromShapes();
-        bodies.put(ha2, 5);
-        
-        DistanceJointDef larm2 = new DistanceJointDef();
-        larm2.initialize(b, ha2, new Vec2((_x - 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
-        w.createJoint(larm2);
-        
-        DistanceJointDef arm2 = new DistanceJointDef();
-        arm2.initialize(e2, ha2, new Vec2((_x - 40) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
-        w.createJoint(arm2);
-        
-        
-        
-        
-        elbowDef.position.set(new Vec2((_x - 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
-        e3 = w.createBody(elbowDef);
-        e3.createShape(elbow);
-        e3.setMassFromShapes();
-        bodies.put(e3, 3);
-        
-        DistanceJointDef uarm3 = new DistanceJointDef();
-        uarm3.initialize(b, e3, new Vec2((_x - 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x - 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
-        w.createJoint(uarm3);
-        
-        handDef.position.set(new Vec2((_x - 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
-        ha3 = w.createBody(handDef);
-        ha3.createShape(hand);
-        ha3.setMassFromShapes();
-        bodies.put(ha3, 5);
-        
-        DistanceJointDef larm3 = new DistanceJointDef();
-        larm3.initialize(b, ha3, new Vec2((_x - 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
-        w.createJoint(larm3);
-        
-        DistanceJointDef arm3 = new DistanceJointDef();
-        arm3.initialize(e3, ha3, new Vec2((_x - 40) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
-        w.createJoint(arm3);
-        
-        
-        
-        
-        
-        elbowDef.position.set(new Vec2((_x + 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
-        e4 = w.createBody(elbowDef);
-        e4.createShape(elbow);
-        e4.setMassFromShapes();
-        bodies.put(e4, 3);
-        
-        DistanceJointDef uarm4 = new DistanceJointDef();
-        uarm4.initialize(b, e4, new Vec2((_x + 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x + 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
-        w.createJoint(uarm4);
-        
-        handDef.position.set(new Vec2((_x + 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
-        ha4 = w.createBody(handDef);
-        ha4.createShape(hand);
-        ha4.setMassFromShapes();
-        bodies.put(ha4, 5);
-        
-        DistanceJointDef larm4 = new DistanceJointDef();
-        larm4.initialize(b, ha4, new Vec2((_x + 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
-        w.createJoint(larm4);
-        
-        DistanceJointDef arm4 = new DistanceJointDef();
-        arm4.initialize(e4, ha4, new Vec2((_x + 40) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
-        w.createJoint(arm4);
-        
-        synchronized (d.objs) {
-        	d.objs.add(this);
-        }
+		headBodyDef.position.set(new Vec2(_x / DevCard.ratio, _y / DevCard.ratio));
+		
+		h = w.createBody(headBodyDef);
+		h.createShape(head);
+		h.setMassFromShapes();
+		//bodies.put(h, 20);
+		
+		PolygonDef body = new PolygonDef();
+		body.setAsBox(15 / DevCard.ratio, 30 / DevCard.ratio);
+		body.filter.groupIndex = -1;
+		body.density = (float) 0.1;
+		body.friction = (float) 0.5;
+		body.restitution = (float) 0.6;
+		body.userData = this;
+		
+		BodyDef bodyBodyDef = new BodyDef();
+		bodyBodyDef.position.set(new Vec2(_x / DevCard.ratio, (_y + 60) / DevCard.ratio));
+		b = w.createBody(bodyBodyDef);
+		b.createShape(body);
+		b.setMassFromShapes();
+		
+		DistanceJointDef neck = new DistanceJointDef();
+		neck.initialize(h, b, new Vec2(_x / DevCard.ratio, _y / DevCard.ratio), new Vec2(_x / DevCard.ratio, (_y + 25) / DevCard.ratio));
+		w.createJoint(neck);
+		
+		CircleDef elbow = new CircleDef();
+		elbow.radius = (float) 3 / DevCard.ratio;
+		elbow.filter.groupIndex = -1;
+		elbow.density = (float) 0.5;
+		elbow.friction = (float) 0.5;
+		elbow.restitution = (float) 0.6;
+		elbow.userData = this;
+		
+		BodyDef elbowDef = new BodyDef();
+		elbowDef.position.set(new Vec2((_x + 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		e = w.createBody(elbowDef);
+		e.createShape(elbow);
+		e.setMassFromShapes();
+		bodies.put(e, 3);
+		
+		DistanceJointDef uarm1 = new DistanceJointDef();
+		uarm1.initialize(b, e, new Vec2((_x + 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x + 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		w.createJoint(uarm1);
+		
+		CircleDef hand = new CircleDef();
+		hand.radius = (float) 5 / DevCard.ratio;
+		hand.filter.groupIndex = -1;
+		hand.density = (float) 0.5;
+		hand.friction = (float) 0.5;
+		hand.restitution = (float) 0.6;
+		hand.userData = this;
+		
+		BodyDef handDef = new BodyDef();
+		handDef.position.set(new Vec2((_x + 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		ha = w.createBody(handDef);
+		ha.createShape(hand);
+		ha.setMassFromShapes();
+		bodies.put(ha, 5);
+		
+		DistanceJointDef larm1 = new DistanceJointDef();
+		larm1.initialize(b, ha, new Vec2((_x + 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		w.createJoint(larm1);
+		
+		DistanceJointDef arm1 = new DistanceJointDef();
+		arm1.initialize(e, ha, new Vec2((_x + 40) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		w.createJoint(arm1);
+		
+		
+		
+		
+		elbowDef.position.set(new Vec2((_x - 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		e2 = w.createBody(elbowDef);
+		e2.createShape(elbow);
+		e2.setMassFromShapes();
+		bodies.put(e2, 3);
+		
+		DistanceJointDef uarm2 = new DistanceJointDef();
+		uarm2.initialize(b, e2, new Vec2((_x - 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x - 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		w.createJoint(uarm2);
+		
+		handDef.position.set(new Vec2((_x - 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		ha2 = w.createBody(handDef);
+		ha2.createShape(hand);
+		ha2.setMassFromShapes();
+		bodies.put(ha2, 5);
+		
+		DistanceJointDef larm2 = new DistanceJointDef();
+		larm2.initialize(b, ha2, new Vec2((_x - 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		w.createJoint(larm2);
+		
+		DistanceJointDef arm2 = new DistanceJointDef();
+		arm2.initialize(e2, ha2, new Vec2((_x - 40) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		w.createJoint(arm2);
+		
+		
+		
+		
+		elbowDef.position.set(new Vec2((_x - 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		e3 = w.createBody(elbowDef);
+		e3.createShape(elbow);
+		e3.setMassFromShapes();
+		bodies.put(e3, 3);
+		
+		DistanceJointDef uarm3 = new DistanceJointDef();
+		uarm3.initialize(b, e3, new Vec2((_x - 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x - 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		w.createJoint(uarm3);
+		
+		handDef.position.set(new Vec2((_x - 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		ha3 = w.createBody(handDef);
+		ha3.createShape(hand);
+		ha3.setMassFromShapes();
+		bodies.put(ha3, 5);
+		
+		DistanceJointDef larm3 = new DistanceJointDef();
+		larm3.initialize(b, ha3, new Vec2((_x - 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		w.createJoint(larm3);
+		
+		DistanceJointDef arm3 = new DistanceJointDef();
+		arm3.initialize(e3, ha3, new Vec2((_x - 40) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		w.createJoint(arm3);
+		
+		
+		
+		
+		
+		elbowDef.position.set(new Vec2((_x + 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		e4 = w.createBody(elbowDef);
+		e4.createShape(elbow);
+		e4.setMassFromShapes();
+		bodies.put(e4, 3);
+		
+		DistanceJointDef uarm4 = new DistanceJointDef();
+		uarm4.initialize(b, e4, new Vec2((_x + 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x + 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		w.createJoint(uarm4);
+		
+		handDef.position.set(new Vec2((_x + 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		ha4 = w.createBody(handDef);
+		ha4.createShape(hand);
+		ha4.setMassFromShapes();
+		bodies.put(ha4, 5);
+		
+		DistanceJointDef larm4 = new DistanceJointDef();
+		larm4.initialize(b, ha4, new Vec2((_x + 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		w.createJoint(larm4);
+		
+		DistanceJointDef arm4 = new DistanceJointDef();
+		arm4.initialize(e4, ha4, new Vec2((_x + 40) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		w.createJoint(arm4);
+		
+		synchronized (d.objs) {
+			d.objs.add(this);
+		}
 	}
 	
 	@Override

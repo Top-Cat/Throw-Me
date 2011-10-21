@@ -23,8 +23,8 @@ public class score extends DispObj {
 		y = _y;
 		
 		synchronized (dc.objs) {
-        	dc.objs.add(this);
-        }
+			dc.objs.add(this);
+		}
 		
 		paint.setColor(Color.rgb(255, 255, 255));
 		paint.setTextSize(30);

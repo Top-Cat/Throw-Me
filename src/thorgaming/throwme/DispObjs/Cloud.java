@@ -38,13 +38,13 @@ public class Cloud extends DispObj {
 		cloud.userData = this;
 		
 		BodyDef headBodyDef = new BodyDef();
-        headBodyDef.position.set(new Vec2(_x / DevCard.ratio, _y / DevCard.ratio));
-        
-        p_body = w.createBody(headBodyDef);
-        p_body.createShape(cloud);
-        cloud.localPosition = new Vec2(33 / DevCard.ratio, 0);
-        p_body.createShape(cloud);
-        p_body.setMassFromShapes();
+		headBodyDef.position.set(new Vec2(_x / DevCard.ratio, _y / DevCard.ratio));
+		
+		p_body = w.createBody(headBodyDef);
+		p_body.createShape(cloud);
+		cloud.localPosition = new Vec2(33 / DevCard.ratio, 0);
+		p_body.createShape(cloud);
+		p_body.setMassFromShapes();
 		
 		_d.objs.add(this);
 	}

@@ -21,13 +21,13 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 
 	public Camera ca = new Camera();
 	
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public void clear() {
-    	for (DispObj i : (ArrayList<DispObj>) objs.clone()) {
-    		i.destroy(this);
-    	}
-    }
-    
+		for (DispObj i : (ArrayList<DispObj>) objs.clone()) {
+			i.destroy(this);
+		}
+	}
+	
 	public List<Anim> anims = new ArrayList<Anim>();
 	public ArrayList<DispObj> objs = new ArrayList<DispObj>();
 	private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GbR3FqjQIqFkxFBWoKqCmIXAEMwdK8E13+AQuMU4i0fVw8kLMFZbk7T1YPezQnBm6ozwJSBrQA+M4HOdKguqnGE+hDtFzWCq5/mZh7VM8/9Sow7EFvlbQll2DR/8OQE1aXGcRKEf51H9a7i5VswOsqwiTAP7BqtbGo/aujo1NxtwX/OYDGIIEx/V7r1lBQCfgNEM9+dn6Ahr4ETPVU9QLhyP2F99vKBhgJ4euQj0/zpaA0jjItMhrfTRAwPXVvWnh65+ECOlpQ6WNZZF2kHBjr5ocHH+zEJDGKrs0DOQ3WDiraoaqmBXRB85vHtQQRV/8KxJHpjtWC2k0eLrfoH4wIDAQAB";
@@ -38,8 +38,8 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 	
 	private AABB worldAABB;
 	public World world;
-    static public float ratio = 30;
-    
+	static public float ratio = 30;
+	
 	public DevCard(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
@@ -47,18 +47,18 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 		objs.clear();
 		
 		SurfaceHolder holder = getHolder();
-        holder.addCallback(this);
-        
+		holder.addCallback(this);
+		
 		t = new DrawThread(holder, context);
 		
 		worldAABB = new AABB();
-        worldAABB.lowerBound.set(new Vec2((float) -1000.0 / ratio, (float) -9000.0 / ratio));
-        worldAABB.upperBound.set(new Vec2((float) 90000.0 / ratio, (float) 1000.0 / ratio));
-        
-        Vec2 gravity = new Vec2((float) 0.0, (float) 9.81);
-        boolean doSleep = true;
-        world = new World(worldAABB, gravity, doSleep);
-    }
+		worldAABB.lowerBound.set(new Vec2((float) -1000.0 / ratio, (float) -9000.0 / ratio));
+		worldAABB.upperBound.set(new Vec2((float) 90000.0 / ratio, (float) 1000.0 / ratio));
+		
+		Vec2 gravity = new Vec2((float) 0.0, (float) 9.81);
+		boolean doSleep = true;
+		world = new World(worldAABB, gravity, doSleep);
+	}
 	
 	List<MotionEvent> mcache = new ArrayList<MotionEvent>();
 	
@@ -111,8 +111,8 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		
 		public void setRunning(boolean b) {
-            doRun = b;
-        }
+			doRun = b;
+		}
 		
 		public void setgrad(int[] grn) {
 			gr = grn;
@@ -121,52 +121,52 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 		int height = 0;
 		
 		@Override
-        public void run() {
+		public void run() {
 			while(doRun) {
 				Canvas c = null;
-                try {
-                	for (MotionEvent e : mcache) {
-                		touch(e);
-                	}
-                	mcache.clear();
-                    c = shold.lockCanvas(null);
-                    world.step((float) 0.01, 5);
-                    
-                	if (draw != null) {
-                		draw.sendCallback();
-                	}
-                    
-                    if (c != null) {
-                    	start = true;
-                    	
-	                    GradientDrawable g = new GradientDrawable(Orientation.TOP_BOTTOM, gr);
-	                    g.setBounds(0, 0, w, h);
-	                    g.draw(c);
-	                    
-	                    List<Anim> over = new ArrayList<Anim>();
-	                    for (Anim i : anims) {
-	                    	i.process(over);
-	                    }
-	                    anims.removeAll(over);
-	                    
-	                    synchronized (objs) {
-		                    for (DispObj i : objs) {
-		                    	i.draw(c, ca);
-		                    }
+				try {
+					for (MotionEvent e : mcache) {
+						touch(e);
+					}
+					mcache.clear();
+					c = shold.lockCanvas(null);
+					world.step((float) 0.01, 5);
+					
+					if (draw != null) {
+						draw.sendCallback();
+					}
+					
+					if (c != null) {
+						start = true;
+						
+						GradientDrawable g = new GradientDrawable(Orientation.TOP_BOTTOM, gr);
+						g.setBounds(0, 0, w, h);
+						g.draw(c);
+						
+						List<Anim> over = new ArrayList<Anim>();
+						for (Anim i : anims) {
+							i.process(over);
 						}
-                    }
-                } catch (Exception e) {
-                	e.printStackTrace();
-                } finally {
-                    // do this in a finally so that if an exception is thrown
-                    // during the above, we don't leave the Surface in an
-                    // inconsistent state
-                    if (c != null) {
-                    	shold.unlockCanvasAndPost(c);
-                    }
-                }
+						anims.removeAll(over);
+						
+						synchronized (objs) {
+							for (DispObj i : objs) {
+								i.draw(c, ca);
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					// do this in a finally so that if an exception is thrown
+					// during the above, we don't leave the Surface in an
+					// inconsistent state
+					if (c != null) {
+						shold.unlockCanvasAndPost(c);
+					}
+				}
 			}
-    	
+		
 		}
 	}
 	
@@ -204,14 +204,14 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		boolean retry = true;
-        t.setRunning(false);
-        while (retry) {
-            try {
-                t.join();
-                retry = false;
-            } catch (InterruptedException e) {
-            }
-        }
+		t.setRunning(false);
+		while (retry) {
+			try {
+				t.join();
+				retry = false;
+			} catch (InterruptedException e) {
+			}
+		}
 	}
 	
 }

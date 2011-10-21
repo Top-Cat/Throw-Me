@@ -38,8 +38,8 @@ public class DispGif extends DispRes {
 	public void draw(Canvas c, Camera ca) {
 		long now=android.os.SystemClock.uptimeMillis();
 		if (moviestart == 0) {   // first time  
-            moviestart = now;  
-        }
+			moviestart = now;  
+		}
 		int relTime = (int)(((now - moviestart) * speed) % movie.duration()) ;
 		if (relTime < pr) {
 			treps++;

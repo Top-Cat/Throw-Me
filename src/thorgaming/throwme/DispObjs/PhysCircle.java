@@ -31,13 +31,13 @@ public class PhysCircle extends Circle {
 		circle.density = _d;
 		circle.friction = (float) 0.5;
 		circle.restitution = (float) 0.6;
-        
-        BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.position.set(new Vec2((float) x / DevCard.ratio, (float) y / DevCard.ratio));
-        
-        Pbody = w.createBody(groundBodyDef);
-        s = Pbody.createShape(circle);
-        Pbody.setMassFromShapes();
+		
+		BodyDef groundBodyDef = new BodyDef();
+		groundBodyDef.position.set(new Vec2((float) x / DevCard.ratio, (float) y / DevCard.ratio));
+		
+		Pbody = w.createBody(groundBodyDef);
+		s = Pbody.createShape(circle);
+		Pbody.setMassFromShapes();
 	}
 	
 	@Override
