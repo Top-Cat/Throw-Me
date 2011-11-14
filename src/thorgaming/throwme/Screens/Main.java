@@ -16,18 +16,18 @@ import thorgaming.throwme.DispObjs.DispRes;
 public class Main extends Screen {
 	
 	DispObj thorcard;
-    Timer t = new Timer();
-    boolean si;
-    
-    public Main(DevCard d, Activity a, Object[] o) {
-        super(d, a, o);
-        
-        si = o != null && o[0] != null ? (Boolean) o[0] : false;
-        thorcard = new DispRes(d, R.drawable.thorgamingcard, ac.getResources(), 800, 480, 0, 0, 0, 0);
-        t.schedule(new waitforscreen(), 500);
-    }
-    
-    public class waitforscreen extends TimerTask {
+	Timer t = new Timer();
+	boolean si;
+	
+	public Main(DevCard d, Activity a, Object[] o) {
+		super(d, a, o);
+		
+		si = o != null && o[0] != null ? (Boolean) o[0] : false;
+		thorcard = new DispRes(d, R.drawable.thorgamingcard, ac.getResources(), 800, 480, 0, 0, 0, 0);
+		t.schedule(new waitforscreen(), 500);
+	}
+	
+	public class waitforscreen extends TimerTask {
 
 		@Override
 		public void run() {
@@ -35,25 +35,25 @@ public class Main extends Screen {
 				t.schedule(new waitforscreen(), 500);
 			} else {
 				if (si) {
-		        	new showmenu2().run();
-		        } else {
-		        	new AlphaAnim(d, thorcard, 0, 255, null, 200);
-			        
-			        t.schedule(new showmenu(), 4000);
-		        }
+					new showmenu2().run();
+				} else {
+					new AlphaAnim(d, thorcard, 0, 255, null, 200);
+					
+					t.schedule(new showmenu(), 4000);
+				}
 			}
 		}
-    	
-    }
-    
-    public class showmenu2 extends TimerTask {
+		
+	}
+	
+	public class showmenu2 extends TimerTask {
 
 		@Override
 		public void run() {
 			thorcard.destroy(d);
 			int[] gr = new int[2];
-            gr[0] = Color.rgb(0, 102, 204);
-            gr[1] = Color.rgb(255, 255, 255);
+			gr[0] = Color.rgb(0, 102, 204);
+			gr[1] = Color.rgb(255, 255, 255);
 			
 			d.t.setgrad(gr);
 			new DispRes(d, R.drawable.throwmelogo, ac.getResources(), 464, 90, 168, 15, 255, 0);
@@ -67,9 +67,9 @@ public class Main extends Screen {
 			new XAnim(d, power, -515, 162, null, 700);
 		}
 
-    }
-    
-    public class playgame implements MouseCallback {
+	}
+	
+	public class playgame implements MouseCallback {
 
 		@Override
 		public void sendCallback(int x, int y) {
@@ -81,9 +81,9 @@ public class Main extends Screen {
 			sendCallback(0, 0);
 		}
 
-    }
-    
-    public class showhighs implements MouseCallback {
+	}
+	
+	public class showhighs implements MouseCallback {
 
 		@Override
 		public void sendCallback(int x, int y) {
@@ -95,18 +95,18 @@ public class Main extends Screen {
 			sendCallback(0, 0);
 		}
 
-    }
-    
-    public class showmenu extends TimerTask {
+	}
+	
+	public class showmenu extends TimerTask {
 
 		@Override
 		public void run() {
 			thorcard.destroy(d);
 			thorcard = new DispRes(d, R.drawable.box2dcard, ac.getResources(), 800, 480, 0, 0, 255, 0);
 			
-	        t.schedule(new showmenu2(), 4000);
+			t.schedule(new showmenu2(), 4000);
 		}
-    	
-    }
+		
+	}
 
 }

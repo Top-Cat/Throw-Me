@@ -25,7 +25,7 @@ import thorgaming.throwme.DispObjs.Rect;
 
 public class Game extends Screen {
 	
-	static { @SuppressWarnings("unused") byte dummy[] = new byte[ 8*1024*1024 ]; }    
+	static { @SuppressWarnings("unused") byte dummy[] = new byte[ 8*1024*1024 ]; }	
 	int gr[][] = new int[9][3];
 	
 	DispRes a, b;
@@ -34,52 +34,52 @@ public class Game extends Screen {
 	Character c;
 	Cloud c1;
 	
-    public Game(DevCard _d, Activity _a, Object[] o) {
+	public Game(DevCard _d, Activity _a, Object[] o) {
 		super(_d, _a, o);
 		
-	    gr[0][0] = 255;
-	    gr[0][1] = 255;
-	    gr[0][2] = 255;
-	    
-	    gr[1][0] = 0;
-	    gr[1][1] = 102;
-	    gr[1][2] = 204;
-	    
-	    gr[2][0] = 255;
-	    gr[2][1] = 255;
-	    gr[2][2] = 0;
-	    
-	    gr[3][0] = 255;
-	    gr[3][1] = 153;
-	    gr[3][2] = 0;
-	    
-	    gr[4][0] = 153;
-	    gr[4][1] = 0;
-	    gr[4][2] = 51;
-	    
-	    gr[5][0] = 51;
-	    gr[5][1] = 255;
-	    gr[5][2] = 102;
-	    
-	    gr[6][0] = 0;
-	    gr[6][1] = 51;
-	    gr[6][2] = 204;
-	    
-	    gr[7][0] = 0;
-	    gr[7][1] = 0;
-	    gr[7][2] = 0;
-	    
-	    gr[8][0] = 0;
-	    gr[8][1] = 0;
-	    gr[8][2] = 0;
-	    
-	    int[] ng = new int[2];
-        ng[0] = Color.rgb(0, 102, 204);
-        ng[1] = Color.rgb(255, 255, 255);
-	    
-	    d.t.setgrad(ng);
-	    
-	    a = new DispRes_Rel(d, R.drawable.bg, ac.getResources(), 879, 240, 0, 300, 255, 0);
+		gr[0][0] = 255;
+		gr[0][1] = 255;
+		gr[0][2] = 255;
+		
+		gr[1][0] = 0;
+		gr[1][1] = 102;
+		gr[1][2] = 204;
+		
+		gr[2][0] = 255;
+		gr[2][1] = 255;
+		gr[2][2] = 0;
+		
+		gr[3][0] = 255;
+		gr[3][1] = 153;
+		gr[3][2] = 0;
+		
+		gr[4][0] = 153;
+		gr[4][1] = 0;
+		gr[4][2] = 51;
+		
+		gr[5][0] = 51;
+		gr[5][1] = 255;
+		gr[5][2] = 102;
+		
+		gr[6][0] = 0;
+		gr[6][1] = 51;
+		gr[6][2] = 204;
+		
+		gr[7][0] = 0;
+		gr[7][1] = 0;
+		gr[7][2] = 0;
+		
+		gr[8][0] = 0;
+		gr[8][1] = 0;
+		gr[8][2] = 0;
+		
+		int[] ng = new int[2];
+		ng[0] = Color.rgb(0, 102, 204);
+		ng[1] = Color.rgb(255, 255, 255);
+		
+		d.t.setgrad(ng);
+		
+		a = new DispRes_Rel(d, R.drawable.bg, ac.getResources(), 879, 240, 0, 300, 255, 0);
 		b = new DispRes_Rel(d, R.drawable.bg, ac.getResources(), 879, 240, 800, 300, 255, 0);
 		
 		for (int i = 0; i < 7; i++) {
@@ -106,7 +106,7 @@ public class Game extends Screen {
 		d.draw = new tick();
 		
 		/*Timer t = new Timer();
-        t.schedule(new tick(), 100, 10);*/
+		t.schedule(new tick(), 100, 10);*/
 	}
 	
 	class hitListener implements ContactListener {
@@ -182,7 +182,7 @@ public class Game extends Screen {
 		public void sendCallback() {
 			if (c != null && c.end && ! ended) {
 				new Highs(d, ac, new Object[] {true, d.ca.x / 10});
-		        ended = true;
+				ended = true;
 			}
 			
 			if (a.getScreenX() < -d.w) {
@@ -221,61 +221,61 @@ public class Game extends Screen {
 			}
 			d.t.setgrad(ng);
 		}
-    	
-    }
+		
+	}
 	
 	  public static int blend (int[] rgb1, int[] rgb2, double ratio)
 	  {
-	    float r  = (float) ratio / 1000;
-	    float ir = (float) 1.0 - r;
+		float r  = (float) ratio / 1000;
+		float ir = (float) 1.0 - r;
 
-	    int color = Color.rgb((int) ((rgb1[0] * r) + (rgb2[0] * ir)), 
-                			(int) ((rgb1[1] * r) + (rgb2[1] * ir)), 
-                			(int) ((rgb1[2] * r) + (rgb2[2] * ir)));
-	    return color;
+		int color = Color.rgb((int) ((rgb1[0] * r) + (rgb2[0] * ir)), 
+							(int) ((rgb1[1] * r) + (rgb2[1] * ir)), 
+							(int) ((rgb1[2] * r) + (rgb2[2] * ir)));
+		return color;
 	  }
 	
 	int sx, sy, x, y, mx, my;
 	
-    @Override
-    public boolean onTouch(MotionEvent event) {
-    	mx = (int) event.getX();
+	@Override
+	public boolean onTouch(MotionEvent event) {
+		mx = (int) event.getX();
 		my = (int) event.getY();
-    	
-    	if (event.getAction() == MotionEvent.ACTION_DOWN) {
-    		x = mx;
-    		y = my;
-    		sx = d.ca.x;
-    		sy = d.ca.y;
-    	} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-    		int nx = (int) (sx + (x - event.getX()));
-    		int ny = (int) (sy + (event.getY() - y));
-    		if (ny < 0) {
-    			ny = 0;
-    		}
-    		if (nx < d.ca.x) {
-    			nx = d.ca.x;
-    		}
-    		//d.ca.SetCameraXY(nx, ny);
-    		
-    		if (c != null) {
-    			c.mouse(event.getX(), event.getY());
-    		}
-    	} else if (event.getAction() == MotionEvent.ACTION_UP) {
-    		if (c != null) {
-    			c.lose = true;
-    		}
-    	}
-    	
+		
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			x = mx;
+			y = my;
+			sx = d.ca.x;
+			sy = d.ca.y;
+		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			int nx = (int) (sx + (x - event.getX()));
+			int ny = (int) (sy + (event.getY() - y));
+			if (ny < 0) {
+				ny = 0;
+			}
+			if (nx < d.ca.x) {
+				nx = d.ca.x;
+			}
+			//d.ca.SetCameraXY(nx, ny);
+			
+			if (c != null) {
+				c.mouse(event.getX(), event.getY());
+			}
+		} else if (event.getAction() == MotionEvent.ACTION_UP) {
+			if (c != null) {
+				c.lose = true;
+			}
+		}
+		
 		return false;
-    }
+	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			new Main(d, ac, new Object[]{true});
 		}
-	    return super.onKeyDown(keyCode, event);
+		return super.onKeyDown(keyCode, event);
 	}
 	
 }
