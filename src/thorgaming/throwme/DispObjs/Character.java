@@ -245,7 +245,6 @@ public class Character extends DispObj {
 			c.drawText("Distance: " + (nx / 10), 10, 40, paint);
 			
 			if (backwards > 10) {
-				//System.out.println("Game Over!");
 				end = true;
 			}
 		}

@@ -40,17 +40,19 @@ public class DispGif extends DispRes {
 		if (moviestart == 0) {   // first time  
 			moviestart = now;  
 		}
-		int relTime = (int)(((now - moviestart) * speed) % movie.duration()) ;
-		if (relTime < pr) {
-			treps++;
-			if (treps >= reps && reps > -1) {
-				destroy(d);
+		if (movie != null) {
+			int relTime = (int)(((now - moviestart) * speed) % movie.duration()) ;
+			if (relTime < pr) {
+				treps++;
+				if (treps >= reps && reps > -1) {
+					destroy(d);
+				}
 			}
+			pr = relTime;
+			movie.setTime(relTime);
+			p.setAlpha(alpha);
+			movie.draw(c, x, y, p);
 		}
-		pr = relTime;
-		movie.setTime(relTime);
-		p.setAlpha(alpha);
-		movie.draw(c, x, y, p);
 	}
 
 }

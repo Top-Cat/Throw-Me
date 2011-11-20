@@ -27,7 +27,6 @@ public class PhysCircle extends Circle {
 		
 		circle = new CircleDef();  
 		circle.radius = (float) r / DevCard.ratio;
-		System.out.println(circle.radius);
 		circle.density = _d;
 		circle.friction = (float) 0.5;
 		circle.restitution = (float) 0.6;

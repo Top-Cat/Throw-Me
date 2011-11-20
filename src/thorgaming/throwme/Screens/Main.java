@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
-import android.graphics.Color;
 import thorgaming.throwme.DevCard;
 import thorgaming.throwme.DispObj;
 import thorgaming.throwme.MouseCallback;
@@ -23,6 +22,7 @@ public class Main extends Screen {
 		super(d, a, o);
 		
 		si = o != null && o[0] != null ? (Boolean) o[0] : false;
+		si = true;
 		thorcard = new DispRes(d, R.drawable.thorgamingcard, ac.getResources(), 800, 480, 0, 0, 0, 0);
 		t.schedule(new waitforscreen(), 500);
 	}
@@ -51,11 +51,7 @@ public class Main extends Screen {
 		@Override
 		public void run() {
 			thorcard.destroy(d);
-			int[] gr = new int[2];
-			gr[0] = Color.rgb(0, 102, 204);
-			gr[1] = Color.rgb(255, 255, 255);
-			
-			d.t.setgrad(gr);
+			d.t.resetGradient();
 			new DispRes(d, R.drawable.throwmelogo, ac.getResources(), 464, 90, 168, 15, 255, 0);
 			DispObj play = new DispRes(d, R.drawable.playgame, ac.getResources(), 500, 85, 150, 160, 255, 0);
 			new XAnim(d, play, -500, 150, null, 500);

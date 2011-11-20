@@ -114,6 +114,13 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 			doRun = b;
 		}
 		
+		public void resetGradient() {
+			int[] gr = new int[2];
+			gr[0] = Color.rgb(0, 102, 204);
+			gr[1] = Color.rgb(255, 255, 255);
+			setgrad(gr);
+		}
+		
 		public void setgrad(int[] grn) {
 			gr = grn;
 		}
@@ -191,7 +198,6 @@ public class DevCard extends SurfaceView implements SurfaceHolder.Callback {
 			//t.run();
 		}
 		t.pos(1);*/
-		
 	}
 	
 	public void createThread() {

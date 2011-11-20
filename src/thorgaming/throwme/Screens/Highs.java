@@ -54,11 +54,7 @@ public class Highs extends Screen {
 		SharedPreferences settings = ac.getSharedPreferences(PREFS_NAME, 0);
 		deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
 		
-		int[] gr = new int[2];
-		gr[0] = Color.rgb(0, 102, 204);
-		gr[1] = Color.rgb(255, 255, 255);
-		
-		d.t.setgrad(gr);
+		d.t.resetGradient();
 		
 		RoundRect rr = new RoundRect(d, 480, 480, 160, 0, 50, 20);
 		rr.paint.setARGB(50, 0, 0, 0);
@@ -84,7 +80,6 @@ public class Highs extends Screen {
 		new GetHighs().start();
 		boolean send = (o != null && o[0] != null) ? (Boolean) o[0] : false;
 		final int score = (o != null && o[1] != null) ? (Integer) o[1] : 0;
-		System.out.println(o != null && o[0] != null);
 		if (send) {
 			final AlertDialog.Builder alert = new AlertDialog.Builder(ac);
 			final EditText input = new EditText(ac);

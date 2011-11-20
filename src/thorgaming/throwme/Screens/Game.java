@@ -180,46 +180,51 @@ public class Game extends Screen {
 		
 		@Override
 		public void sendCallback() {
-			if (c != null && c.end && ! ended) {
-				new Highs(d, ac, new Object[] {true, d.ca.x / 10});
+			if (c != null && c.end && !ended) {
+				ac.runOnUiThread(new Runnable() {
+					public void run() {
+						new Highs(d, ac, new Object[] {true, d.ca.x / 10});
+					}
+				});
 				ended = true;
 			}
-			
-			if (a.getScreenX() < -d.w) {
-				a.x = d.ca.x + d.w;
-			}
-			if (b.getScreenX() < -d.w) {
-				b.x = d.ca.x + d.w;
-			}
-			for (int i = 0; i < 7; i++) {
-				if (dj[i].getScreenX() < -160) {
-					dist++;
-					dj[i].move((dist * 160) + 80, 480);
-					dj[i].randomiseColor();
-					dj[i].setRadius((int) (Math.random() * 80) + 80);
+			if (!ended) {
+				if (a.getScreenX() < -d.w) {
+					a.x = d.ca.x + d.w;
 				}
-			}
-			
-			int ng[] = new int[2];
-			if (d.ca.y > 7999) {
-				
-				ng[0] = Color.rgb(0, 0, 0);
-				ng[1] = Color.rgb(0, 0, 0);
-				
-			} else if (d.ca.y > 0) {
-				
-				int ny = d.ca.y + 10;
-				if (ny % 1000 < d.ca.y % 1000) {
-					ny -= (ny % 1000) + 1;
+				if (b.getScreenX() < -d.w) {
+					b.x = d.ca.x + d.w;
 				}
-				ng[0] = blend(gr[(int) Math.floor(d.ca.y / 1000) + 1], gr[(int) Math.floor(d.ca.y / 1000)], ny % 1000);
-				ng[1] = blend(gr[(int) Math.floor(d.ca.y / 1000) + 1], gr[(int) Math.floor(d.ca.y / 1000)], d.ca.y % 1000);
+				for (int i = 0; i < 7; i++) {
+					if (dj[i].getScreenX() < -160) {
+						dist++;
+						dj[i].move((dist * 160) + 80, 480);
+						dj[i].randomiseColor();
+						dj[i].setRadius((int) (Math.random() * 80) + 80);
+					}
+				}
 				
-			} else {
-				ng[0] = Color.rgb(255, 255, 255);
-				ng[1] = Color.rgb(255, 255, 255);
+				int ng[] = new int[2];
+				if (d.ca.y > 7999) {
+					
+					ng[0] = Color.rgb(0, 0, 0);
+					ng[1] = Color.rgb(0, 0, 0);
+					
+				} else if (d.ca.y > 0) {
+					
+					int ny = d.ca.y + 10;
+					if (ny % 1000 < d.ca.y % 1000) {
+						ny -= (ny % 1000) + 1;
+					}
+					ng[0] = blend(gr[(int) Math.floor(d.ca.y / 1000) + 1], gr[(int) Math.floor(d.ca.y / 1000)], ny % 1000);
+					ng[1] = blend(gr[(int) Math.floor(d.ca.y / 1000) + 1], gr[(int) Math.floor(d.ca.y / 1000)], d.ca.y % 1000);
+					
+				} else {
+					ng[0] = Color.rgb(255, 255, 255);
+					ng[1] = Color.rgb(255, 255, 255);
+				}
+				d.t.setgrad(ng);
 			}
-			d.t.setgrad(ng);
 		}
 		
 	}
