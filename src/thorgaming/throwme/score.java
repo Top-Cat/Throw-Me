@@ -10,20 +10,20 @@ import android.graphics.Paint;
 public class score extends DispObj {
 	
 	private String name;
-	private int score, y, scroll, pos;
+	private int score, y, scroll, position;
 	private Date date;
 	Paint paint = new Paint();
 	Paint lpaint = new Paint();
 	
-	public score(DevCard dc, int p, String n, int s, Date d, int _y) {
-		name = n;
-		score = s;
-		date = d;
-		pos = p;
-		y = _y;
+	public score(Stage stage, int position, String name, int score, Date date, int y) {
+		this.name = name;
+		this.score = score;
+		this.date = date;
+		this.position = position;
+		this.y = y;
 		
-		synchronized (dc.objs) {
-			dc.objs.add(this);
+		synchronized (stage.objs) {
+			stage.objs.add(this);
 		}
 		
 		paint.setColor(Color.rgb(255, 255, 255));
@@ -34,15 +34,15 @@ public class score extends DispObj {
 		lpaint.setColor(Color.rgb(0, 0, 0));
 	}
 	
-	public void setys(int s) {
-		scroll = s;
+	public void setScroll(int scroll) {
+		this.scroll = scroll;
 	}
 
 	@Override
 	public void draw(Canvas c, Camera ca) {
 		c.drawText(name, 210, scroll + y + 30, paint);
 		c.drawText(Integer.toString(score), 210, scroll + y + 60, paint);
-		c.drawText(Integer.toString(pos), 165, scroll + y + 30, paint);
+		c.drawText(Integer.toString(position), 165, scroll + y + 30, paint);
 		c.drawText(new SimpleDateFormat("dd/MM/yyyy").format(date), 480, scroll + y + 30, paint);
 		c.drawLine(160, scroll + y + 63, 640, scroll + y + 63, lpaint);
 	}

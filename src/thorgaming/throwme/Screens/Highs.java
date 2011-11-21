@@ -23,7 +23,7 @@ import android.graphics.Shader;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.EditText;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 import thorgaming.throwme.DispObj;
 import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
@@ -48,41 +48,41 @@ public class Highs extends Screen {
 	List<score> highs = new ArrayList<score>();
 	
 	/** Called when the activity is first created. */
-	public Highs(DevCard d, Activity a, Object[] o) {
-		super(d, a, o);
+	public Highs(Stage stage, Activity a, Object[] o) {
+		super(stage, a, o);
 		
-		SharedPreferences settings = ac.getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, 0);
 		deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
 		
-		d.t.resetGradient();
+		stage.t.resetGradient();
 		
-		RoundRect rr = new RoundRect(d, 480, 480, 160, 0, 50, 20);
+		RoundRect rr = new RoundRect(stage, 480, 480, 160, 0, 50, 20);
 		rr.paint.setARGB(50, 0, 0, 0);
 		rr.stroke.setARGB(150, 0, 0, 0);
 		
-		d.draw = null;
+		stage.draw = null;
 		
-		loader = new DispGif(ac.getApplicationContext(), d, R.drawable.ajax, ac.getResources(), 128, 128, 336, 176, 255, 0, -1, 1);
-		b1 = new DispRes(d, R.drawable.day_bw, ac.getResources(), 150, 60, 645, 10, 255, 10);
+		loader = new DispGif(activity.getApplicationContext(), stage, R.drawable.ajax, activity.getResources(), 128, 128, 336, 176, 255, 0, -1, 1);
+		b1 = new DispRes(stage, R.drawable.day_bw, activity.getResources(), 150, 60, 645, 10, 255, 10);
 		b1.setMouseDownEvent(new daysel());
-		b2 = new DispRes(d, R.drawable.week_bw, ac.getResources(), 150, 44, 645, 90, 255, 10);
+		b2 = new DispRes(stage, R.drawable.week_bw, activity.getResources(), 150, 44, 645, 90, 255, 10);
 		b2.setMouseDownEvent(new weeksel());
-		b3 = new DispRes(d, R.drawable.month_bw, ac.getResources(), 150, 33, 645, 154, 255, 10);
+		b3 = new DispRes(stage, R.drawable.month_bw, activity.getResources(), 150, 33, 645, 154, 255, 10);
 		b3.setMouseDownEvent(new monthsel());
-		b4 = new DispRes(d, R.drawable.time_bw, ac.getResources(), 150, 25, 645, 207, 255, 10);
+		b4 = new DispRes(stage, R.drawable.time_bw, activity.getResources(), 150, 25, 645, 207, 255, 10);
 		b4.setMouseDownEvent(new timesel());
 		
-		l1 = new DispRes(d, R.drawable.day, ac.getResources(), 150, 60, 645, 10, 0, 0);
-		l2 = new DispRes(d, R.drawable.week, ac.getResources(), 150, 44, 645, 90, 0, 0);
-		l3 = new DispRes(d, R.drawable.month, ac.getResources(), 150, 33, 645, 154, 0, 0);
-		l4 = new DispRes(d, R.drawable.time, ac.getResources(), 150, 25, 645, 207, 0, 0);
+		l1 = new DispRes(stage, R.drawable.day, activity.getResources(), 150, 60, 645, 10, 0, 0);
+		l2 = new DispRes(stage, R.drawable.week, activity.getResources(), 150, 44, 645, 90, 0, 0);
+		l3 = new DispRes(stage, R.drawable.month, activity.getResources(), 150, 33, 645, 154, 0, 0);
+		l4 = new DispRes(stage, R.drawable.time, activity.getResources(), 150, 25, 645, 207, 0, 0);
 		
 		new GetHighs().start();
 		boolean send = (o != null && o[0] != null) ? (Boolean) o[0] : false;
 		final int score = (o != null && o[1] != null) ? (Integer) o[1] : 0;
 		if (send) {
-			final AlertDialog.Builder alert = new AlertDialog.Builder(ac);
-			final EditText input = new EditText(ac);
+			final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+			final EditText input = new EditText(activity);
 			alert.setView(input);
 			alert.setMessage("Enter name:");
 			alert.setPositiveButton("Submit score", new DialogInterface.OnClickListener() {
@@ -280,7 +280,7 @@ public class Highs extends Screen {
 			boolean s = false;
 			while (!s) {
 				for (score i : highs) {
-					i.destroy(d);
+					i.destroy(stage);
 				}
 				highs.clear();
 				loader.setAlpha(255);
@@ -299,21 +299,21 @@ public class Highs extends Screen {
 						ResultSet r = pr.executeQuery();
 						loader.setAlpha(0);
 						while (r.next()) {
-							highs.add(new score(d, a + 1, r.getString("name"), r.getInt("score"), r.getDate("date"), (a * 60)));
+							highs.add(new score(stage, a + 1, r.getString("name"), r.getInt("score"), r.getDate("date"), (a * 60)));
 							a++;
 						}
 						
 						if (rrb != null) {
-							rrb.destroy(d);
-							rb.destroy(d);
+							rrb.destroy(stage);
+							rb.destroy(stage);
 						}
 						
-						rrb = new RoundRect(d, 491, 490, 155, -5, 0, 24);
+						rrb = new RoundRect(stage, 491, 490, 155, -5, 0, 24);
 						rrb.paint.setARGB(0, 0, 0, 0);
 						rrb.stroke.setStrokeWidth(10);
 						rrb.stroke.setShader(new LinearGradient(0, 0, 0, 480, Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
 						
-						rb = new RoundRect(d, 480, 480, 160, 0, 0, 20);
+						rb = new RoundRect(stage, 480, 480, 160, 0, 0, 20);
 						rb.paint.setARGB(0, 0, 0, 0);
 						rb.stroke.setARGB(255, 0, 0, 0);
 						rb.stroke.setStrokeWidth(1);
@@ -349,7 +349,7 @@ public class Highs extends Screen {
 				m -= a;
 				
 				for (score i : highs) {
-					i.setys(scroll);
+					i.setScroll(scroll);
 				}
 				
 				ThrowMe.waiting(10);
@@ -357,7 +357,7 @@ public class Highs extends Screen {
 		}
 		
 		for (score i : highs) {
-			i.setys(scroll);
+			i.setScroll(scroll);
 		}
 		
 		return false;
@@ -366,7 +366,7 @@ public class Highs extends Screen {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			new Main(d, ac, new Object[] {true});
+			new Main(stage, activity, new Object[] {true});
 		}
 		return super.onKeyDown(keyCode, event);
 	}

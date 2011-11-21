@@ -3,21 +3,23 @@ package thorgaming.throwme.Screens;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 import thorgaming.throwme.ThrowMe;
 
 public class Screen {
 
-	DevCard d;
-	ThrowMe ac;
+	Stage stage;
+	ThrowMe activity;
 	
-	public Screen(DevCard _d, Activity a, Object[] o) {
-		d = _d;
-		d.clear();
-		ac = (ThrowMe) a;
-		ac.s = this;
+	public Screen(Stage stage, Activity activity, Object[] data) {
+		this.stage = stage;
+		stage.clear();
+		this.activity = (ThrowMe) activity;
+		this.activity.screen = this;
 	}
+	
 	public boolean onTouch(MotionEvent event) { return false; };
+	
 	public boolean onKeyDown(int keyCode, KeyEvent event) { return true; };
 	
 }

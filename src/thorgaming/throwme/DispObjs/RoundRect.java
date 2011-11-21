@@ -5,24 +5,22 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Paint.Style;
 import thorgaming.throwme.Camera;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 
 public class RoundRect extends Rect {
 
-	//int width, height;
 	public Paint stroke = new Paint();
 	int co = 20;
-	//int ax, ay;
 	
-	public RoundRect(DevCard _d, int _w, int _h, int _x, int _y, int _alpha, int _c) {
-		super(_d, _w, _h, _x, _y, _alpha);
+	public RoundRect(Stage stage, int width, int height, int x, int y, int alpha, int _c) {
+		super(stage, width, height, x, y, alpha);
 		co = _c;
 		stroke.setStyle(Style.STROKE);
 	}
 	
 	@Override
 	public boolean checkPress(int x, int y) {
-		if (x > this.x && x < this.x + width && y > this.y && y < this.y + height) {
+		if (x > getX() && x < getX() + width && y > getY() && y < getY() + height) {
 			return true;
 		}
 		return false;
@@ -30,11 +28,11 @@ public class RoundRect extends Rect {
 
 	@Override
 	public void draw(Canvas c, Camera ca) {
-		ax = (x * ca.w) / 800;
-		ay = (y * ca.h) / 480;
+		actualX = (getX() * ca.getScreenWidth()) / 800;
+		actualY = (getY() * ca.getScreenHeight()) / 480;
 		
-		paint.setAlpha(alpha);
-		RectF rectangle = new RectF(x, y, x + width, y + height);
+		paint.setAlpha(getAlpha());
+		RectF rectangle = new RectF(getX(), getY(), getX() + width, getY() + height);
 		c.drawRoundRect(rectangle, co, co, paint);
 		c.drawRoundRect(rectangle, co, co, stroke);
 	}

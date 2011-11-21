@@ -18,7 +18,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 
 import thorgaming.throwme.Camera;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 import thorgaming.throwme.DispObj;
 
 public class Character extends DispObj {
@@ -31,16 +31,16 @@ public class Character extends DispObj {
 	MouseJoint mj;
 	Drawable eye_d;
 	
-	public Character(DevCard d, Resources r, int eye, World _w, int _x, int _y) {
+	public Character(Stage stage, Resources r, int eye, World world, int x, int y) {
 		eye_d = r.getDrawable(eye);
-		w = _w;
+		w = world;
 		paint.setColor(Color.rgb(255, 153, 0));
 		paint.setTextSize(30);
 		paint.setSubpixelText(true);
 		paint.setStrokeWidth(1);
 
 		CircleDef head = new CircleDef();  
-		head.radius = (float) 20 / DevCard.ratio;
+		head.radius = (float) 20 / Stage.ratio;
 		head.filter.groupIndex = -1;
 		head.density = (float) 0.5;
 		head.friction = (float) 0.5;
@@ -48,7 +48,7 @@ public class Character extends DispObj {
 		head.userData = this;
 		
 		BodyDef headBodyDef = new BodyDef();
-		headBodyDef.position.set(new Vec2(_x / DevCard.ratio, _y / DevCard.ratio));
+		headBodyDef.position.set(new Vec2(x / Stage.ratio, y / Stage.ratio));
 		
 		h = w.createBody(headBodyDef);
 		h.createShape(head);
@@ -56,7 +56,7 @@ public class Character extends DispObj {
 		//bodies.put(h, 20);
 		
 		PolygonDef body = new PolygonDef();
-		body.setAsBox(15 / DevCard.ratio, 30 / DevCard.ratio);
+		body.setAsBox(15 / Stage.ratio, 30 / Stage.ratio);
 		body.filter.groupIndex = -1;
 		body.density = (float) 0.1;
 		body.friction = (float) 0.5;
@@ -64,17 +64,17 @@ public class Character extends DispObj {
 		body.userData = this;
 		
 		BodyDef bodyBodyDef = new BodyDef();
-		bodyBodyDef.position.set(new Vec2(_x / DevCard.ratio, (_y + 60) / DevCard.ratio));
+		bodyBodyDef.position.set(new Vec2(x / Stage.ratio, (y + 60) / Stage.ratio));
 		b = w.createBody(bodyBodyDef);
 		b.createShape(body);
 		b.setMassFromShapes();
 		
 		DistanceJointDef neck = new DistanceJointDef();
-		neck.initialize(h, b, new Vec2(_x / DevCard.ratio, _y / DevCard.ratio), new Vec2(_x / DevCard.ratio, (_y + 25) / DevCard.ratio));
+		neck.initialize(h, b, new Vec2(x / Stage.ratio, y / Stage.ratio), new Vec2(x / Stage.ratio, (y + 25) / Stage.ratio));
 		w.createJoint(neck);
 		
 		CircleDef elbow = new CircleDef();
-		elbow.radius = (float) 3 / DevCard.ratio;
+		elbow.radius = (float) 3 / Stage.ratio;
 		elbow.filter.groupIndex = -1;
 		elbow.density = (float) 0.5;
 		elbow.friction = (float) 0.5;
@@ -82,18 +82,18 @@ public class Character extends DispObj {
 		elbow.userData = this;
 		
 		BodyDef elbowDef = new BodyDef();
-		elbowDef.position.set(new Vec2((_x + 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		elbowDef.position.set(new Vec2((x + 40) / Stage.ratio, (y + 30) / Stage.ratio));
 		e = w.createBody(elbowDef);
 		e.createShape(elbow);
 		e.setMassFromShapes();
 		bodies.put(e, 3);
 		
 		DistanceJointDef uarm1 = new DistanceJointDef();
-		uarm1.initialize(b, e, new Vec2((_x + 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x + 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		uarm1.initialize(b, e, new Vec2((x + 15) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x + 40) / Stage.ratio, (y + 30) / Stage.ratio));
 		w.createJoint(uarm1);
 		
 		CircleDef hand = new CircleDef();
-		hand.radius = (float) 5 / DevCard.ratio;
+		hand.radius = (float) 5 / Stage.ratio;
 		hand.filter.groupIndex = -1;
 		hand.density = (float) 0.5;
 		hand.friction = (float) 0.5;
@@ -101,109 +101,109 @@ public class Character extends DispObj {
 		hand.userData = this;
 		
 		BodyDef handDef = new BodyDef();
-		handDef.position.set(new Vec2((_x + 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		handDef.position.set(new Vec2((x + 65) / Stage.ratio, (y + 30) / Stage.ratio));
 		ha = w.createBody(handDef);
 		ha.createShape(hand);
 		ha.setMassFromShapes();
 		bodies.put(ha, 5);
 		
 		DistanceJointDef larm1 = new DistanceJointDef();
-		larm1.initialize(b, ha, new Vec2((_x + 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		larm1.initialize(b, ha, new Vec2((x + 15) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x + 65) / Stage.ratio, (y + 30) / Stage.ratio));
 		w.createJoint(larm1);
 		
 		DistanceJointDef arm1 = new DistanceJointDef();
-		arm1.initialize(e, ha, new Vec2((_x + 40) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		arm1.initialize(e, ha, new Vec2((x + 40) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x + 65) / Stage.ratio, (y + 30) / Stage.ratio));
 		w.createJoint(arm1);
 		
 		
 		
 		
-		elbowDef.position.set(new Vec2((_x - 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		elbowDef.position.set(new Vec2((x - 40) / Stage.ratio, (y + 30) / Stage.ratio));
 		e2 = w.createBody(elbowDef);
 		e2.createShape(elbow);
 		e2.setMassFromShapes();
 		bodies.put(e2, 3);
 		
 		DistanceJointDef uarm2 = new DistanceJointDef();
-		uarm2.initialize(b, e2, new Vec2((_x - 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x - 40) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		uarm2.initialize(b, e2, new Vec2((x - 15) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x - 40) / Stage.ratio, (y + 30) / Stage.ratio));
 		w.createJoint(uarm2);
 		
-		handDef.position.set(new Vec2((_x - 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		handDef.position.set(new Vec2((x - 65) / Stage.ratio, (y + 30) / Stage.ratio));
 		ha2 = w.createBody(handDef);
 		ha2.createShape(hand);
 		ha2.setMassFromShapes();
 		bodies.put(ha2, 5);
 		
 		DistanceJointDef larm2 = new DistanceJointDef();
-		larm2.initialize(b, ha2, new Vec2((_x - 15) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		larm2.initialize(b, ha2, new Vec2((x - 15) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x - 65) / Stage.ratio, (y + 30) / Stage.ratio));
 		w.createJoint(larm2);
 		
 		DistanceJointDef arm2 = new DistanceJointDef();
-		arm2.initialize(e2, ha2, new Vec2((_x - 40) / DevCard.ratio, (_y + 30) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 30) / DevCard.ratio));
+		arm2.initialize(e2, ha2, new Vec2((x - 40) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x - 65) / Stage.ratio, (y + 30) / Stage.ratio));
 		w.createJoint(arm2);
 		
 		
 		
 		
-		elbowDef.position.set(new Vec2((_x - 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		elbowDef.position.set(new Vec2((x - 40) / Stage.ratio, (y + 90) / Stage.ratio));
 		e3 = w.createBody(elbowDef);
 		e3.createShape(elbow);
 		e3.setMassFromShapes();
 		bodies.put(e3, 3);
 		
 		DistanceJointDef uarm3 = new DistanceJointDef();
-		uarm3.initialize(b, e3, new Vec2((_x - 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x - 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		uarm3.initialize(b, e3, new Vec2((x - 15) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x - 40) / Stage.ratio, (y + 90) / Stage.ratio));
 		w.createJoint(uarm3);
 		
-		handDef.position.set(new Vec2((_x - 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		handDef.position.set(new Vec2((x - 65) / Stage.ratio, (y + 90) / Stage.ratio));
 		ha3 = w.createBody(handDef);
 		ha3.createShape(hand);
 		ha3.setMassFromShapes();
 		bodies.put(ha3, 5);
 		
 		DistanceJointDef larm3 = new DistanceJointDef();
-		larm3.initialize(b, ha3, new Vec2((_x - 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		larm3.initialize(b, ha3, new Vec2((x - 15) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x - 65) / Stage.ratio, (y + 90) / Stage.ratio));
 		w.createJoint(larm3);
 		
 		DistanceJointDef arm3 = new DistanceJointDef();
-		arm3.initialize(e3, ha3, new Vec2((_x - 40) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x - 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		arm3.initialize(e3, ha3, new Vec2((x - 40) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x - 65) / Stage.ratio, (y + 90) / Stage.ratio));
 		w.createJoint(arm3);
 		
 		
 		
 		
 		
-		elbowDef.position.set(new Vec2((_x + 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		elbowDef.position.set(new Vec2((x + 40) / Stage.ratio, (y + 90) / Stage.ratio));
 		e4 = w.createBody(elbowDef);
 		e4.createShape(elbow);
 		e4.setMassFromShapes();
 		bodies.put(e4, 3);
 		
 		DistanceJointDef uarm4 = new DistanceJointDef();
-		uarm4.initialize(b, e4, new Vec2((_x + 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x + 40) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		uarm4.initialize(b, e4, new Vec2((x + 15) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x + 40) / Stage.ratio, (y + 90) / Stage.ratio));
 		w.createJoint(uarm4);
 		
-		handDef.position.set(new Vec2((_x + 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		handDef.position.set(new Vec2((x + 65) / Stage.ratio, (y + 90) / Stage.ratio));
 		ha4 = w.createBody(handDef);
 		ha4.createShape(hand);
 		ha4.setMassFromShapes();
 		bodies.put(ha4, 5);
 		
 		DistanceJointDef larm4 = new DistanceJointDef();
-		larm4.initialize(b, ha4, new Vec2((_x + 15) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		larm4.initialize(b, ha4, new Vec2((x + 15) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x + 65) / Stage.ratio, (y + 90) / Stage.ratio));
 		w.createJoint(larm4);
 		
 		DistanceJointDef arm4 = new DistanceJointDef();
-		arm4.initialize(e4, ha4, new Vec2((_x + 40) / DevCard.ratio, (_y + 90) / DevCard.ratio), new Vec2((_x + 65) / DevCard.ratio, (_y + 90) / DevCard.ratio));
+		arm4.initialize(e4, ha4, new Vec2((x + 40) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x + 65) / Stage.ratio, (y + 90) / Stage.ratio));
 		w.createJoint(arm4);
 		
-		synchronized (d.objs) {
-			d.objs.add(this);
+		synchronized (stage.objs) {
+			stage.objs.add(this);
 		}
 	}
 	
 	@Override
-	public void destroy(DevCard d) {
+	public void destroy(Stage d) {
 		// TODO
 		super.destroy(d);
 	}
@@ -217,7 +217,7 @@ public class Character extends DispObj {
 	public void draw(Canvas c, Camera ca) {
 		if (!lose) {
 			Vec2 world1 = h.getPosition();
-			Vec2 world2 = new Vec2(mx / DevCard.ratio, my / DevCard.ratio);
+			Vec2 world2 = new Vec2(mx / Stage.ratio, my / Stage.ratio);
 			Vec2 d = world2.sub(world1);
 			float dlen = d.normalize();
 			Vec2 springForce = d.clone();
@@ -229,18 +229,18 @@ public class Character extends DispObj {
 			Vec2 dampingForce = d.clone();
 			dampingForce = dampingForce.mul((float) (Vec2.dot(v,d) * damping));
 			h.applyForce(dampingForce, world1);
-			c.drawLine(h.getWorldCenter().x * DevCard.ratio, h.getWorldCenter().y * DevCard.ratio, mx, my, paint);
+			c.drawLine(h.getWorldCenter().x * Stage.ratio, h.getWorldCenter().y * Stage.ratio, mx, my, paint);
 		} else { 
-			int nx = (int) (ca.x - (ca.x + (-(DevCard.ratio)*h.getWorldCenter().x + ca.w/2))/12);
-			if (nx < ca.x) {
+			int nx = (int) (ca.getX() - (ca.getX() + (-(Stage.ratio)*h.getWorldCenter().x + ca.getScreenWidth()/2))/12);
+			if (nx < ca.getX()) {
 				backwards++;
-				nx = ca.x;
+				nx = ca.getX();
 			} else {
 				backwards = 0;
 			}
-			int ny = (int) (ca.y - (ca.y - (-(DevCard.ratio)*h.getWorldCenter().y + ca.h/2))/12);
-			ny = ny < 0 ? ca.y : ny;
-			ca.SetCameraXY(nx, ny);
+			int ny = (int) (ca.getY() - (ca.getY() - (-(Stage.ratio)*h.getWorldCenter().y + ca.getScreenHeight()/2))/12);
+			ny = ny < 0 ? ca.getY() : ny;
+			ca.setCameraXY(nx, ny);
 			
 			c.drawText("Distance: " + (nx / 10), 10, 40, paint);
 			
@@ -250,23 +250,18 @@ public class Character extends DispObj {
 		}
 		for (Body i : bodies.keySet()) {
 			Vec2 p = i.getPosition();
-			c.drawCircle((((p.x * DevCard.ratio) - ca.x) * ca.w) / 800, (((p.y * DevCard.ratio) + ca.y) * ca.h) / 480, bodies.get(i), paint);
+			c.drawCircle((((p.x * Stage.ratio) - ca.getX()) * ca.getScreenWidth()) / 800, (((p.y * Stage.ratio) + ca.getY()) * ca.getScreenHeight()) / 480, bodies.get(i), paint);
 		}
 		
 		Vec2 p = h.getPosition();
 		
-		int ax = (int) ((((p.x * DevCard.ratio) - ca.x) * ca.w) / 800);
-		int ay = (int) ((((p.y * DevCard.ratio) + ca.y) * ca.h) / 480);
+		int ax = (int) ((((p.x * Stage.ratio) - ca.getX()) * ca.getScreenWidth()) / 800);
+		int ay = (int) ((((p.y * Stage.ratio) + ca.getY()) * ca.getScreenHeight()) / 480);
 		
 		c.rotate((float) Math.toDegrees(h.getAngle()), ax, ay);
 		eye_d.setBounds(ax - 20, ay - 20, ax + 20, ay + 20);
 		eye_d.draw(c);
 		c.restore();
-		
-		//Vec2 q = b.getPosition();
-		//c.rotate((float) Math.toDegrees(b.getAngle()), (q.x * DevCard.ratio) - ca.x, (q.y * DevCard.ratio) + ca.y);
-		//c.drawRect(((((q.x * DevCard.ratio) - ca.x) - 15) * ca.w) / 800, ((((q.y * DevCard.ratio) + ca.y) - 30) * ca.h) / 480, ((((q.x * DevCard.ratio) - ca.x) + 15) * ca.w) / 800, (((q.y * DevCard.ratio) + ca.y + 30) * ca.h) / 480, paint);
-		//c.restore();
 	}
 
 	float mx, my;
@@ -279,7 +274,7 @@ public class Character extends DispObj {
 	
 	@Override
 	public boolean checkPress(int x, int y) {
-		return false; // You can't press this :)
+		return false;
 	}
 	
 }

@@ -10,7 +10,7 @@ import org.jbox2d.dynamics.World;
 import android.graphics.Canvas;
 
 import thorgaming.throwme.Camera;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 
 public class PhysCircle extends Circle {
 	
@@ -20,19 +20,19 @@ public class PhysCircle extends Circle {
 	BodyDef bd;
 	Shape s;
 	
-	public PhysCircle(DevCard d, int r, int _d, int _x, int _y, int _alpha, World _w) {
-		super(d, r, _x, _y, _alpha);
+	public PhysCircle(Stage stage, int r, int _d, int x, int y, int alpha, World world) {
+		super(stage, r, x, y, alpha);
 		
-		w = _w;
+		w = world;
 		
 		circle = new CircleDef();  
-		circle.radius = (float) r / DevCard.ratio;
+		circle.radius = (float) r / Stage.ratio;
 		circle.density = _d;
 		circle.friction = (float) 0.5;
 		circle.restitution = (float) 0.6;
 		
 		BodyDef groundBodyDef = new BodyDef();
-		groundBodyDef.position.set(new Vec2((float) x / DevCard.ratio, (float) y / DevCard.ratio));
+		groundBodyDef.position.set(new Vec2((float) getX() / Stage.ratio, (float) getY() / Stage.ratio));
 		
 		Pbody = w.createBody(groundBodyDef);
 		s = Pbody.createShape(circle);
@@ -43,14 +43,14 @@ public class PhysCircle extends Circle {
 	public void setRadius(int r) {
 		super.setRadius(r);
 		Pbody.destroyShape(s);
-		circle.radius = (float) r / DevCard.ratio;
+		circle.radius = (float) r / Stage.ratio;
 		s = Pbody.createShape(circle);
 		Pbody.setMassFromShapes();
 	}
 	
 	@Override
 	public void move(int _x, int _y) {
-		Pbody.setXForm(new Vec2((float) _x / DevCard.ratio, (float) _y / DevCard.ratio), 0);
+		Pbody.setXForm(new Vec2((float) _x / Stage.ratio, (float) _y / Stage.ratio), 0);
 	}
 	
 	public Body getBody() {
@@ -58,18 +58,17 @@ public class PhysCircle extends Circle {
 	}
 	
 	@Override
-	public void destroy(DevCard d) {
+	public void destroy(Stage d) {
 		w.destroyBody(Pbody);
 		super.destroy(d);
 	}
 	
 	@Override
 	public void draw(Canvas c, Camera ca) {
-		
 		Vec2 p = Pbody.getPosition();
 		
-		x = (int) (p.x * DevCard.ratio) - ca.x;
-		y = (int) (p.y * DevCard.ratio) + ca.y;
+		setX((int) (p.x * Stage.ratio) - ca.getX());
+		setY((int) (p.y * Stage.ratio) + ca.getY());
 		
 		super.draw(c, ca);
 	}

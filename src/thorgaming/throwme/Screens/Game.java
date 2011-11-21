@@ -12,7 +12,7 @@ import org.jbox2d.dynamics.contacts.ContactPoint;
 import org.jbox2d.dynamics.contacts.ContactResult;
 
 import thorgaming.throwme.Callback;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
 import thorgaming.throwme.DispObjs.Character;
@@ -34,8 +34,8 @@ public class Game extends Screen {
 	Character c;
 	Cloud c1;
 	
-	public Game(DevCard _d, Activity _a, Object[] o) {
-		super(_d, _a, o);
+	public Game(Stage stage, Activity _a, Object[] o) {
+		super(stage, _a, o);
 		
 		gr[0][0] = 255;
 		gr[0][1] = 255;
@@ -77,33 +77,33 @@ public class Game extends Screen {
 		ng[0] = Color.rgb(0, 102, 204);
 		ng[1] = Color.rgb(255, 255, 255);
 		
-		d.t.setgrad(ng);
+		stage.t.setgrad(ng);
 		
-		a = new DispRes_Rel(d, R.drawable.bg, ac.getResources(), 879, 240, 0, 300, 255, 0);
-		b = new DispRes_Rel(d, R.drawable.bg, ac.getResources(), 879, 240, 800, 300, 255, 0);
+		a = new DispRes_Rel(stage, R.drawable.bg, activity.getResources(), 879, 240, 0, 300, 255, 0);
+		b = new DispRes_Rel(stage, R.drawable.bg, activity.getResources(), 879, 240, 800, 300, 255, 0);
 		
 		for (int i = 0; i < 7; i++) {
-			dj[i] = new PhysCircle(d, (int) (Math.random() * 80) + 80, 0, (160 * i) + 80, 480, 255, d.world);
+			dj[i] = new PhysCircle(stage, (int) (Math.random() * 80) + 80, 0, (160 * i) + 80, 480, 255, stage.world);
 		}
 		
-		box = new DispRes_Rel(d, R.drawable.box, ac.getResources(), 150, 150, 325, 105, 255, 0);
-		new Rect(d, 800, 480, 0, 0, 0).setMouseDownEvent(new boxsplode());
+		box = new DispRes_Rel(stage, R.drawable.box, activity.getResources(), 150, 150, 325, 105, 255, 0);
+		new Rect(stage, 800, 480, 0, 0, 0).setMouseDownEvent(new boxsplode());
 		
-		c1 = new Cloud(ac.getApplicationContext(), d, d.world, 850, -120);
-		new Cloud(ac.getApplicationContext(), d, d.world, 150, -720);
-		new Cloud(ac.getApplicationContext(), d, d.world, 600, -620);
-		new Cloud(ac.getApplicationContext(), d, d.world, 900, -920);
-		new Cloud(ac.getApplicationContext(), d, d.world, 300, -1120);
-		new Cloud(ac.getApplicationContext(), d, d.world, 550, -1920);
-		new Cloud(ac.getApplicationContext(), d, d.world, 800, -1320);
+		c1 = new Cloud(activity.getApplicationContext(), stage, stage.world, 850, -120);
+		new Cloud(activity.getApplicationContext(), stage, stage.world, 150, -720);
+		new Cloud(activity.getApplicationContext(), stage, stage.world, 600, -620);
+		new Cloud(activity.getApplicationContext(), stage, stage.world, 900, -920);
+		new Cloud(activity.getApplicationContext(), stage, stage.world, 300, -1120);
+		new Cloud(activity.getApplicationContext(), stage, stage.world, 550, -1920);
+		new Cloud(activity.getApplicationContext(), stage, stage.world, 800, -1320);
 		
-		d.world.setContactListener(new hitListener());
+		stage.world.setContactListener(new hitListener());
 		
 		//PhysCircle ychar = new PhysCircle(d, 20, 1, 400, 0, 255, d.world);
 		//ychar.getBody().applyImpulse(new Vec2(10, -10), ychar.getBody().getWorldCenter());
 		//c = new Character(d, d.world);
 		
-		d.draw = new tick();
+		stage.draw = new tick();
 		
 		/*Timer t = new Timer();
 		t.schedule(new tick(), 100, 10);*/
@@ -161,9 +161,9 @@ public class Game extends Screen {
 		@Override
 		public void sendCallback() {
 			if (c == null) {
-				box.destroy(d);
-				c = new Character(d, ac.getResources(), R.drawable.eye, d.world, 400, 240);
-				new DispGif(ac.getApplicationContext(), d, R.drawable.explosion, ac.getResources(), 764, 556, 18, -38, 255, 0, 1, 4);
+				box.destroy(stage);
+				c = new Character(stage, activity.getResources(), R.drawable.eye, stage.world, 400, 240);
+				new DispGif(activity.getApplicationContext(), stage, R.drawable.explosion, activity.getResources(), 764, 556, 18, -38, 255, 0, 1, 4);
 			} else {
 				c1.animate();
 			}
@@ -181,19 +181,19 @@ public class Game extends Screen {
 		@Override
 		public void sendCallback() {
 			if (c != null && c.end && !ended) {
-				ac.runOnUiThread(new Runnable() {
+				activity.runOnUiThread(new Runnable() {
 					public void run() {
-						new Highs(d, ac, new Object[] {true, d.ca.x / 10});
+						new Highs(stage, activity, new Object[] {true, stage.ca.getX() / 10});
 					}
 				});
 				ended = true;
 			}
 			if (!ended) {
-				if (a.getScreenX() < -d.w) {
-					a.x = d.ca.x + d.w;
+				if (a.getScreenX() < -stage.ca.getScreenWidth()) {
+					a.setX(stage.ca.getX() + stage.ca.getScreenWidth());
 				}
-				if (b.getScreenX() < -d.w) {
-					b.x = d.ca.x + d.w;
+				if (b.getScreenX() < -stage.ca.getScreenWidth()) {
+					b.setX(stage.ca.getX() + stage.ca.getScreenWidth());
 				}
 				for (int i = 0; i < 7; i++) {
 					if (dj[i].getScreenX() < -160) {
@@ -205,25 +205,25 @@ public class Game extends Screen {
 				}
 				
 				int ng[] = new int[2];
-				if (d.ca.y > 7999) {
+				if (stage.ca.getY() > 7999) {
 					
 					ng[0] = Color.rgb(0, 0, 0);
 					ng[1] = Color.rgb(0, 0, 0);
 					
-				} else if (d.ca.y > 0) {
+				} else if (stage.ca.getY() > 0) {
 					
-					int ny = d.ca.y + 10;
-					if (ny % 1000 < d.ca.y % 1000) {
+					int ny = stage.ca.getY() + 10;
+					if (ny % 1000 < stage.ca.getY() % 1000) {
 						ny -= (ny % 1000) + 1;
 					}
-					ng[0] = blend(gr[(int) Math.floor(d.ca.y / 1000) + 1], gr[(int) Math.floor(d.ca.y / 1000)], ny % 1000);
-					ng[1] = blend(gr[(int) Math.floor(d.ca.y / 1000) + 1], gr[(int) Math.floor(d.ca.y / 1000)], d.ca.y % 1000);
+					ng[0] = blend(gr[(int) Math.floor(stage.ca.getY() / 1000) + 1], gr[(int) Math.floor(stage.ca.getY() / 1000)], ny % 1000);
+					ng[1] = blend(gr[(int) Math.floor(stage.ca.getY() / 1000) + 1], gr[(int) Math.floor(stage.ca.getY() / 1000)], stage.ca.getY() % 1000);
 					
 				} else {
 					ng[0] = Color.rgb(255, 255, 255);
 					ng[1] = Color.rgb(255, 255, 255);
 				}
-				d.t.setgrad(ng);
+				stage.t.setgrad(ng);
 			}
 		}
 		
@@ -250,18 +250,17 @@ public class Game extends Screen {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			x = mx;
 			y = my;
-			sx = d.ca.x;
-			sy = d.ca.y;
+			sx = stage.ca.getX();
+			sy = stage.ca.getY();
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			int nx = (int) (sx + (x - event.getX()));
 			int ny = (int) (sy + (event.getY() - y));
 			if (ny < 0) {
 				ny = 0;
 			}
-			if (nx < d.ca.x) {
-				nx = d.ca.x;
+			if (nx < stage.ca.getX()) {
+				nx = stage.ca.getX();
 			}
-			//d.ca.SetCameraXY(nx, ny);
 			
 			if (c != null) {
 				c.mouse(event.getX(), event.getY());
@@ -278,7 +277,7 @@ public class Game extends Screen {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			new Main(d, ac, new Object[]{true});
+			new Main(stage, activity, new Object[]{true});
 		}
 		return super.onKeyDown(keyCode, event);
 	}

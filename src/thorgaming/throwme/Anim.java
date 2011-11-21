@@ -4,31 +4,31 @@ import java.util.List;
 
 public abstract class Anim {
 	
-	protected DispObj d;
-	protected Callback c;
+	protected DispObj obj;
+	protected Callback callback;
 	
-	public Anim(Callback c) {
-		setCallback(c);
+	public Anim(Callback callback) {
+		setCallback(callback);
 	}
 	
-	public void setObject(DispObj _d) {
-		d = _d;
+	public void setObject(DispObj obj) {
+		this.obj = obj;
 	}
 	
 	public DispObj getObject() {
-		return d;
+		return obj;
 	}
 	
-	public void setCallback(Callback _c) {
-		c = _c;
+	public void setCallback(Callback callback) {
+		this.callback = callback;
 	}
 	
 	public void callCallback() {
-		if (c != null) {
-			c.sendCallback();
+		if (callback != null) {
+			callback.sendCallback();
 		}
 	}
 	
-	public abstract void process(List<Anim> _d);
+	public abstract void process(List<Anim> toProcess);
 	
 }

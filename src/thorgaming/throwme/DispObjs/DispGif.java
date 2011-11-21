@@ -8,7 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Movie;
 import android.graphics.Paint;
 import thorgaming.throwme.Camera;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 
 public class DispGif extends DispRes {
 
@@ -19,12 +19,12 @@ public class DispGif extends DispRes {
 	int reps = -1;
 	int treps = 0;
 	double speed = 1;
-	DevCard d;
+	Stage stage;
 	
-	public DispGif(Context c, DevCard _d, int did, Resources re, int w, int h, int _x, int _y, int _alpha, int _h, int r, double s) {
-		super(_d, did, re, w, h, _x, _y, _alpha, _h);
+	public DispGif(Context c, Stage stage, int did, Resources re, int width, int height, int x, int y, int alpha, int _h, int r, double s) {
+		super(stage, did, re, width, height, x, y, alpha, _h);
 		
-		d = _d;
+		this.stage = stage;
 		reps = r;
 		speed = s;
 		is=c.getResources().openRawResource(did);
@@ -45,13 +45,13 @@ public class DispGif extends DispRes {
 			if (relTime < pr) {
 				treps++;
 				if (treps >= reps && reps > -1) {
-					destroy(d);
+					destroy(stage);
 				}
 			}
 			pr = relTime;
 			movie.setTime(relTime);
-			p.setAlpha(alpha);
-			movie.draw(c, x, y, p);
+			p.setAlpha(getAlpha());
+			movie.draw(c, getX(), getY(), p);
 		}
 	}
 

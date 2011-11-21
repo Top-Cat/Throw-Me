@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import thorgaming.throwme.Camera;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 import thorgaming.throwme.DispObj;
 
 public class DispRes extends DispObj {
@@ -12,33 +12,33 @@ public class DispRes extends DispObj {
 	int width = 0;
 	int height = 0;
 	int did;
-	Drawable d;
-	int ax = 0, ay = 0, hit = 0;
+	Drawable drawable;
+	int actualX = 0, actualY = 0, hit = 0;
 	
 	public int getScreenX() {
-		return ax;
+		return actualX;
 	}
 	
 	public int getScreenY() {
-		return ay;
+		return actualY;
 	}
 	
-	public DispRes(DevCard _d, int did, Resources re, int w, int h, int _x, int _y, int _alpha, int _h) {
-		height = h;
-		width = w;
-		x = _x;
-		y = _y;
-		d = re.getDrawable(did);
-		alpha = _alpha;
+	public DispRes(Stage stage, int did, Resources re, int width, int height, int x, int y, int alpha, int _h) {
+		this.height = height;
+		this.width = width;
+		setX(x);
+		setY(y);
+		drawable = re.getDrawable(did);
+		setAlpha(alpha);
 		this.did = did;
 		hit = _h;
 		
-		_d.objs.add(this);
+		stage.objs.add(this);
 	}
 	
 	@Override
 	public boolean checkPress(int x, int y) {
-		if (ax <= x + hit && ax + width >= x - hit && ay <= y + hit && ay + height >= y - hit) {
+		if (actualX <= x + hit && actualX + width >= x - hit && actualY <= y + hit && actualY + height >= y - hit) {
 			return true;
 		}
 		return false;
@@ -46,12 +46,12 @@ public class DispRes extends DispObj {
 
 	@Override
 	public void draw(Canvas c, Camera ca) {
-		ax = (x * ca.w) / 800;
-		ay = (y * ca.h) / 480;
+		actualX = (getX() * ca.getScreenWidth()) / 800;
+		actualY = (getY() * ca.getScreenHeight()) / 480;
 		
-		d.setBounds(ax, ay, ((x + width) * ca.w) / 800, ((y + height) * ca.h) / 480);
-		d.setAlpha(alpha);
-		d.draw(c);
+		drawable.setBounds(actualX, actualY, ((getX() + width) * ca.getScreenWidth()) / 800, ((getY() + height) * ca.getScreenHeight()) / 480);
+		drawable.setAlpha(getAlpha());
+		drawable.draw(c);
 	}
 	
 }

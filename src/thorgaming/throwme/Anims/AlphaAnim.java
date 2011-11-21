@@ -4,14 +4,14 @@ import java.util.List;
 
 import thorgaming.throwme.Anim;
 import thorgaming.throwme.Callback;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 import thorgaming.throwme.DispObj;
 
 public class AlphaAnim extends Anim {
 
 	int p, s, e;
 	
-	public AlphaAnim(DevCard _d, DispObj obj, int start, int end, Callback c, long time) {
+	public AlphaAnim(Stage stage, DispObj obj, int start, int end, Callback c, long time) {
 		super(c);
 		p = (int) ( Math.abs(start - end) / (time / 10) );
 		setObject(obj);
@@ -19,7 +19,7 @@ public class AlphaAnim extends Anim {
 		s = start;
 		e = end;
 		
-		_d.anims.add(this);
+		stage.anims.add(this);
 	}
 
 	@Override

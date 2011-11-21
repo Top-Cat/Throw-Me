@@ -8,16 +8,16 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 import thorgaming.throwme.Screens.Main;
 import thorgaming.throwme.Screens.Screen;
 
 public class ThrowMe extends Activity {
 	
-	DevCard d;
+	Stage stage;
 	DispObj thorcard;
 	Connection conn;
-	public Screen s;
+	public Screen screen;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -30,9 +30,9 @@ public class ThrowMe extends Activity {
 		
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
-		d = (DevCard) findViewById(R.id.menu);
+		stage = (Stage) findViewById(R.id.menu);
 		
-		new Main(d, this, null);
+		new Main(stage, this, null);
 	}
 	
 	public static void waiting(int n){
@@ -47,20 +47,20 @@ public class ThrowMe extends Activity {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (!this.isFinishing()) {
-			d.sendtouch(event);
+			stage.sendtouch(event);
 		}
-		return s.onTouch(event);
+		return screen.onTouch(event);
 	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		return s.onKeyDown(keyCode, event);
+		return screen.onKeyDown(keyCode, event);
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		d.createThread();
+		stage.createThread();
 	}
 
 }

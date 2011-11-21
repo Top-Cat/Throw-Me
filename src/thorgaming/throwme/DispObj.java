@@ -7,24 +7,32 @@ import android.graphics.Canvas;
 
 public abstract class DispObj {
 	
-	public int x = 0;
-	public int y = 0;
-	public int alpha = 255;
+	private int x = 0;
+	private int y = 0;
+	private int alpha = 255;
 	
-	protected MouseCallback c, d;
+	private MouseCallback onMouseUpEvent, onMouseDownEvent;
 	
 	public abstract void draw(Canvas c, Camera ca);
 
-	public void setMouseUpEvent(MouseCallback _c) {
-		c = _c;
+	public void setMouseUpEvent(MouseCallback event) {
+		onMouseUpEvent = event;
 	}
 	
-	public void setMouseDownEvent(MouseCallback _c) {
-		d = _c;
+	public MouseCallback getMouseUpEvent() {
+		return onMouseUpEvent;
 	}
 	
-	public void setAlpha(int a) {
-		alpha = a; 
+	public void setMouseDownEvent(MouseCallback event) {
+		onMouseDownEvent = event;
+	}
+	
+	public MouseCallback getMouseDownEvent() {
+		return onMouseDownEvent;
+	}
+	
+	public void setAlpha(int alpha) {
+		this.alpha = alpha; 
 	}
 	
 	public int getAlpha() {
@@ -39,20 +47,20 @@ public abstract class DispObj {
 		return y;
 	}
 	
-	public void move(int _x, int _y) {
-		moveX(_x);
-		moveY(_y);
+	public void move(int x, int y) {
+		setX(x);
+		setY(y);
 	}
 	
-	public void moveX(int _x) {
-		x = _x;
+	public void setX(int x) {
+		this.x = x;
 	}
 	
-	public void moveY(int _y) {
-		y = _y;
+	public void setY(int y) {
+		this.y = y;
 	}
 	
-	public void destroy(DevCard d) {
+	public void destroy(Stage d) {
 		List<Anim> over = new ArrayList<Anim>();
 		for (Anim i : d.anims) {
 			if (i.getObject() == this) {

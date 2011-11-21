@@ -4,22 +4,22 @@ import java.util.List;
 
 import thorgaming.throwme.Anim;
 import thorgaming.throwme.Callback;
-import thorgaming.throwme.DevCard;
+import thorgaming.throwme.Stage;
 import thorgaming.throwme.DispObj;
 
 public class XAnim extends Anim {
 
 	int p, s, e;
 	
-	public XAnim(DevCard _d, DispObj obj, int start, int end, Callback c, long time) {
+	public XAnim(Stage stage, DispObj obj, int start, int end, Callback c, long time) {
 		super(c);
 		p = (int) ( Math.abs(start - end) / (time / 10) );
 		setObject(obj);
-		obj.moveX(start);
+		obj.setX(start);
 		s = start;
 		e = end;
 		
-		_d.anims.add(this);
+		stage.anims.add(this);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class XAnim extends Anim {
 			val = Math.min(e, s);
 		}
 		
-		getObject().moveX(val);
+		getObject().setX(val);
 		
 		if ((val >= e && j == 1) || (val <= e && j == -1)) {
 			over.add(this);
