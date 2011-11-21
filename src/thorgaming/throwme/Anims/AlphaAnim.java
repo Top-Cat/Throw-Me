@@ -9,33 +9,33 @@ import thorgaming.throwme.DispObj;
 
 public class AlphaAnim extends Anim {
 
-	int p, s, e;
+	int unit, start, end;
 	
-	public AlphaAnim(Stage stage, DispObj obj, int start, int end, Callback c, long time) {
-		super(c);
-		p = (int) ( Math.abs(start - end) / (time / 10) );
+	public AlphaAnim(Stage stage, DispObj obj, int start, int end, Callback callback, long time) {
+		super(callback);
+		unit = (int) ( Math.abs(start - end) / (time / 10) );
 		setObject(obj);
 		obj.setAlpha(start);
-		s = start;
-		e = end;
+		this.start = start;
+		this.end = end;
 		
-		stage.anims.add(this);
+		stage.animations.add(this);
 	}
 
 	@Override
 	public void process(List<Anim> over) {
-		int j = s > e ? -1 : 1;
-		int val = getObject().getAlpha() + (p * j);
+		int j = start > end ? -1 : 1;
+		int val = getObject().getAlpha() + (unit * j);
 		
-		if (val > Math.max(e, s)) {
-			val = Math.max(e, s);
-		} else if (val < Math.min(e, s)) {
-			val = Math.min(e, s);
+		if (val > Math.max(end, start)) {
+			val = Math.max(end, start);
+		} else if (val < Math.min(end, start)) {
+			val = Math.min(end, start);
 		}
 		
 		getObject().setAlpha(val);
 		
-		if ((val >= e && j == 1) || (val <= e && j == -1)) {
+		if ((val >= end && j == 1) || (val <= end && j == -1)) {
 			over.add(this);
 			callCallback();
 		}

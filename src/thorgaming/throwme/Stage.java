@@ -8,10 +8,6 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -19,20 +15,20 @@ import android.view.SurfaceView;
 
 public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 
-	public Camera ca = new Camera();
+	public Camera camera = new Camera();
 	
 	@SuppressWarnings("unchecked")
 	public void clear() {
-		for (DispObj i : (ArrayList<DispObj>) objs.clone()) {
-			i.destroy(this);
+		for (DispObj obj : (ArrayList<DispObj>) objects.clone()) {
+			obj.destroy(this);
 		}
 	}
 	
-	public List<Anim> anims = new ArrayList<Anim>();
-	public ArrayList<DispObj> objs = new ArrayList<DispObj>();
+	public List<Anim> animations = new ArrayList<Anim>();
+	public ArrayList<DispObj> objects = new ArrayList<DispObj>();
 	private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GbR3FqjQIqFkxFBWoKqCmIXAEMwdK8E13+AQuMU4i0fVw8kLMFZbk7T1YPezQnBm6ozwJSBrQA+M4HOdKguqnGE+hDtFzWCq5/mZh7VM8/9Sow7EFvlbQll2DR/8OQE1aXGcRKEf51H9a7i5VswOsqwiTAP7BqtbGo/aujo1NxtwX/OYDGIIEx/V7r1lBQCfgNEM9+dn6Ahr4ETPVU9QLhyP2F99vKBhgJ4euQj0/zpaA0jjItMhrfTRAwPXVvWnh65+ECOlpQ6WNZZF2kHBjr5ocHH+zEJDGKrs0DOQ3WDiraoaqmBXRB85vHtQQRV/8KxJHpjtWC2k0eLrfoH4wIDAQAB";
 	
-	public DrawThread t;
+	public DrawThread drawThread;
 	
 	private AABB worldAABB;
 	public World world;
@@ -41,13 +37,13 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 	public Stage(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
-		anims.clear();
-		objs.clear();
+		animations.clear();
+		objects.clear();
 		
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
 		
-		t = new DrawThread(holder, context);
+		drawThread = new DrawThread(holder, context, this);
 		
 		worldAABB = new AABB();
 		worldAABB.lowerBound.set(new Vec2((float) -1000.0 / ratio, (float) -9000.0 / ratio));
@@ -70,7 +66,7 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 		int y = (int) event.getY();
 		
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			for (DispObj i : (ArrayList<DispObj>) objs.clone()) {
+			for (DispObj i : (ArrayList<DispObj>) objects.clone()) {
 				if (i.checkPress(x, y)) {
 					MouseCallback callback = i.getMouseDownEvent();
 					if (callback != null) {
@@ -80,7 +76,7 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 				}
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			for (DispObj i : (ArrayList<DispObj>) objs.clone()) {
+			for (DispObj i : (ArrayList<DispObj>) objects.clone()) {
 				if (i.checkPress(x, y)) {
 					MouseCallback callback = i.getMouseUpEvent();
 					if (callback != null) {
@@ -95,112 +91,30 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 	public Callback draw = null;
 	public boolean start = false;
 	
-	int[] gr = {Color.rgb(0, 0, 0), Color.rgb(0, 0, 0)};
-	
-	public class DrawThread extends Thread {
-		
-		SurfaceHolder shold;
-		Context co;
-		Boolean doRun = false;
-		int p;
-		int test = (int) (Math.random() * 100);
-		
-		public DrawThread(SurfaceHolder surfaceHolder, Context context) {
-			co = context;
-			shold = surfaceHolder;
-		}
-		
-		public void setRunning(boolean b) {
-			doRun = b;
-		}
-		
-		public void resetGradient() {
-			int[] gr = new int[2];
-			gr[0] = Color.rgb(0, 102, 204);
-			gr[1] = Color.rgb(255, 255, 255);
-			setgrad(gr);
-		}
-		
-		public void setgrad(int[] grn) {
-			gr = grn;
-		}
-		
-		int height = 0;
-		
-		@Override
-		public void run() {
-			while(doRun) {
-				Canvas c = null;
-				try {
-					for (MotionEvent e : mcache) {
-						touch(e);
-					}
-					mcache.clear();
-					c = shold.lockCanvas(null);
-					world.step((float) 0.01, 5);
-					
-					if (draw != null) {
-						draw.sendCallback();
-					}
-					
-					if (c != null) {
-						start = true;
-						
-						GradientDrawable g = new GradientDrawable(Orientation.TOP_BOTTOM, gr);
-						g.setBounds(0, 0, ca.getScreenWidth(), ca.getScreenHeight());
-						g.draw(c);
-						
-						List<Anim> over = new ArrayList<Anim>();
-						for (Anim i : anims) {
-							i.process(over);
-						}
-						anims.removeAll(over);
-						
-						synchronized (objs) {
-							for (DispObj i : objs) {
-								i.draw(c, ca);
-							}
-						}
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					// do this in a finally so that if an exception is thrown
-					// during the above, we don't leave the Surface in an
-					// inconsistent state
-					if (c != null) {
-						shold.unlockCanvasAndPost(c);
-					}
-				}
-			}
-		
-		}
-	}
-	
 	final Object monitor = new Object();
 	
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-		ca.setScreen(width, height);
+		camera.setScreen(width, height);
 	}
 	
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) { }
 	
 	public void createThread() {
-		t.setRunning(false);
-		t = new DrawThread(getHolder(), getContext());
-		t.setRunning(true);
-		t.start();
+		drawThread.setRunning(false);
+		drawThread = new DrawThread(getHolder(), getContext(), this);
+		drawThread.setRunning(true);
+		drawThread.start();
 	}
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		boolean retry = true;
-		t.setRunning(false);
+		drawThread.setRunning(false);
 		while (retry) {
 			try {
-				t.join();
+				drawThread.join();
 				retry = false;
 			} catch (InterruptedException e) {
 			}

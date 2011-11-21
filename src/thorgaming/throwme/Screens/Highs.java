@@ -23,6 +23,7 @@ import android.graphics.Shader;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.EditText;
+import thorgaming.throwme.DrawThread;
 import thorgaming.throwme.Stage;
 import thorgaming.throwme.DispObj;
 import thorgaming.throwme.MouseCallback;
@@ -36,8 +37,8 @@ import thorgaming.throwme.DispObjs.RoundRect;
 
 public class Highs extends Screen {
 	
-	DispObj loader, b1,b2,b3,b4,l1,l2,l3,l4;
-	RoundRect rrb, rb;
+	DispObj loader, dayBW,weekBW,monthBW,timeBW,dayC,weekC,monthC,timeC;
+	RoundRect roundedBorderBackground, roundedBorder;
 	Connection conn;
 	public static final String PREFS_NAME = "throwmedevicekey";
 	String deviceid = "";
@@ -45,16 +46,15 @@ public class Highs extends Screen {
 	
 	int scroll = 0;
 	
-	List<score> highs = new ArrayList<score>();
+	List<score> highScores = new ArrayList<score>();
 	
-	/** Called when the activity is first created. */
-	public Highs(Stage stage, Activity a, Object[] o) {
-		super(stage, a, o);
+	public Highs(Stage stage, Activity activity, Object[] data) {
+		super(stage, activity, data);
 		
 		SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, 0);
 		deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
 		
-		stage.t.resetGradient();
+		DrawThread.resetGradient();
 		
 		RoundRect rr = new RoundRect(stage, 480, 480, 160, 0, 50, 20);
 		rr.paint.setARGB(50, 0, 0, 0);
@@ -63,23 +63,23 @@ public class Highs extends Screen {
 		stage.draw = null;
 		
 		loader = new DispGif(activity.getApplicationContext(), stage, R.drawable.ajax, activity.getResources(), 128, 128, 336, 176, 255, 0, -1, 1);
-		b1 = new DispRes(stage, R.drawable.day_bw, activity.getResources(), 150, 60, 645, 10, 255, 10);
-		b1.setMouseDownEvent(new daysel());
-		b2 = new DispRes(stage, R.drawable.week_bw, activity.getResources(), 150, 44, 645, 90, 255, 10);
-		b2.setMouseDownEvent(new weeksel());
-		b3 = new DispRes(stage, R.drawable.month_bw, activity.getResources(), 150, 33, 645, 154, 255, 10);
-		b3.setMouseDownEvent(new monthsel());
-		b4 = new DispRes(stage, R.drawable.time_bw, activity.getResources(), 150, 25, 645, 207, 255, 10);
-		b4.setMouseDownEvent(new timesel());
+		dayBW = new DispRes(stage, R.drawable.day_bw, activity.getResources(), 150, 60, 645, 10, 255, 10);
+		dayBW.setMouseDownEvent(new daysel());
+		weekBW = new DispRes(stage, R.drawable.week_bw, activity.getResources(), 150, 44, 645, 90, 255, 10);
+		weekBW.setMouseDownEvent(new weeksel());
+		monthBW = new DispRes(stage, R.drawable.month_bw, activity.getResources(), 150, 33, 645, 154, 255, 10);
+		monthBW.setMouseDownEvent(new monthsel());
+		timeBW = new DispRes(stage, R.drawable.time_bw, activity.getResources(), 150, 25, 645, 207, 255, 10);
+		timeBW.setMouseDownEvent(new timesel());
 		
-		l1 = new DispRes(stage, R.drawable.day, activity.getResources(), 150, 60, 645, 10, 0, 0);
-		l2 = new DispRes(stage, R.drawable.week, activity.getResources(), 150, 44, 645, 90, 0, 0);
-		l3 = new DispRes(stage, R.drawable.month, activity.getResources(), 150, 33, 645, 154, 0, 0);
-		l4 = new DispRes(stage, R.drawable.time, activity.getResources(), 150, 25, 645, 207, 0, 0);
+		dayC = new DispRes(stage, R.drawable.day, activity.getResources(), 150, 60, 645, 10, 0, 0);
+		weekC = new DispRes(stage, R.drawable.week, activity.getResources(), 150, 44, 645, 90, 0, 0);
+		monthC = new DispRes(stage, R.drawable.month, activity.getResources(), 150, 33, 645, 154, 0, 0);
+		timeC = new DispRes(stage, R.drawable.time, activity.getResources(), 150, 25, 645, 207, 0, 0);
 		
 		new GetHighs().start();
-		boolean send = (o != null && o[0] != null) ? (Boolean) o[0] : false;
-		final int score = (o != null && o[1] != null) ? (Integer) o[1] : 0;
+		boolean send = (data != null && data[0] != null) ? (Boolean) data[0] : false;
+		final int score = (data != null && data[1] != null) ? (Integer) data[1] : 0;
 		if (send) {
 			final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
 			final EditText input = new EditText(activity);
@@ -128,15 +128,15 @@ public class Highs extends Screen {
 	}
 	
 	public void bw() {
-		l1.setAlpha(0);
-		l2.setAlpha(0);
-		l3.setAlpha(0);
-		l4.setAlpha(0);
+		dayC.setAlpha(0);
+		weekC.setAlpha(0);
+		monthC.setAlpha(0);
+		timeC.setAlpha(0);
 		
-		b1.setAlpha(255);
-		b2.setAlpha(255);
-		b3.setAlpha(255);
-		b4.setAlpha(255);
+		dayBW.setAlpha(255);
+		weekBW.setAlpha(255);
+		monthBW.setAlpha(255);
+		timeBW.setAlpha(255);
 	}
 	
 	public class timesel implements MouseCallback {
@@ -144,8 +144,8 @@ public class Highs extends Screen {
 		@Override
 		public void sendCallback(int x, int y) {
 			bw();
-			b4.setAlpha(0);
-			l4.setAlpha(255);
+			timeBW.setAlpha(0);
+			timeC.setAlpha(255);
 			load("SELECT * FROM scores ORDER BY score DESC LIMIT 50");
 		}
 
@@ -161,8 +161,8 @@ public class Highs extends Screen {
 		@Override
 		public void sendCallback(int x, int y) {
 			bw();
-			b3.setAlpha(0);
-			l3.setAlpha(255);
+			monthBW.setAlpha(0);
+			monthC.setAlpha(255);
 			load("SELECT * FROM scores WHERE date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH) ORDER BY score DESC LIMIT 50");
 		}
 
@@ -178,8 +178,8 @@ public class Highs extends Screen {
 		@Override
 		public void sendCallback(int x, int y) {
 			bw();
-			b2.setAlpha(0);
-			l2.setAlpha(255);
+			weekBW.setAlpha(0);
+			weekC.setAlpha(255);
 			load("SELECT * FROM scores WHERE date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) ORDER BY score DESC LIMIT 50");
 		}
 
@@ -195,8 +195,8 @@ public class Highs extends Screen {
 		@Override
 		public void sendCallback(int x, int y) {
 			bw();
-			b1.setAlpha(0);
-			l1.setAlpha(255);
+			dayBW.setAlpha(0);
+			dayC.setAlpha(255);
 			load("SELECT * FROM scores WHERE date >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) ORDER BY score DESC LIMIT 50");
 		}
 
@@ -236,7 +236,7 @@ public class Highs extends Screen {
 	
 	private int cs(int s) {
 		if (s > 0) { s = 0; }
-		int ma = -((60 * highs.size()) - 400);
+		int ma = -((60 * highScores.size()) - 400);
 		if (ma > 0) { ma = 0; }
 		if (s < ma) { s = ma; }
 		return s;
@@ -279,10 +279,10 @@ public class Highs extends Screen {
 		public void run() {
 			boolean s = false;
 			while (!s) {
-				for (score i : highs) {
+				for (score i : highScores) {
 					i.destroy(stage);
 				}
-				highs.clear();
+				highScores.clear();
 				loader.setAlpha(255);
 				while (conn == null) {
 					if (!t) {
@@ -299,24 +299,24 @@ public class Highs extends Screen {
 						ResultSet r = pr.executeQuery();
 						loader.setAlpha(0);
 						while (r.next()) {
-							highs.add(new score(stage, a + 1, r.getString("name"), r.getInt("score"), r.getDate("date"), (a * 60)));
+							highScores.add(new score(stage, a + 1, r.getString("name"), r.getInt("score"), r.getDate("date"), (a * 60)));
 							a++;
 						}
 						
-						if (rrb != null) {
-							rrb.destroy(stage);
-							rb.destroy(stage);
+						if (roundedBorderBackground != null) {
+							roundedBorderBackground.destroy(stage);
+							roundedBorder.destroy(stage);
 						}
 						
-						rrb = new RoundRect(stage, 491, 490, 155, -5, 0, 24);
-						rrb.paint.setARGB(0, 0, 0, 0);
-						rrb.stroke.setStrokeWidth(10);
-						rrb.stroke.setShader(new LinearGradient(0, 0, 0, 480, Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
+						roundedBorderBackground = new RoundRect(stage, 491, 490, 155, -5, 0, 24);
+						roundedBorderBackground.paint.setARGB(0, 0, 0, 0);
+						roundedBorderBackground.stroke.setStrokeWidth(10);
+						roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, 480, Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
 						
-						rb = new RoundRect(stage, 480, 480, 160, 0, 0, 20);
-						rb.paint.setARGB(0, 0, 0, 0);
-						rb.stroke.setARGB(255, 0, 0, 0);
-						rb.stroke.setStrokeWidth(1);
+						roundedBorder = new RoundRect(stage, 480, 480, 160, 0, 0, 20);
+						roundedBorder.paint.setARGB(0, 0, 0, 0);
+						roundedBorder.stroke.setARGB(255, 0, 0, 0);
+						roundedBorder.stroke.setStrokeWidth(1);
 						s = true;
 					} catch (SQLException e) {
 						e.printStackTrace();
@@ -348,7 +348,7 @@ public class Highs extends Screen {
 				scroll = cs(scroll);
 				m -= a;
 				
-				for (score i : highs) {
+				for (score i : highScores) {
 					i.setScroll(scroll);
 				}
 				
@@ -356,7 +356,7 @@ public class Highs extends Screen {
 			}
 		}
 		
-		for (score i : highs) {
+		for (score i : highScores) {
 			i.setScroll(scroll);
 		}
 		

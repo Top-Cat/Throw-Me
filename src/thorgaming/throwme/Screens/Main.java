@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import thorgaming.throwme.DrawThread;
 import thorgaming.throwme.Stage;
 import thorgaming.throwme.DispObj;
 import thorgaming.throwme.MouseCallback;
@@ -15,16 +16,16 @@ import thorgaming.throwme.DispObjs.DispRes;
 public class Main extends Screen {
 	
 	DispObj thorcard;
-	Timer t = new Timer();
-	boolean si;
+	Timer timer = new Timer();
+	boolean skipIntro;
 	
-	public Main(Stage stage, Activity a, Object[] o) {
-		super(stage, a, o);
+	public Main(Stage stage, Activity activity, Object[] data) {
+		super(stage, activity, data);
 		
-		si = o != null && o[0] != null ? (Boolean) o[0] : false;
-		si = true;
+		skipIntro = data != null && data[0] != null ? (Boolean) data[0] : false;
+		skipIntro = true;
 		thorcard = new DispRes(stage, R.drawable.thorgamingcard, activity.getResources(), 800, 480, 0, 0, 0, 0);
-		t.schedule(new waitforscreen(), 500);
+		timer.schedule(new waitforscreen(), 500);
 	}
 	
 	public class waitforscreen extends TimerTask {
@@ -32,14 +33,14 @@ public class Main extends Screen {
 		@Override
 		public void run() {
 			if (stage.start == false) {
-				t.schedule(new waitforscreen(), 500);
+				timer.schedule(new waitforscreen(), 500);
 			} else {
-				if (si) {
+				if (skipIntro) {
 					new showmenu2().run();
 				} else {
 					new AlphaAnim(stage, thorcard, 0, 255, null, 200);
 					
-					t.schedule(new showmenu(), 4000);
+					timer.schedule(new showmenu(), 4000);
 				}
 			}
 		}
@@ -51,7 +52,7 @@ public class Main extends Screen {
 		@Override
 		public void run() {
 			thorcard.destroy(stage);
-			stage.t.resetGradient();
+			DrawThread.resetGradient();
 			new DispRes(stage, R.drawable.throwmelogo, activity.getResources(), 464, 90, 168, 15, 255, 0);
 			DispObj play = new DispRes(stage, R.drawable.playgame, activity.getResources(), 500, 85, 150, 160, 255, 0);
 			new XAnim(stage, play, -500, 150, null, 500);
@@ -100,7 +101,7 @@ public class Main extends Screen {
 			thorcard.destroy(stage);
 			thorcard = new DispRes(stage, R.drawable.box2dcard, activity.getResources(), 800, 480, 0, 0, 255, 0);
 			
-			t.schedule(new showmenu2(), 4000);
+			timer.schedule(new showmenu2(), 4000);
 		}
 		
 	}

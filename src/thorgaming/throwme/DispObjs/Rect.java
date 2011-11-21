@@ -29,7 +29,7 @@ public class Rect extends DispObj {
 		setY(y);
 		setAlpha(alpha);
 		
-		stage.objs.add(this);
+		stage.objects.add(this);
 	}
 	
 	public void setSize(int width, int height) {

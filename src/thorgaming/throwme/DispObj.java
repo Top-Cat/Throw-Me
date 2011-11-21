@@ -62,15 +62,15 @@ public abstract class DispObj {
 	
 	public void destroy(Stage d) {
 		List<Anim> over = new ArrayList<Anim>();
-		for (Anim i : d.anims) {
+		for (Anim i : d.animations) {
 			if (i.getObject() == this) {
 				over.add(i);
 			}
 		}
-		d.anims.removeAll(over);
+		d.animations.removeAll(over);
 		
-		synchronized (d.objs) {
-			d.objs.remove(this);
+		synchronized (d.objects) {
+			d.objects.remove(this);
 		}
 	}
 	

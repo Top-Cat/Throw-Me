@@ -33,7 +33,7 @@ public class DispRes extends DispObj {
 		this.did = did;
 		hit = _h;
 		
-		stage.objs.add(this);
+		stage.objects.add(this);
 	}
 	
 	@Override

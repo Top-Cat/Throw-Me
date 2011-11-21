@@ -18,14 +18,14 @@ import thorgaming.throwme.R;
 
 public class Cloud extends DispObj {
 
-	InputStream is = null;
+	InputStream inputStream = null;
 	Movie movie;
 	long moviestart;
-	Body p_body;
+	Body physicsBody;
 	
-	public Cloud(Context c, Stage stage, World world, int x, int y) {
-		is=c.getResources().openRawResource(R.drawable.cloud);
-		movie=Movie.decodeStream(is);
+	public Cloud(Context context, Stage stage, World world, int x, int y) {
+		inputStream = context.getResources().openRawResource(R.drawable.cloud);
+		movie = Movie.decodeStream(inputStream);
 		setX(x);
 		setY(y);
 		
@@ -39,25 +39,25 @@ public class Cloud extends DispObj {
 		BodyDef headBodyDef = new BodyDef();
 		headBodyDef.position.set(new Vec2(getX() / Stage.ratio, getY() / Stage.ratio));
 		
-		p_body = world.createBody(headBodyDef);
-		p_body.createShape(cloud);
+		physicsBody = world.createBody(headBodyDef);
+		physicsBody.createShape(cloud);
 		cloud.localPosition = new Vec2(33 / Stage.ratio, 0);
-		p_body.createShape(cloud);
-		p_body.setMassFromShapes();
+		physicsBody.createShape(cloud);
+		physicsBody.setMassFromShapes();
 		
-		stage.objs.add(this);
+		stage.objects.add(this);
 	}
 	
-	int ax, ay;
+	int actualX, actualY;
 	
 	@Override
-	public void draw(Canvas c, Camera ca) {
-		ax = ((getX() - 200 - ca.getX()) * ca.getScreenWidth()) / 800;
-		ay = ((getY() - 200 + ca.getY()) * ca.getScreenHeight()) / 480;
+	public void draw(Canvas canvas, Camera camera) {
+		actualX = ((getX() - 200 - camera.getX()) * camera.getScreenWidth()) / 800;
+		actualY = ((getY() - 200 + camera.getY()) * camera.getScreenHeight()) / 480;
 		
-		if (ax < -266) {
+		if (actualX < -266) {
 			setX(getX() + 1000);
-			p_body.setXForm(new Vec2((float) getX() / Stage.ratio, (float) getY() / Stage.ratio), 0);
+			physicsBody.setXForm(new Vec2((float) getX() / Stage.ratio, (float) getY() / Stage.ratio), 0);
 			moviestart = 0;
 		}
 		
@@ -66,7 +66,7 @@ public class Cloud extends DispObj {
 			relTime = 1;
 		}
 		movie.setTime(relTime);
-		movie.draw(c, ax, ay);
+		movie.draw(canvas, actualX, actualY);
 	}
 
 	public void animate() {
@@ -77,7 +77,6 @@ public class Cloud extends DispObj {
 	
 	@Override
 	public boolean checkPress(int x, int y) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

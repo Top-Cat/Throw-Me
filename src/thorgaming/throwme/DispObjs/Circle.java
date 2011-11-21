@@ -29,7 +29,7 @@ public class Circle extends DispObj {
 		setY(y);
 		setAlpha(alpha);
 		
-		stage.objs.add(this);
+		stage.objects.add(this);
 	}
 	
 	public void setRadius(int r) {

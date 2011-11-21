@@ -22,8 +22,8 @@ public class score extends DispObj {
 		this.position = position;
 		this.y = y;
 		
-		synchronized (stage.objs) {
-			stage.objs.add(this);
+		synchronized (stage.objects) {
+			stage.objects.add(this);
 		}
 		
 		paint.setColor(Color.rgb(255, 255, 255));

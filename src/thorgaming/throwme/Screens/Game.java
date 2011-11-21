@@ -12,6 +12,7 @@ import org.jbox2d.dynamics.contacts.ContactPoint;
 import org.jbox2d.dynamics.contacts.ContactResult;
 
 import thorgaming.throwme.Callback;
+import thorgaming.throwme.DrawThread;
 import thorgaming.throwme.Stage;
 import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
@@ -34,8 +35,8 @@ public class Game extends Screen {
 	Character c;
 	Cloud c1;
 	
-	public Game(Stage stage, Activity _a, Object[] o) {
-		super(stage, _a, o);
+	public Game(Stage stage, Activity activity, Object[] data) {
+		super(stage, activity, data);
 		
 		gr[0][0] = 255;
 		gr[0][1] = 255;
@@ -77,7 +78,7 @@ public class Game extends Screen {
 		ng[0] = Color.rgb(0, 102, 204);
 		ng[1] = Color.rgb(255, 255, 255);
 		
-		stage.t.setgrad(ng);
+		DrawThread.setgrad(ng);
 		
 		a = new DispRes_Rel(stage, R.drawable.bg, activity.getResources(), 879, 240, 0, 300, 255, 0);
 		b = new DispRes_Rel(stage, R.drawable.bg, activity.getResources(), 879, 240, 800, 300, 255, 0);
@@ -183,17 +184,17 @@ public class Game extends Screen {
 			if (c != null && c.end && !ended) {
 				activity.runOnUiThread(new Runnable() {
 					public void run() {
-						new Highs(stage, activity, new Object[] {true, stage.ca.getX() / 10});
+						new Highs(stage, activity, new Object[] {true, stage.camera.getX() / 10});
 					}
 				});
 				ended = true;
 			}
 			if (!ended) {
-				if (a.getScreenX() < -stage.ca.getScreenWidth()) {
-					a.setX(stage.ca.getX() + stage.ca.getScreenWidth());
+				if (a.getScreenX() < -stage.camera.getScreenWidth()) {
+					a.setX(stage.camera.getX() + stage.camera.getScreenWidth());
 				}
-				if (b.getScreenX() < -stage.ca.getScreenWidth()) {
-					b.setX(stage.ca.getX() + stage.ca.getScreenWidth());
+				if (b.getScreenX() < -stage.camera.getScreenWidth()) {
+					b.setX(stage.camera.getX() + stage.camera.getScreenWidth());
 				}
 				for (int i = 0; i < 7; i++) {
 					if (dj[i].getScreenX() < -160) {
@@ -205,25 +206,25 @@ public class Game extends Screen {
 				}
 				
 				int ng[] = new int[2];
-				if (stage.ca.getY() > 7999) {
+				if (stage.camera.getY() > 7999) {
 					
 					ng[0] = Color.rgb(0, 0, 0);
 					ng[1] = Color.rgb(0, 0, 0);
 					
-				} else if (stage.ca.getY() > 0) {
+				} else if (stage.camera.getY() > 0) {
 					
-					int ny = stage.ca.getY() + 10;
-					if (ny % 1000 < stage.ca.getY() % 1000) {
+					int ny = stage.camera.getY() + 10;
+					if (ny % 1000 < stage.camera.getY() % 1000) {
 						ny -= (ny % 1000) + 1;
 					}
-					ng[0] = blend(gr[(int) Math.floor(stage.ca.getY() / 1000) + 1], gr[(int) Math.floor(stage.ca.getY() / 1000)], ny % 1000);
-					ng[1] = blend(gr[(int) Math.floor(stage.ca.getY() / 1000) + 1], gr[(int) Math.floor(stage.ca.getY() / 1000)], stage.ca.getY() % 1000);
+					ng[0] = blend(gr[(int) Math.floor(stage.camera.getY() / 1000) + 1], gr[(int) Math.floor(stage.camera.getY() / 1000)], ny % 1000);
+					ng[1] = blend(gr[(int) Math.floor(stage.camera.getY() / 1000) + 1], gr[(int) Math.floor(stage.camera.getY() / 1000)], stage.camera.getY() % 1000);
 					
 				} else {
 					ng[0] = Color.rgb(255, 255, 255);
 					ng[1] = Color.rgb(255, 255, 255);
 				}
-				stage.t.setgrad(ng);
+				DrawThread.setgrad(ng);
 			}
 		}
 		
@@ -250,16 +251,16 @@ public class Game extends Screen {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			x = mx;
 			y = my;
-			sx = stage.ca.getX();
-			sy = stage.ca.getY();
+			sx = stage.camera.getX();
+			sy = stage.camera.getY();
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			int nx = (int) (sx + (x - event.getX()));
 			int ny = (int) (sy + (event.getY() - y));
 			if (ny < 0) {
 				ny = 0;
 			}
-			if (nx < stage.ca.getX()) {
-				nx = stage.ca.getX();
+			if (nx < stage.camera.getX()) {
+				nx = stage.camera.getX();
 			}
 			
 			if (c != null) {

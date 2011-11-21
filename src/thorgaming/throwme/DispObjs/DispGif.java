@@ -12,10 +12,10 @@ import thorgaming.throwme.Stage;
 
 public class DispGif extends DispRes {
 
-	InputStream is=null;
+	InputStream is = null;
 	Movie movie;
 	long moviestart;
-	Paint p = new Paint();
+	Paint paint = new Paint();
 	int reps = -1;
 	int treps = 0;
 	double speed = 1;
@@ -36,7 +36,7 @@ public class DispGif extends DispRes {
 	
 	@Override
 	public void draw(Canvas c, Camera ca) {
-		long now=android.os.SystemClock.uptimeMillis();
+		long now = android.os.SystemClock.uptimeMillis();
 		if (moviestart == 0) {   // first time  
 			moviestart = now;  
 		}
@@ -50,8 +50,8 @@ public class DispGif extends DispRes {
 			}
 			pr = relTime;
 			movie.setTime(relTime);
-			p.setAlpha(getAlpha());
-			movie.draw(c, getX(), getY(), p);
+			paint.setAlpha(getAlpha());
+			movie.draw(c, getX(), getY(), paint);
 		}
 	}
 
