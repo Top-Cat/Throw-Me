@@ -10,11 +10,11 @@ import thorgaming.throwme.Stage;
 public class RoundRect extends Rect {
 
 	public Paint stroke = new Paint();
-	int co = 20;
+	private int cornerRadius = 20;
 	
-	public RoundRect(Stage stage, int width, int height, int x, int y, int alpha, int _c) {
+	public RoundRect(Stage stage, int width, int height, int x, int y, int alpha, int cornerRadius) {
 		super(stage, width, height, x, y, alpha);
-		co = _c;
+		this.cornerRadius = cornerRadius;
 		stroke.setStyle(Style.STROKE);
 	}
 	
@@ -27,14 +27,14 @@ public class RoundRect extends Rect {
 	}
 
 	@Override
-	public void draw(Canvas c, Camera ca) {
-		actualX = (getX() * ca.getScreenWidth()) / 800;
-		actualY = (getY() * ca.getScreenHeight()) / 480;
+	public void draw(Canvas canvas, Camera camera) {
+		actualX = (getX() * camera.getScreenWidth()) / 800;
+		actualY = (getY() * camera.getScreenHeight()) / 480;
 		
 		paint.setAlpha(getAlpha());
 		RectF rectangle = new RectF(getX(), getY(), getX() + width, getY() + height);
-		c.drawRoundRect(rectangle, co, co, paint);
-		c.drawRoundRect(rectangle, co, co, stroke);
+		canvas.drawRoundRect(rectangle, cornerRadius, cornerRadius, paint);
+		canvas.drawRoundRect(rectangle, cornerRadius, cornerRadius, stroke);
 	}
 	
 }

@@ -9,9 +9,21 @@ import thorgaming.throwme.DispObj;
 
 public class Circle extends DispObj {
 
-	int radius = 0;
-	Paint paint = new Paint();
-	int actualX, actualY;
+	private int radius = 0;
+	public Paint paint = new Paint();
+	private int actualX;
+	private int actualY;
+	
+	public Circle(Stage stage, int radius, int x, int y, int alpha) {
+		randomiseColor();
+
+		setRadius(radius);
+		setX(x);
+		setY(y);
+		setAlpha(alpha);
+		
+		stage.objects.add(this);
+	}
 	
 	public int getScreenX() {
 		return actualX;
@@ -21,19 +33,8 @@ public class Circle extends DispObj {
 		return actualY;
 	}
 	
-	public Circle(Stage stage, int r, int x, int y, int alpha) {
-		randomiseColor();
-
-		radius = r;
-		setX(x);
-		setY(y);
-		setAlpha(alpha);
-		
-		stage.objects.add(this);
-	}
-	
-	public void setRadius(int r) {
-		radius = r;
+	public void setRadius(int radius) {
+		this.radius = radius;
 	}
 	
 	public void randomiseColor() {
@@ -42,20 +43,20 @@ public class Circle extends DispObj {
 	
 	@Override
 	public boolean checkPress(int x, int y) {
-		int d = (int) Math.sqrt(Math.pow(actualX - x, 2) + Math.pow(actualY - y, 2));
-		if (d < radius) {
+		int distance = (int) Math.sqrt(Math.pow(actualX - x, 2) + Math.pow(actualY - y, 2));
+		if (distance < radius) {
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public void draw(Canvas c, Camera ca) {
-		actualX = (getX() * ca.getScreenWidth()) / 800;
-		actualY = (getY() * ca.getScreenHeight()) / 480;
+	public void draw(Canvas canvas, Camera camera) {
+		actualX = (getX() * camera.getScreenWidth()) / 800;
+		actualY = (getY() * camera.getScreenHeight()) / 480;
 		
 		paint.setAlpha(getAlpha());
-		c.drawCircle(actualX, actualY, radius, paint);
+		canvas.drawCircle(actualX, actualY, radius, paint);
 	}
 	
 }

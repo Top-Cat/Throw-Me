@@ -2,7 +2,10 @@ package thorgaming.throwme;
 
 public class Camera {
 	
-	private int x = 0, y = 0, screenWidth = 800, screenHeight = 480;
+	private int x = 0;
+	private int y = 0;
+	private int screenWidth = 800;
+	private int screenHeight = 480;
 	
 	public void setCameraX(int _x) {
 		setCameraXY(_x, y);

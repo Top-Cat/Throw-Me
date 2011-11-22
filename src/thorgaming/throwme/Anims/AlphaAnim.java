@@ -9,7 +9,9 @@ import thorgaming.throwme.DispObj;
 
 public class AlphaAnim extends Anim {
 
-	int unit, start, end;
+	private int unit;
+	private int start;
+	private int end;
 	
 	public AlphaAnim(Stage stage, DispObj obj, int start, int end, Callback callback, long time) {
 		super(callback);

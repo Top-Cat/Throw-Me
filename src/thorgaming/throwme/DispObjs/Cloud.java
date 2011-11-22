@@ -18,16 +18,20 @@ import thorgaming.throwme.R;
 
 public class Cloud extends DispObj {
 
-	InputStream inputStream = null;
-	Movie movie;
-	long moviestart;
-	Body physicsBody;
+	private InputStream inputStream = null;
+	private Movie movie;
+	private long moviestart;
+	private World world;
+	private Body physicsBody;
+	private int actualX;
+	private int actualY;
 	
 	public Cloud(Context context, Stage stage, World world, int x, int y) {
 		inputStream = context.getResources().openRawResource(R.drawable.cloud);
 		movie = Movie.decodeStream(inputStream);
 		setX(x);
 		setY(y);
+		this.world = world;
 		
 		CircleDef cloud = new CircleDef();
 		cloud.isSensor = true;
@@ -47,8 +51,6 @@ public class Cloud extends DispObj {
 		
 		stage.objects.add(this);
 	}
-	
-	int actualX, actualY;
 	
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
@@ -73,6 +75,12 @@ public class Cloud extends DispObj {
 		if (moviestart == 0) {
 			moviestart = android.os.SystemClock.uptimeMillis();
 		}
+	}
+	
+	@Override
+	public void destroy(Stage stage) {
+		super.destroy(stage);
+		world.destroyBody(physicsBody);
 	}
 	
 	@Override

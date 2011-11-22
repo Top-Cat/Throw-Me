@@ -13,15 +13,12 @@ import android.view.SurfaceHolder;
 	
 public class DrawThread extends Thread {
 	
-	public static int[] gradient = {Color.rgb(0, 0, 0), Color.rgb(0, 0, 0)};
-	SurfaceHolder surfaceHolder;
-	Context context;
-	Boolean doRun = false;
-	int height = 0;
-	Stage stage;
+	private static int[] gradient = {Color.rgb(0, 0, 0), Color.rgb(0, 0, 0)};
+	private SurfaceHolder surfaceHolder;
+	private boolean doRun = false;
+	private Stage stage;
 	
 	public DrawThread(SurfaceHolder surfaceHolder, Context context, Stage stage) {
-		this.context = context;
 		this.surfaceHolder = surfaceHolder;
 		this.stage = stage;
 	}

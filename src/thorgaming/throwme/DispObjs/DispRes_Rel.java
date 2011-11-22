@@ -7,18 +7,18 @@ import android.graphics.Canvas;
 
 public class DispRes_Rel extends DispRes {
 
-	public DispRes_Rel(Stage stage, int did, Resources re, int width, int height, int x, int y, int alpha, int _h) {
-		super(stage, did, re, width, height, x, y, alpha, _h);
+	public DispRes_Rel(Stage stage, int drawableId, Resources resources, int width, int height, int x, int y, int alpha, int hitPadding) {
+		super(stage, drawableId, resources, width, height, x, y, alpha, hitPadding);
 	}
 	
 	@Override
-	public void draw(Canvas c, Camera ca) {
-		actualX = ((getX() - ca.getX()) * ca.getScreenWidth()) / 800;
-		actualY = ((getY() + ca.getY()) * ca.getScreenHeight()) / 480;
+	public void draw(Canvas canvas, Camera camera) {
+		actualX = ((getX() - camera.getX()) * camera.getScreenWidth()) / 800;
+		actualY = ((getY() + camera.getY()) * camera.getScreenHeight()) / 480;
 		
-		drawable.setBounds(actualX, actualY, (((getX() - ca.getX()) + width) * ca.getScreenWidth()) / 800, (((getY() + ca.getY()) + height) * ca.getScreenHeight()) / 480);
+		drawable.setBounds(actualX, actualY, (((getX() - camera.getX()) + width) * camera.getScreenWidth()) / 800, (((getY() + camera.getY()) + height) * camera.getScreenHeight()) / 480);
 		drawable.setAlpha(getAlpha());
-		drawable.draw(c);
+		drawable.draw(canvas);
 	}
 	
 }

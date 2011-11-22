@@ -17,16 +17,9 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 
 	public Camera camera = new Camera();
 	
-	@SuppressWarnings("unchecked")
-	public void clear() {
-		for (DispObj obj : (ArrayList<DispObj>) objects.clone()) {
-			obj.destroy(this);
-		}
-	}
-	
 	public List<Anim> animations = new ArrayList<Anim>();
 	public ArrayList<DispObj> objects = new ArrayList<DispObj>();
-	private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GbR3FqjQIqFkxFBWoKqCmIXAEMwdK8E13+AQuMU4i0fVw8kLMFZbk7T1YPezQnBm6ozwJSBrQA+M4HOdKguqnGE+hDtFzWCq5/mZh7VM8/9Sow7EFvlbQll2DR/8OQE1aXGcRKEf51H9a7i5VswOsqwiTAP7BqtbGo/aujo1NxtwX/OYDGIIEx/V7r1lBQCfgNEM9+dn6Ahr4ETPVU9QLhyP2F99vKBhgJ4euQj0/zpaA0jjItMhrfTRAwPXVvWnh65+ECOlpQ6WNZZF2kHBjr5ocHH+zEJDGKrs0DOQ3WDiraoaqmBXRB85vHtQQRV/8KxJHpjtWC2k0eLrfoH4wIDAQAB";
+	//private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GbR3FqjQIqFkxFBWoKqCmIXAEMwdK8E13+AQuMU4i0fVw8kLMFZbk7T1YPezQnBm6ozwJSBrQA+M4HOdKguqnGE+hDtFzWCq5/mZh7VM8/9Sow7EFvlbQll2DR/8OQE1aXGcRKEf51H9a7i5VswOsqwiTAP7BqtbGo/aujo1NxtwX/OYDGIIEx/V7r1lBQCfgNEM9+dn6Ahr4ETPVU9QLhyP2F99vKBhgJ4euQj0/zpaA0jjItMhrfTRAwPXVvWnh65+ECOlpQ6WNZZF2kHBjr5ocHH+zEJDGKrs0DOQ3WDiraoaqmBXRB85vHtQQRV/8KxJHpjtWC2k0eLrfoH4wIDAQAB";
 	
 	public DrawThread drawThread;
 	
@@ -52,6 +45,13 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 		Vec2 gravity = new Vec2((float) 0.0, (float) 9.81);
 		boolean doSleep = true;
 		world = new World(worldAABB, gravity, doSleep);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void clear() {
+		for (DispObj obj : (ArrayList<DispObj>) objects.clone()) {
+			obj.destroy(this);
+		}
 	}
 	
 	List<MotionEvent> mcache = new ArrayList<MotionEvent>();

@@ -13,7 +13,7 @@ public abstract class DispObj {
 	
 	private MouseCallback onMouseUpEvent, onMouseDownEvent;
 	
-	public abstract void draw(Canvas c, Camera ca);
+	public abstract void draw(Canvas canvas, Camera camera);
 
 	public void setMouseUpEvent(MouseCallback event) {
 		onMouseUpEvent = event;
@@ -60,17 +60,17 @@ public abstract class DispObj {
 		this.y = y;
 	}
 	
-	public void destroy(Stage d) {
+	public void destroy(Stage stage) {
 		List<Anim> over = new ArrayList<Anim>();
-		for (Anim i : d.animations) {
+		for (Anim i : stage.animations) {
 			if (i.getObject() == this) {
 				over.add(i);
 			}
 		}
-		d.animations.removeAll(over);
+		stage.animations.removeAll(over);
 		
-		synchronized (d.objects) {
-			d.objects.remove(this);
+		synchronized (stage.objects) {
+			stage.objects.remove(this);
 		}
 	}
 	

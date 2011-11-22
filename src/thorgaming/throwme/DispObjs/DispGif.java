@@ -12,46 +12,46 @@ import thorgaming.throwme.Stage;
 
 public class DispGif extends DispRes {
 
-	InputStream is = null;
-	Movie movie;
-	long moviestart;
-	Paint paint = new Paint();
-	int reps = -1;
-	int treps = 0;
-	double speed = 1;
-	Stage stage;
+	public Paint paint = new Paint();
 	
-	public DispGif(Context c, Stage stage, int did, Resources re, int width, int height, int x, int y, int alpha, int _h, int r, double s) {
-		super(stage, did, re, width, height, x, y, alpha, _h);
+	private InputStream is = null;
+	private Movie movie;
+	private long movieStart;
+	private int repetitions = -1;
+	private int totalRepetitions = 0;
+	private double speed = 1;
+	private Stage stage;
+	private int previousTime = 0;
+	
+	public DispGif(Context context, Stage stage, int drawableId, Resources resources, int width, int height, int x, int y, int alpha, int hitPadding, int repetitions, double speed) {
+		super(stage, drawableId, resources, width, height, x, y, alpha, hitPadding);
 		
 		this.stage = stage;
-		reps = r;
-		speed = s;
-		is=c.getResources().openRawResource(did);
-		movie=Movie.decodeStream(is);
+		this.repetitions = repetitions;
+		this.speed = speed;
+		is = context.getResources().openRawResource(drawableId);
+		movie = Movie.decodeStream(is);
 		
 	}
 	
-	int pr = 0;
-	
 	@Override
-	public void draw(Canvas c, Camera ca) {
+	public void draw(Canvas canvas, Camera camera) {
 		long now = android.os.SystemClock.uptimeMillis();
-		if (moviestart == 0) {   // first time  
-			moviestart = now;  
+		if (movieStart == 0) {
+			movieStart = now;  
 		}
 		if (movie != null) {
-			int relTime = (int)(((now - moviestart) * speed) % movie.duration()) ;
-			if (relTime < pr) {
-				treps++;
-				if (treps >= reps && reps > -1) {
+			int relTime = (int)(((now - movieStart) * speed) % movie.duration()) ;
+			if (relTime < previousTime) {
+				totalRepetitions++;
+				if (totalRepetitions >= repetitions && repetitions > -1) {
 					destroy(stage);
 				}
 			}
-			pr = relTime;
+			previousTime = relTime;
 			movie.setTime(relTime);
 			paint.setAlpha(getAlpha());
-			movie.draw(c, getX(), getY(), paint);
+			movie.draw(canvas, getX(), getY(), paint);
 		}
 	}
 

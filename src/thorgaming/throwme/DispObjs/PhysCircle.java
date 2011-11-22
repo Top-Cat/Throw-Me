@@ -14,63 +14,62 @@ import thorgaming.throwme.Stage;
 
 public class PhysCircle extends Circle {
 	
-	Body Pbody;
-	World w;
-	CircleDef circle;
-	BodyDef bd;
-	Shape s;
+	private Body physicsBody;
+	private World world;
+	private CircleDef circle;
+	private Shape shape;
 	
-	public PhysCircle(Stage stage, int r, int _d, int x, int y, int alpha, World world) {
-		super(stage, r, x, y, alpha);
+	public PhysCircle(Stage stage, int radius, int density, int x, int y, int alpha, World world) {
+		super(stage, radius, x, y, alpha);
 		
-		w = world;
+		this.world = world;
 		
 		circle = new CircleDef();  
-		circle.radius = (float) r / Stage.ratio;
-		circle.density = _d;
+		circle.radius = (float) radius / Stage.ratio;
+		circle.density = density;
 		circle.friction = (float) 0.5;
 		circle.restitution = (float) 0.6;
 		
 		BodyDef groundBodyDef = new BodyDef();
 		groundBodyDef.position.set(new Vec2((float) getX() / Stage.ratio, (float) getY() / Stage.ratio));
 		
-		Pbody = w.createBody(groundBodyDef);
-		s = Pbody.createShape(circle);
-		Pbody.setMassFromShapes();
+		physicsBody = world.createBody(groundBodyDef);
+		shape = physicsBody.createShape(circle);
+		physicsBody.setMassFromShapes();
 	}
 	
 	@Override
-	public void setRadius(int r) {
-		super.setRadius(r);
-		Pbody.destroyShape(s);
-		circle.radius = (float) r / Stage.ratio;
-		s = Pbody.createShape(circle);
-		Pbody.setMassFromShapes();
+	public void setRadius(int radius) {
+		super.setRadius(radius);
+		physicsBody.destroyShape(shape);
+		circle.radius = (float) radius / Stage.ratio;
+		shape = physicsBody.createShape(circle);
+		physicsBody.setMassFromShapes();
 	}
 	
 	@Override
-	public void move(int _x, int _y) {
-		Pbody.setXForm(new Vec2((float) _x / Stage.ratio, (float) _y / Stage.ratio), 0);
+	public void move(int x, int y) {
+		physicsBody.setXForm(new Vec2((float) x / Stage.ratio, (float) y / Stage.ratio), 0);
 	}
 	
 	public Body getBody() {
-		return Pbody;
+		return physicsBody;
 	}
 	
 	@Override
-	public void destroy(Stage d) {
-		w.destroyBody(Pbody);
-		super.destroy(d);
+	public void destroy(Stage stage) {
+		world.destroyBody(physicsBody);
+		super.destroy(stage);
 	}
 	
 	@Override
-	public void draw(Canvas c, Camera ca) {
-		Vec2 p = Pbody.getPosition();
+	public void draw(Canvas canvas, Camera camera) {
+		Vec2 position = physicsBody.getPosition();
 		
-		setX((int) (p.x * Stage.ratio) - ca.getX());
-		setY((int) (p.y * Stage.ratio) + ca.getY());
+		setX((int) (position.x * Stage.ratio) - camera.getX());
+		setY((int) (position.y * Stage.ratio) + camera.getY());
 		
-		super.draw(c, ca);
+		super.draw(canvas, camera);
 	}
 	
 }

@@ -9,7 +9,6 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
-import org.jbox2d.dynamics.joints.MouseJoint;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -23,13 +22,21 @@ import thorgaming.throwme.DispObj;
 
 public class Character extends DispObj {
 	
-	World world;
-	Body bodyBody, bodyHead, bodyRightElbow, bodyRightHand, bodyLeftElbow, bodyLeftHand, bodyLeftKnee, bodyLeftFoot, bodyRightKnee, bodyRightFoot;
+	private World world;
+	private Body bodyBody;
+	private Body bodyHead;
+	private Body bodyRightElbow;
+	private Body bodyRightHand;
+	private Body bodyLeftElbow;
+	private Body bodyLeftHand;
+	private Body bodyLeftKnee;
+	private Body bodyLeftFoot;
+	private Body bodyRightKnee;
+	private Body bodyRightFoot;
 	public boolean end = false;
-	HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
-	Paint paint = new Paint();
-	MouseJoint mouseJoint;
-	Drawable drawableEye;
+	private HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
+	private Paint paint = new Paint();
+	private Drawable drawableEye;
 	
 	public Character(Stage stage, Resources r, int eye, World world, int x, int y) {
 		drawableEye = r.getDrawable(eye);
@@ -203,8 +210,18 @@ public class Character extends DispObj {
 	}
 	
 	@Override
-	public void destroy(Stage d) {
-		super.destroy(d);
+	public void destroy(Stage stage) {
+		super.destroy(stage);
+		world.destroyBody(bodyBody);
+		world.destroyBody(bodyHead);
+		world.destroyBody(bodyRightElbow);
+		world.destroyBody(bodyRightHand);
+		world.destroyBody(bodyLeftElbow);
+		world.destroyBody(bodyLeftHand);
+		world.destroyBody(bodyLeftKnee);
+		world.destroyBody(bodyLeftFoot);
+		world.destroyBody(bodyRightKnee);
+		world.destroyBody(bodyRightFoot);
 	}
 	
 	int k = 15; // Spring constant
@@ -254,11 +271,11 @@ public class Character extends DispObj {
 		
 		Vec2 p = bodyHead.getPosition();
 		
-		int ax = (int) ((((p.x * Stage.ratio) - camera.getX()) * camera.getScreenWidth()) / 800);
-		int ay = (int) ((((p.y * Stage.ratio) + camera.getY()) * camera.getScreenHeight()) / 480);
+		int actualX = (int) ((((p.x * Stage.ratio) - camera.getX()) * camera.getScreenWidth()) / 800);
+		int actualY = (int) ((((p.y * Stage.ratio) + camera.getY()) * camera.getScreenHeight()) / 480);
 		
-		canvas.rotate((float) Math.toDegrees(bodyHead.getAngle()), ax, ay);
-		drawableEye.setBounds(ax - 20, ay - 20, ax + 20, ay + 20);
+		canvas.rotate((float) Math.toDegrees(bodyHead.getAngle()), actualX, actualY);
+		drawableEye.setBounds(actualX - 20, actualY - 20, actualX + 20, actualY + 20);
 		drawableEye.draw(canvas);
 		canvas.restore();
 	}

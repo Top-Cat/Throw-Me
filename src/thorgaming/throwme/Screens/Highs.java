@@ -2,7 +2,6 @@ package thorgaming.throwme.Screens;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -30,23 +29,39 @@ import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
 import thorgaming.throwme.ThrowMe;
 import thorgaming.throwme.logins;
-import thorgaming.throwme.score;
+import thorgaming.throwme.ScoreRow;
 import thorgaming.throwme.DispObjs.DispGif;
 import thorgaming.throwme.DispObjs.DispRes;
 import thorgaming.throwme.DispObjs.RoundRect;
 
 public class Highs extends Screen {
 	
-	DispObj loader, dayBW,weekBW,monthBW,timeBW,dayC,weekC,monthC,timeC;
-	RoundRect roundedBorderBackground, roundedBorder;
-	Connection conn;
+	private DispObj loader;
+	private DispObj dayBW;
+	private DispObj weekBW;
+	private DispObj monthBW;
+	private DispObj timeBW;
+	private DispObj dayC;
+	private DispObj weekC;
+	private DispObj monthC;
+	private DispObj timeC;
+	
+	private RoundRect roundedBorderBackground, roundedBorder;
+	private Connection conn;
 	public static final String PREFS_NAME = "throwmedevicekey";
-	String deviceid = "";
-	SecureRandom gen = new SecureRandom();
+	private String deviceid = "";
+	//private SecureRandom gen = new SecureRandom();
 	
-	int scroll = 0;
+	private boolean gettingScores = false;
+	private int mouseY;
+	private int downY;
+	private int scrollStart;
+	private int previousMovement;
+	private int movement;
 	
-	List<score> highScores = new ArrayList<score>();
+	private int scroll = 0;
+	
+	private List<ScoreRow> highScores = new ArrayList<ScoreRow>();
 	
 	public Highs(Stage stage, Activity activity, Object[] data) {
 		super(stage, activity, data);
@@ -127,7 +142,7 @@ public class Highs extends Screen {
 		}
 	}
 	
-	public void bw() {
+	public void resetOptions() {
 		dayC.setAlpha(0);
 		weekC.setAlpha(0);
 		monthC.setAlpha(0);
@@ -143,7 +158,7 @@ public class Highs extends Screen {
 
 		@Override
 		public void sendCallback(int x, int y) {
-			bw();
+			resetOptions();
 			timeBW.setAlpha(0);
 			timeC.setAlpha(255);
 			load("SELECT * FROM scores ORDER BY score DESC LIMIT 50");
@@ -160,7 +175,7 @@ public class Highs extends Screen {
 
 		@Override
 		public void sendCallback(int x, int y) {
-			bw();
+			resetOptions();
 			monthBW.setAlpha(0);
 			monthC.setAlpha(255);
 			load("SELECT * FROM scores WHERE date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH) ORDER BY score DESC LIMIT 50");
@@ -177,7 +192,7 @@ public class Highs extends Screen {
 
 		@Override
 		public void sendCallback(int x, int y) {
-			bw();
+			resetOptions();
 			weekBW.setAlpha(0);
 			weekC.setAlpha(255);
 			load("SELECT * FROM scores WHERE date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) ORDER BY score DESC LIMIT 50");
@@ -194,7 +209,7 @@ public class Highs extends Screen {
 
 		@Override
 		public void sendCallback(int x, int y) {
-			bw();
+			resetOptions();
 			dayBW.setAlpha(0);
 			dayC.setAlpha(255);
 			load("SELECT * FROM scores WHERE date >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) ORDER BY score DESC LIMIT 50");
@@ -207,13 +222,11 @@ public class Highs extends Screen {
 
 	}
 	
-	boolean t = false;
-	
 	class GetHighs extends Thread {
 		
 		@Override
 		public void run() {
-			t = true;
+			gettingScores = true;
 			try {
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
 				// Step 2: Establish the connection to the database. 
@@ -227,26 +240,16 @@ public class Highs extends Screen {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			t = false;
+			gettingScores = false;
 		}
 		
 	}
 	
-	int mx, my, y, s_t, p, m;
-	
-	private int cs(int s) {
-		if (s > 0) { s = 0; }
-		int ma = -((60 * highScores.size()) - 400);
-		if (ma > 0) { ma = 0; }
-		if (s < ma) { s = ma; }
-		return s;
-	}
-	
-	public void insert(String q) {
-		boolean s = false;
-		while (!s) {
+	public void insert(String query) {
+		boolean success = false;
+		while (!success) {
 			while (conn == null) {
-				if (!t) {
+				if (!gettingScores) {
 					new GetHighs().start();
 				}
 				ThrowMe.waiting(200);
@@ -254,9 +257,9 @@ public class Highs extends Screen {
 			if (conn != null) {
 				PreparedStatement pr;
 				try {
-					pr = conn.prepareStatement(q);
+					pr = conn.prepareStatement(query);
 					pr.executeUpdate();
-					s = true;
+					success = true;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -279,13 +282,13 @@ public class Highs extends Screen {
 		public void run() {
 			boolean s = false;
 			while (!s) {
-				for (score i : highScores) {
+				for (ScoreRow i : highScores) {
 					i.destroy(stage);
 				}
 				highScores.clear();
 				loader.setAlpha(255);
 				while (conn == null) {
-					if (!t) {
+					if (!gettingScores) {
 						new GetHighs().start();
 					}
 					ThrowMe.waiting(200);
@@ -299,7 +302,7 @@ public class Highs extends Screen {
 						ResultSet r = pr.executeQuery();
 						loader.setAlpha(0);
 						while (r.next()) {
-							highScores.add(new score(stage, a + 1, r.getString("name"), r.getInt("score"), r.getDate("date"), (a * 60)));
+							highScores.add(new ScoreRow(stage, a + 1, r.getString("name"), r.getInt("score"), r.getDate("date"), (a * 60)));
 							a++;
 						}
 						
@@ -326,38 +329,45 @@ public class Highs extends Screen {
 		}
 	}
 	
+	private int scrollBound(int scroll) {
+		if (scroll > 0) { scroll = 0; }
+		int maximum = -((60 * highScores.size()) - 400);
+		if (maximum > 0) { maximum = 0; }
+		if (scroll < maximum) { scroll = maximum; }
+		return scroll;
+	}
+	
 	public boolean onTouch(MotionEvent event) {
-		mx = (int) event.getX();
-		my = (int) event.getY();
+		mouseY = (int) event.getY();
 		
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			y = my;
-			s_t = scroll;
+			downY = mouseY;
+			scrollStart = scroll;
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			if (Math.abs(my - y) > 10) {
-				scroll = cs(s_t + (my - y));
-				m = p - (my - y);
-				p = (my - y);
+			if (Math.abs(mouseY - downY) > 10) {
+				scroll = scrollBound(scrollStart + (mouseY - downY));
+				movement = previousMovement - (mouseY - downY);
+				previousMovement = (mouseY - downY);
 			} else {
-				m = 0;
+				movement = 0;
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			int a = m > 0 ? 1 : -1;
-			while (Math.abs(m) > 1) {
-				scroll -= m;
-				scroll = cs(scroll);
-				m -= a;
+			int direction = movement > 0 ? 1 : -1;
+			while (Math.abs(movement) > 1) {
+				scroll -= movement;
+				scroll = scrollBound(scroll);
+				movement -= direction;
 				
-				for (score i : highScores) {
-					i.setScroll(scroll);
+				for (ScoreRow scoreRow : highScores) {
+					scoreRow.setScroll(scroll);
 				}
 				
 				ThrowMe.waiting(10);
 			}
 		}
 		
-		for (score i : highScores) {
-			i.setScroll(scroll);
+		for (ScoreRow scoreRow : highScores) {
+			scoreRow.setScroll(scroll);
 		}
 		
 		return false;

@@ -8,8 +8,8 @@ import thorgaming.throwme.ThrowMe;
 
 public class Screen {
 
-	Stage stage;
-	ThrowMe activity;
+	protected Stage stage;
+	protected ThrowMe activity;
 	
 	public Screen(Stage stage, Activity activity, Object[] data) {
 		this.stage = stage;

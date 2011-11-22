@@ -15,9 +15,9 @@ import thorgaming.throwme.DispObjs.DispRes;
 
 public class Main extends Screen {
 	
-	DispObj thorcard;
-	Timer timer = new Timer();
-	boolean skipIntro;
+	private DispObj thorcard;
+	private Timer timer = new Timer();
+	private boolean skipIntro;
 	
 	public Main(Stage stage, Activity activity, Object[] data) {
 		super(stage, activity, data);

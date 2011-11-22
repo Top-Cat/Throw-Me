@@ -9,11 +9,25 @@ import thorgaming.throwme.DispObj;
 
 public class DispRes extends DispObj {
 
-	int width = 0;
-	int height = 0;
-	int did;
-	Drawable drawable;
-	int actualX = 0, actualY = 0, hit = 0;
+	protected int width = 0;
+	protected int height = 0;
+	protected Drawable drawable;
+	protected int actualX = 0;
+	protected int actualY = 0;
+	
+	private int hitPadding = 0;
+	
+	public DispRes(Stage stage, int drawableId, Resources resources, int width, int height, int x, int y, int alpha, int hitPadding) {
+		this.height = height;
+		this.width = width;
+		setX(x);
+		setY(y);
+		drawable = resources.getDrawable(drawableId);
+		setAlpha(alpha);
+		this.hitPadding = hitPadding;
+		
+		stage.objects.add(this);
+	}
 	
 	public int getScreenX() {
 		return actualX;
@@ -23,35 +37,22 @@ public class DispRes extends DispObj {
 		return actualY;
 	}
 	
-	public DispRes(Stage stage, int did, Resources re, int width, int height, int x, int y, int alpha, int _h) {
-		this.height = height;
-		this.width = width;
-		setX(x);
-		setY(y);
-		drawable = re.getDrawable(did);
-		setAlpha(alpha);
-		this.did = did;
-		hit = _h;
-		
-		stage.objects.add(this);
-	}
-	
 	@Override
 	public boolean checkPress(int x, int y) {
-		if (actualX <= x + hit && actualX + width >= x - hit && actualY <= y + hit && actualY + height >= y - hit) {
+		if (actualX <= x + hitPadding && actualX + width >= x - hitPadding && actualY <= y + hitPadding && actualY + height >= y - hitPadding) {
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public void draw(Canvas c, Camera ca) {
-		actualX = (getX() * ca.getScreenWidth()) / 800;
-		actualY = (getY() * ca.getScreenHeight()) / 480;
+	public void draw(Canvas canvas, Camera camera) {
+		actualX = (getX() * camera.getScreenWidth()) / 800;
+		actualY = (getY() * camera.getScreenHeight()) / 480;
 		
-		drawable.setBounds(actualX, actualY, ((getX() + width) * ca.getScreenWidth()) / 800, ((getY() + height) * ca.getScreenHeight()) / 480);
+		drawable.setBounds(actualX, actualY, ((getX() + width) * camera.getScreenWidth()) / 800, ((getY() + height) * camera.getScreenHeight()) / 480);
 		drawable.setAlpha(getAlpha());
-		drawable.draw(c);
+		drawable.draw(canvas);
 	}
 	
 }

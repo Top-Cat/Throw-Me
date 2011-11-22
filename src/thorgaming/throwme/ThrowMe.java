@@ -1,7 +1,5 @@
 package thorgaming.throwme;
 
-import java.sql.Connection;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -14,9 +12,7 @@ import thorgaming.throwme.Screens.Screen;
 
 public class ThrowMe extends Activity {
 	
-	Stage stage;
-	DispObj thorcard;
-	Connection conn;
+	private Stage stage;
 	public Screen screen;
 	
 	/** Called when the activity is first created. */
