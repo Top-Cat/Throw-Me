@@ -1,7 +1,10 @@
-package thorgaming.throwme;
+package thorgaming.throwme.displayobjects;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import thorgaming.throwme.Camera;
+import thorgaming.throwme.Stage;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,15 +19,12 @@ public class ScoreRow extends DispObj {
 	private Paint lpaint = new Paint();
 	
 	public ScoreRow(Stage stage, int position, String name, int score, Date date, int y) {
+		super(stage);
 		this.name = name;
 		this.score = score;
 		this.date = date;
 		this.position = position;
 		this.y = y;
-		
-		synchronized (stage.objects) {
-			stage.objects.add(this);
-		}
 		
 		paint.setColor(Color.rgb(255, 255, 255));
 		paint.setTextSize(30);

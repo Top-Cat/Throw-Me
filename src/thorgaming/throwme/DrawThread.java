@@ -3,6 +3,9 @@ package thorgaming.throwme;
 import java.util.ArrayList;
 import java.util.List;
 
+import thorgaming.throwme.animation.Anim;
+import thorgaming.throwme.displayobjects.DispObj;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,6 +20,7 @@ public class DrawThread extends Thread {
 	private SurfaceHolder surfaceHolder;
 	private boolean doRun = false;
 	private Stage stage;
+	public Object physicsSync = 0;
 	
 	public DrawThread(SurfaceHolder surfaceHolder, Context context, Stage stage) {
 		this.surfaceHolder = surfaceHolder;
@@ -48,7 +52,9 @@ public class DrawThread extends Thread {
 				}
 				stage.mcache.clear();
 				c = surfaceHolder.lockCanvas(null);
-				stage.world.step((float) 0.01, 5);
+				synchronized (physicsSync) {
+					stage.world.step((float) 0.01, 5);					
+				}
 				
 				if (stage.draw != null) {
 					stage.draw.sendCallback();

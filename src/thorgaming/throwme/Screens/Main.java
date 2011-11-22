@@ -1,4 +1,4 @@
-package thorgaming.throwme.Screens;
+package thorgaming.throwme.screens;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -6,12 +6,12 @@ import java.util.TimerTask;
 import android.app.Activity;
 import thorgaming.throwme.DrawThread;
 import thorgaming.throwme.Stage;
-import thorgaming.throwme.DispObj;
+import thorgaming.throwme.displayobjects.DispObj;
 import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
-import thorgaming.throwme.Anims.AlphaAnim;
-import thorgaming.throwme.Anims.XAnim;
-import thorgaming.throwme.DispObjs.DispRes;
+import thorgaming.throwme.animation.AlphaAnim;
+import thorgaming.throwme.animation.XAnim;
+import thorgaming.throwme.displayobjects.DispRes;
 
 public class Main extends Screen {
 	

@@ -1,4 +1,4 @@
-package thorgaming.throwme.Screens;
+package thorgaming.throwme.screens;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,15 +24,15 @@ import android.view.MotionEvent;
 import android.widget.EditText;
 import thorgaming.throwme.DrawThread;
 import thorgaming.throwme.Stage;
-import thorgaming.throwme.DispObj;
 import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
 import thorgaming.throwme.ThrowMe;
 import thorgaming.throwme.logins;
-import thorgaming.throwme.ScoreRow;
-import thorgaming.throwme.DispObjs.DispGif;
-import thorgaming.throwme.DispObjs.DispRes;
-import thorgaming.throwme.DispObjs.RoundRect;
+import thorgaming.throwme.displayobjects.DispGif;
+import thorgaming.throwme.displayobjects.DispObj;
+import thorgaming.throwme.displayobjects.DispRes;
+import thorgaming.throwme.displayobjects.RoundRect;
+import thorgaming.throwme.displayobjects.ScoreRow;
 
 public class Highs extends Screen {
 	

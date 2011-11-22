@@ -6,8 +6,8 @@ import org.jbox2d.dynamics.ContactListener;
 import org.jbox2d.dynamics.contacts.ContactPoint;
 import org.jbox2d.dynamics.contacts.ContactResult;
 
-import thorgaming.throwme.DispObjs.Character;
-import thorgaming.throwme.DispObjs.Cloud;
+import thorgaming.throwme.displayobjects.Character;
+import thorgaming.throwme.displayobjects.Cloud;
 
 public class HitListener implements ContactListener {
 

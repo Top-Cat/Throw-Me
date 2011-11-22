@@ -1,4 +1,4 @@
-package thorgaming.throwme.Screens;
+package thorgaming.throwme.screens;
 
 import android.app.Activity;
 import android.view.KeyEvent;
@@ -14,6 +14,7 @@ public class Screen {
 	public Screen(Stage stage, Activity activity, Object[] data) {
 		this.stage = stage;
 		stage.clear();
+		stage.draw = null;
 		this.activity = (ThrowMe) activity;
 		this.activity.screen = this;
 	}

@@ -7,21 +7,21 @@ public class Camera {
 	private int screenWidth = 800;
 	private int screenHeight = 480;
 	
-	public void setCameraX(int _x) {
-		setCameraXY(_x, y);
+	public void setCameraX(int x) {
+		this.x = x;
 	}
 	
-	public void setCameraY(int _y) {
-		setCameraXY(x, _y);
+	public void setCameraY(int y) {
+		this.y = y;
 	}
 	
-	public void setCameraXY(int _x, int _y) {
-		x = _x;
-		y = _y;
+	public void setCameraXY(int x, int y) {
+		setCameraX(x);
+		setCameraY(y);
 	}
 	
-	public void offSetCamera(int _x, int _y) {
-		setCameraXY(_x + x, _y + y);
+	public void offSetCamera(int x, int y) {
+		setCameraXY(this.x + x, this.y + y);
 	}
 	
 	public void setScreen(int width, int height) {

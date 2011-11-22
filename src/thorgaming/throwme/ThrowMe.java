@@ -7,8 +7,8 @@ import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import thorgaming.throwme.Stage;
-import thorgaming.throwme.Screens.Main;
-import thorgaming.throwme.Screens.Screen;
+import thorgaming.throwme.screens.Main;
+import thorgaming.throwme.screens.Screen;
 
 public class ThrowMe extends Activity {
 	

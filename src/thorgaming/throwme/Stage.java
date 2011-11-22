@@ -7,6 +7,9 @@ import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 
+import thorgaming.throwme.animation.Anim;
+import thorgaming.throwme.displayobjects.DispObj;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;

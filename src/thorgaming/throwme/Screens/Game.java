@@ -1,4 +1,4 @@
-package thorgaming.throwme.Screens;
+package thorgaming.throwme.screens;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -11,13 +11,13 @@ import thorgaming.throwme.HitListener;
 import thorgaming.throwme.Stage;
 import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
-import thorgaming.throwme.DispObjs.Character;
-import thorgaming.throwme.DispObjs.Cloud;
-import thorgaming.throwme.DispObjs.DispGif;
-import thorgaming.throwme.DispObjs.DispRes;
-import thorgaming.throwme.DispObjs.DispRes_Rel;
-import thorgaming.throwme.DispObjs.PhysCircle;
-import thorgaming.throwme.DispObjs.Rect;
+import thorgaming.throwme.displayobjects.Character;
+import thorgaming.throwme.displayobjects.Cloud;
+import thorgaming.throwme.displayobjects.DispGif;
+import thorgaming.throwme.displayobjects.DispRes;
+import thorgaming.throwme.displayobjects.DispRes_Rel;
+import thorgaming.throwme.displayobjects.PhysCircle;
+import thorgaming.throwme.displayobjects.Rect;
 
 public class Game extends Screen {
 	
@@ -40,6 +40,8 @@ public class Game extends Screen {
 	
 	public Game(Stage stage, Activity activity, Object[] data) {
 		super(stage, activity, data);
+		
+		stage.camera.setCameraXY(0, 0);
 		
 		gradient[0][0] = 255;
 		gradient[0][1] = 255;
@@ -131,7 +133,9 @@ public class Game extends Screen {
 			if (character != null && character.end && !ended) {
 				activity.runOnUiThread(new Runnable() {
 					public void run() {
-						new Highs(stage, activity, new Object[] {true, stage.camera.getX() / 10});
+						synchronized (stage.drawThread.physicsSync) {
+							new Highs(stage, activity, new Object[] {true, stage.camera.getX() / 10});
+						}
 					}
 				});
 				ended = true;
