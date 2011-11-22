@@ -20,7 +20,7 @@ public class DrawThread extends Thread {
 	private SurfaceHolder surfaceHolder;
 	private boolean doRun = false;
 	private Stage stage;
-	public Object physicsSync = 0;
+	public Integer physicsSync = 0;
 	
 	public DrawThread(SurfaceHolder surfaceHolder, Context context, Stage stage) {
 		this.surfaceHolder = surfaceHolder;

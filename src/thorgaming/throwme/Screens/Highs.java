@@ -1,15 +1,21 @@
 package thorgaming.throwme.screens;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import org.yaml.snakeyaml.Yaml;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,7 +33,6 @@ import thorgaming.throwme.Stage;
 import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
 import thorgaming.throwme.ThrowMe;
-import thorgaming.throwme.logins;
 import thorgaming.throwme.displayobjects.DispGif;
 import thorgaming.throwme.displayobjects.DispObj;
 import thorgaming.throwme.displayobjects.DispRes;
@@ -47,19 +52,17 @@ public class Highs extends Screen {
 	private DispObj timeC;
 	
 	private RoundRect roundedBorderBackground, roundedBorder;
-	private Connection conn;
 	public static final String PREFS_NAME = "throwmedevicekey";
 	private String deviceid = "";
 	//private SecureRandom gen = new SecureRandom();
 	
-	private boolean gettingScores = false;
 	private int mouseY;
 	private int downY;
 	private int scrollStart;
 	private int previousMovement;
 	private int movement;
 	
-	private int scroll = 0;
+	public int scroll = 0;
 	
 	private List<ScoreRow> highScores = new ArrayList<ScoreRow>();
 	
@@ -92,7 +95,6 @@ public class Highs extends Screen {
 		monthC = new DispRes(stage, R.drawable.month, activity.getResources(), 150, 33, 645, 154, 0, 0);
 		timeC = new DispRes(stage, R.drawable.time, activity.getResources(), 150, 25, 645, 207, 0, 0);
 		
-		new GetHighs().start();
 		boolean send = (data != null && data[0] != null) ? (Boolean) data[0] : false;
 		final int score = (data != null && data[1] != null) ? (Integer) data[1] : 0;
 		if (send) {
@@ -112,9 +114,21 @@ public class Highs extends Screen {
 						byte[] messageDigest = digest.digest();
 						StringBuffer hexString = new StringBuffer();
 						for (int i=0;i<messageDigest.length;i++) {
-							hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+							int j = 0xFF & messageDigest[i];
+							if (j < 16) hexString.append("0");
+							hexString.append(Integer.toHexString(j));
 						}
-						insert("INSERT INTO scores VALUES (NULL, '" + deviceid + "', '" + value + "', " + score + ", NULL, '" + hexString + "')");
+						try {
+							URL url = new URL("http://thomasc.co.uk/throwme/api.php?action=submit&score=" + score + "&name=" + value + "&deviceid=" + deviceid + "&checkstring=" + hexString);
+							HttpURLConnection con = (HttpURLConnection)(url.openConnection());
+							BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+							while ((in.readLine()) != null);
+							in.close();
+						} catch (MalformedURLException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 						new daysel().sendCallback();
 					} catch (NoSuchAlgorithmException e) {
 						e.printStackTrace();
@@ -161,7 +175,7 @@ public class Highs extends Screen {
 			resetOptions();
 			timeBW.setAlpha(0);
 			timeC.setAlpha(255);
-			load("SELECT * FROM scores ORDER BY score DESC LIMIT 50");
+			new loader("").start();
 		}
 
 		@Override
@@ -178,7 +192,7 @@ public class Highs extends Screen {
 			resetOptions();
 			monthBW.setAlpha(0);
 			monthC.setAlpha(255);
-			load("SELECT * FROM scores WHERE date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH) ORDER BY score DESC LIMIT 50");
+			new loader("month").start();
 		}
 
 		@Override
@@ -195,7 +209,7 @@ public class Highs extends Screen {
 			resetOptions();
 			weekBW.setAlpha(0);
 			weekC.setAlpha(255);
-			load("SELECT * FROM scores WHERE date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) ORDER BY score DESC LIMIT 50");
+			new loader("week").start();
 		}
 
 		@Override
@@ -212,7 +226,7 @@ public class Highs extends Screen {
 			resetOptions();
 			dayBW.setAlpha(0);
 			dayC.setAlpha(255);
-			load("SELECT * FROM scores WHERE date >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) ORDER BY score DESC LIMIT 50");
+			new loader("day").start();
 		}
 
 		@Override
@@ -222,110 +236,69 @@ public class Highs extends Screen {
 
 	}
 	
-	class GetHighs extends Thread {
+	boolean loading = false;
+	private class loader extends Thread {
 		
-		@Override
+		String type = "";
+		
+		public loader(String type) {
+			this.type = type;
+		}
+		
+		@SuppressWarnings("unchecked")
 		public void run() {
-			gettingScores = true;
 			try {
-				Class.forName("com.mysql.jdbc.Driver").newInstance();
-				// Step 2: Establish the connection to the database. 
-				conn = DriverManager.getConnection(new logins().url);
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			gettingScores = false;
-		}
-		
-	}
-	
-	public void insert(String query) {
-		boolean success = false;
-		while (!success) {
-			while (conn == null) {
-				if (!gettingScores) {
-					new GetHighs().start();
-				}
-				ThrowMe.waiting(200);
-			}
-			if (conn != null) {
-				PreparedStatement pr;
-				try {
-					pr = conn.prepareStatement(query);
-					pr.executeUpdate();
-					success = true;
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	public void load(String sql) {
-		new load().setsql(sql).start();
-	}
-	
-	class load extends Thread {
-		String q;
-		
-		public Thread setsql(String sql) {
-			q = sql;
-			return this;
-		}
-		
-		public void run() {
-			boolean s = false;
-			while (!s) {
-				for (ScoreRow i : highScores) {
-					i.destroy(stage);
-				}
-				highScores.clear();
-				loader.setAlpha(255);
-				while (conn == null) {
-					if (!gettingScores) {
-						new GetHighs().start();
-					}
-					ThrowMe.waiting(200);
-				}
-				if (conn != null) {
-					int a = 0;
+				if (!loading) {
+					loading = true;
 					
-					PreparedStatement pr;
-					try {
-						pr = conn.prepareStatement(q);
-						ResultSet r = pr.executeQuery();
-						loader.setAlpha(0);
-						while (r.next()) {
-							highScores.add(new ScoreRow(stage, a + 1, r.getString("name"), r.getInt("score"), r.getDate("date"), (a * 60)));
+					for (ScoreRow i : highScores) {
+						i.destroy(stage);
+					}
+					highScores.clear();
+					loader.setAlpha(255);
+					
+					URL url = new URL("http://thomasc.co.uk/throwme/api.php?type=" + type);
+					BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+					Yaml yaml = new Yaml();
+					Object yamlObj = yaml.load(reader);
+					reader.close();
+					
+					if (yamlObj instanceof ArrayList<?>) {
+						ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yamlObj;
+						
+						int a = 0;
+						SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						for (Map<String, String> i : list) {
+							try {
+								highScores.add(new ScoreRow(stage, Highs.this, a + 1, i.get("name"), Integer.valueOf(i.get("score")), sdf.parse(i.get("date")), (a * 60)));
+							} catch (NumberFormatException e) {
+								e.printStackTrace();
+							} catch (ParseException e) {
+								e.printStackTrace();
+							}
 							a++;
 						}
-						
-						if (roundedBorderBackground != null) {
-							roundedBorderBackground.destroy(stage);
-							roundedBorder.destroy(stage);
-						}
-						
-						roundedBorderBackground = new RoundRect(stage, 491, 490, 155, -5, 0, 24);
-						roundedBorderBackground.paint.setARGB(0, 0, 0, 0);
-						roundedBorderBackground.stroke.setStrokeWidth(10);
-						roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, 480, Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
-						
-						roundedBorder = new RoundRect(stage, 480, 480, 160, 0, 0, 20);
-						roundedBorder.paint.setARGB(0, 0, 0, 0);
-						roundedBorder.stroke.setARGB(255, 0, 0, 0);
-						roundedBorder.stroke.setStrokeWidth(1);
-						s = true;
-					} catch (SQLException e) {
-						e.printStackTrace();
 					}
+					
+					loader.setAlpha(0);
+					if (roundedBorderBackground != null) {
+						roundedBorderBackground.destroy(stage);
+						roundedBorder.destroy(stage);
+					}
+					
+					roundedBorderBackground = new RoundRect(stage, 491, 490, 155, -5, 0, 24);
+					roundedBorderBackground.paint.setARGB(0, 0, 0, 0);
+					roundedBorderBackground.stroke.setStrokeWidth(10);
+					roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, 480, Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
+					
+					roundedBorder = new RoundRect(stage, 480, 480, 160, 0, 0, 20);
+					roundedBorder.paint.setARGB(0, 0, 0, 0);
+					roundedBorder.stroke.setARGB(255, 0, 0, 0);
+					roundedBorder.stroke.setStrokeWidth(1);
+					
+					loading = false;
 				}
-			}
+			} catch (MalformedURLException e) { } catch (IOException e) { }
 		}
 	}
 	
@@ -358,16 +331,8 @@ public class Highs extends Screen {
 				scroll = scrollBound(scroll);
 				movement -= direction;
 				
-				for (ScoreRow scoreRow : highScores) {
-					scoreRow.setScroll(scroll);
-				}
-				
 				ThrowMe.waiting(10);
 			}
-		}
-		
-		for (ScoreRow scoreRow : highScores) {
-			scoreRow.setScroll(scroll);
 		}
 		
 		return false;

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import thorgaming.throwme.Camera;
 import thorgaming.throwme.Stage;
+import thorgaming.throwme.screens.Highs;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,16 +14,18 @@ import android.graphics.Paint;
 public class ScoreRow extends DispObj {
 	
 	private String name;
-	private int score, y, scroll, position;
+	private int score, y, position;
 	private Date date;
 	private Paint paint = new Paint();
 	private Paint lpaint = new Paint();
+	private Highs screen;
 	
-	public ScoreRow(Stage stage, int position, String name, int score, Date date, int y) {
+	public ScoreRow(Stage stage, Highs screen, int position, String name, int score, Date date, int y) {
 		super(stage);
 		this.name = name;
 		this.score = score;
 		this.date = date;
+		this.screen = screen;
 		this.position = position;
 		this.y = y;
 		
@@ -33,13 +36,11 @@ public class ScoreRow extends DispObj {
 		
 		lpaint.setColor(Color.rgb(0, 0, 0));
 	}
-	
-	public void setScroll(int scroll) {
-		this.scroll = scroll;
-	}
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
+		int scroll = screen.scroll;
+		
 		canvas.drawText(name, 210, scroll + y + 30, paint);
 		canvas.drawText(Integer.toString(score), 210, scroll + y + 60, paint);
 		canvas.drawText(Integer.toString(position), 165, scroll + y + 30, paint);
