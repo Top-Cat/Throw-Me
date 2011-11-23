@@ -38,7 +38,6 @@ public class Character extends DispObj {
 	private Drawable drawableEye;
 	
 	public Character(Stage stage, Resources r, int eye, World world, int x, int y) {
-		super(stage);
 		drawableEye = r.getDrawable(eye);
 		this.world = world;
 		paint.setColor(Color.rgb(255, 153, 0));
@@ -203,6 +202,8 @@ public class Character extends DispObj {
 		DistanceJointDef arm4 = new DistanceJointDef();
 		arm4.initialize(bodyRightKnee, bodyRightFoot, new Vec2((x + 40) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x + 65) / Stage.ratio, (y + 90) / Stage.ratio));
 		world.createJoint(arm4);
+		
+		addToScreen(stage);
 	}
 	
 	@Override
@@ -224,6 +225,8 @@ public class Character extends DispObj {
 	double damping = 2;
 	int length = 1;
 	int backwards = 0;
+	float previousHeadX = 0;
+	double avgSpeed = 1;
 	
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
@@ -242,23 +245,24 @@ public class Character extends DispObj {
 			dampingForce = dampingForce.mul((float) (Vec2.dot(v,d) * damping));
 			bodyHead.applyForce(dampingForce, world1);
 			canvas.drawLine(bodyHead.getWorldCenter().x * Stage.ratio, bodyHead.getWorldCenter().y * Stage.ratio, mouseX, mouseY, paint);
-		} else { 
-			int nx = (int) (camera.getX() - (camera.getX() + (-(Stage.ratio)*bodyHead.getWorldCenter().x + camera.getScreenWidth()/2))/10);
-			if (nx < camera.getX()) {
-				backwards++;
-				nx = camera.getX();
-			} else {
-				backwards = 0;
-			}
-			int ny = (int) (camera.getY() - (camera.getY() - (-(Stage.ratio)*bodyHead.getWorldCenter().y + camera.getScreenHeight()/2))/10);
-			ny = ny < 0 ? camera.getY() : ny;
-			camera.setCameraXY(nx, ny);
-			
-			canvas.drawText("Distance: " + (nx / 10), 10, 40, paint);
-			
-			if (backwards > 10) {
+		} else {
+			avgSpeed -= (avgSpeed - (bodyHead.getWorldCenter().x - previousHeadX)) / 100;
+			previousHeadX = bodyHead.getWorldCenter().x;
+			if (avgSpeed < (1/Stage.ratio)) {
 				end = true;
 			}
+
+			int nx = (int) (camera.getX() - (camera.getX() + (-(Stage.ratio)*bodyHead.getWorldCenter().x + camera.getScreenWidth()/2))/10);
+			int ny = (int) (camera.getY() - (camera.getY() - (-(Stage.ratio)*bodyHead.getWorldCenter().y + camera.getScreenHeight()/2))/10);
+			ny = ny < 0 ? camera.getY() : ny;
+			nx = nx < camera.getX() ? camera.getX() : nx;
+			camera.setCameraXY(nx, ny);
+			
+			canvas.drawText("Distance: " + (nx / 10) + "m", 10, 40, paint);
+			String altitudeText = "Altitude: " + ((int) -(bodyHead.getWorldCenter().y - 12)*2) + "m";
+			android.graphics.Rect bounds = new android.graphics.Rect();
+			paint.getTextBounds(altitudeText, 0, altitudeText.length(), bounds);
+			canvas.drawText(altitudeText, camera.getScreenWidth() - bounds.width() - 10, 40, paint);
 		}
 		for (Body i : bodies.keySet()) {
 			Vec2 p = i.getPosition();
