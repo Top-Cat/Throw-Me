@@ -263,39 +263,39 @@ public class Highs extends Screen {
 					Object yamlObj = yaml.load(reader);
 					reader.close();
 					
-					if (yamlObj instanceof ArrayList<?>) {
-						ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yamlObj;
-						
-						int a = 0;
-						SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-						for (Map<String, String> i : list) {
-							try {
-								highScores.add(new ScoreRow(stage, Highs.this, a + 1, i.get("name"), Integer.valueOf(i.get("score")), sdf.parse(i.get("date")), (a * 60)));
-							} catch (NumberFormatException e) {
-								e.printStackTrace();
-							} catch (ParseException e) {
-								e.printStackTrace();
+					if (activity.screen == Highs.this) {
+						if (yamlObj instanceof ArrayList<?>) {
+							ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yamlObj;
+							
+							int a = 0;
+							SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							for (Map<String, String> i : list) {
+								try {
+									highScores.add(new ScoreRow(stage, Highs.this, a + 1, i.get("name"), Integer.valueOf(i.get("score")), sdf.parse(i.get("date")), (a++ * 60)));
+								} catch (NumberFormatException e) {
+									e.printStackTrace();
+								} catch (ParseException e) {
+									e.printStackTrace();
+								}
 							}
-							a++;
 						}
+						
+						loader.setAlpha(0);
+						if (roundedBorderBackground != null) {
+							roundedBorderBackground.destroy(stage);
+							roundedBorder.destroy(stage);
+						}
+						
+						roundedBorderBackground = new RoundRect(stage, 491, 490, 155, -5, 0, 24);
+						roundedBorderBackground.paint.setARGB(0, 0, 0, 0);
+						roundedBorderBackground.stroke.setStrokeWidth(10);
+						roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, 480, Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
+						
+						roundedBorder = new RoundRect(stage, 480, 480, 160, 0, 0, 20);
+						roundedBorder.paint.setARGB(0, 0, 0, 0);
+						roundedBorder.stroke.setARGB(255, 0, 0, 0);
+						roundedBorder.stroke.setStrokeWidth(1);
 					}
-					
-					loader.setAlpha(0);
-					if (roundedBorderBackground != null) {
-						roundedBorderBackground.destroy(stage);
-						roundedBorder.destroy(stage);
-					}
-					
-					roundedBorderBackground = new RoundRect(stage, 491, 490, 155, -5, 0, 24);
-					roundedBorderBackground.paint.setARGB(0, 0, 0, 0);
-					roundedBorderBackground.stroke.setStrokeWidth(10);
-					roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, 480, Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
-					
-					roundedBorder = new RoundRect(stage, 480, 480, 160, 0, 0, 20);
-					roundedBorder.paint.setARGB(0, 0, 0, 0);
-					roundedBorder.stroke.setARGB(255, 0, 0, 0);
-					roundedBorder.stroke.setStrokeWidth(1);
-					
 					loading = false;
 				}
 			} catch (MalformedURLException e) { } catch (IOException e) { }
