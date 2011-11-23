@@ -59,6 +59,7 @@ public class Character extends DispObj {
 		bodyHead = world.createBody(headBodyDef);
 		bodyHead.createShape(head);
 		bodyHead.setMassFromShapes();
+		bodyHead.m_angularDamping = 0.7F;
 		//bodies.put(h, 20);
 		
 		PolygonDef body = new PolygonDef();
