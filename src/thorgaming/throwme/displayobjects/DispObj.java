@@ -16,7 +16,7 @@ public abstract class DispObj {
 	private int y = 0;
 	private int alpha = 255;
 	
-	public DispObj(Stage stage) {
+	protected void addToScreen(Stage stage) {
 		synchronized (stage.objects) {
 			stage.objects.add(this);
 		}

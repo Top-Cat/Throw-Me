@@ -26,7 +26,6 @@ public class Cloud extends DispObj {
 	private int actualY;
 	
 	public Cloud(Context context, Stage stage, World world, int x, int y) {
-		super(stage);
 		inputStream = context.getResources().openRawResource(R.drawable.cloud);
 		movie = Movie.decodeStream(inputStream);
 		setX(x);
@@ -48,6 +47,8 @@ public class Cloud extends DispObj {
 		cloud.localPosition = new Vec2(33 / Stage.ratio, 0);
 		physicsBody.createShape(cloud);
 		physicsBody.setMassFromShapes();
+		
+		addToScreen(stage);
 	}
 	
 	@Override

@@ -17,7 +17,6 @@ public class DispRes extends DispObj {
 	private int hitPadding = 0;
 	
 	public DispRes(Stage stage, int drawableId, Resources resources, int width, int height, int x, int y, int alpha, int hitPadding) {
-		super(stage);
 		this.height = height;
 		this.width = width;
 		setX(x);
@@ -25,6 +24,8 @@ public class DispRes extends DispObj {
 		drawable = resources.getDrawable(drawableId);
 		setAlpha(alpha);
 		this.hitPadding = hitPadding;
+		
+		addToScreen(stage);
 	}
 	
 	public int getScreenX() {

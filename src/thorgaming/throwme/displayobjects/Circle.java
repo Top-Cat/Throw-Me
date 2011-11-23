@@ -14,13 +14,14 @@ public class Circle extends DispObj {
 	private int actualY;
 	
 	public Circle(Stage stage, int radius, int x, int y, int alpha) {
-		super(stage);
 		randomiseColor();
 
 		setRadius(radius);
 		setX(x);
 		setY(y);
 		setAlpha(alpha);
+		
+		addToScreen(stage);
 	}
 	
 	public int getScreenX() {

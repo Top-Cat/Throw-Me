@@ -60,8 +60,8 @@ public class PhysCircle extends Circle {
 	
 	@Override
 	public void destroy(Stage stage) {
-		world.destroyBody(physicsBody);
 		super.destroy(stage);
+		world.destroyBody(physicsBody);
 	}
 	
 	@Override

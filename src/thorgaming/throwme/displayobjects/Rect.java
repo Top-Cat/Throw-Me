@@ -15,13 +15,14 @@ public class Rect extends DispObj {
 	protected int actualY;
 	
 	public Rect(Stage stage, int width, int height, int x, int y, int alpha) {
-		super(stage);
 		randomiseColor();
 
 		setSize(width, height);
 		setX(x);
 		setY(y);
 		setAlpha(alpha);
+		
+		addToScreen(stage);
 	}
 	
 	public int getScreenX() {
