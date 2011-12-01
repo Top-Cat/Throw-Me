@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="thorgaming.throwme"
+	package="com.thorgaming.throwme"
 	android:versionCode="1"
 	android:versionName="1.0" android:installLocation="preferExternal"><uses-sdk android:minSdkVersion="10" />
     
@@ -16,9 +16,9 @@
 			</intent-filter>
 		</activity>
 		
-		<service android:name="BillingService" />
+		<service android:name=".BillingService" />
 
-		<receiver android:name="BillingReceiver">
+		<receiver android:name=".BillingReceiver">
 			<intent-filter>
 				<action android:name="com.android.vending.billing.IN_APP_NOTIFY" />
 				<action android:name="com.android.vending.billing.RESPONSE_CODE" />
