@@ -12,7 +12,7 @@ import thorgaming.throwme.screens.Screen;
 
 public class ThrowMe extends Activity {
 	
-	private Stage stage;
+	public static Stage stage = null;
 	public Screen screen;
 	
 	/** Called when the activity is first created. */
@@ -25,7 +25,7 @@ public class ThrowMe extends Activity {
 		
 		stage = (Stage) findViewById(R.id.menu);
 		
-		new Main(stage, this, null);
+		new Main(this, null);
 	}
 	
 	public static void waiting(int n){

@@ -6,20 +6,23 @@ import java.util.List;
 import thorgaming.throwme.animation.Anim;
 import thorgaming.throwme.Camera;
 import thorgaming.throwme.MouseCallback;
-import thorgaming.throwme.Stage;
+import thorgaming.throwme.ThrowMe;
 
 import android.graphics.Canvas;
 
 public abstract class DispObj {
 	
+	private int width = 0;
+	private int height = 0;
 	private int x = 0;
 	private int y = 0;
 	private int alpha = 255;
 	
-	protected void addToScreen(Stage stage) {
-		synchronized (stage.objects) {
-			stage.objects.add(this);
+	public DispObj addToScreen() {
+		synchronized (ThrowMe.stage.objects) {
+			ThrowMe.stage.objects.add(this);
 		}
+		return this;
 	}
 	
 	private MouseCallback onMouseUpEvent, onMouseDownEvent;
@@ -42,8 +45,9 @@ public abstract class DispObj {
 		return onMouseDownEvent;
 	}
 	
-	public void setAlpha(int alpha) {
-		this.alpha = alpha; 
+	public DispObj setAlpha(int alpha) {
+		this.alpha = alpha;
+		return this;
 	}
 	
 	public int getAlpha() {
@@ -73,17 +77,35 @@ public abstract class DispObj {
 		return this;
 	}
 	
-	public void destroy(Stage stage) {
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public DispObj setWidth(int width) {
+		this.width = width;
+		return this;
+	}
+	
+	public DispObj setHeight(int height) {
+		this.height = height;
+		return this;
+	}
+	
+	public void destroy() {
 		List<Anim> over = new ArrayList<Anim>();
-		for (Anim i : stage.animations) {
+		for (Anim i : ThrowMe.stage.animations) {
 			if (i.getObject() == this) {
 				over.add(i);
 			}
 		}
-		stage.animations.removeAll(over);
+		ThrowMe.stage.animations.removeAll(over);
 		
-		synchronized (stage.objects) {
-			stage.objects.remove(this);
+		synchronized (ThrowMe.stage.objects) {
+			ThrowMe.stage.objects.remove(this);
 		}
 	}
 	

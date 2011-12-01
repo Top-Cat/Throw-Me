@@ -2,12 +2,11 @@ package thorgaming.throwme.displayobjects;
 
 import java.io.InputStream;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Movie;
 import android.graphics.Paint;
 import thorgaming.throwme.Camera;
-import thorgaming.throwme.Stage;
+import thorgaming.throwme.ThrowMe;
 
 public class DispGif extends DispRes {
 
@@ -19,16 +18,14 @@ public class DispGif extends DispRes {
 	private int repetitions = -1;
 	private int totalRepetitions = 0;
 	private double speed = 1;
-	private Stage stage;
 	private int previousTime = 0;
 	
-	public DispGif(Context context, Stage stage, int drawableId, int width, int height, int x, int y, int alpha, int hitPadding, int repetitions, double speed) {
-		super(stage, drawableId, width, height, x, y, alpha, hitPadding);
+	public DispGif(int drawableId, int repetitions, double speed) {
+		super(drawableId);
 		
-		this.stage = stage;
 		this.repetitions = repetitions;
 		this.speed = speed;
-		is = context.getResources().openRawResource(drawableId);
+		is = ThrowMe.stage.getResources().openRawResource(drawableId);
 		movie = Movie.decodeStream(is);
 	}
 	
@@ -43,7 +40,7 @@ public class DispGif extends DispRes {
 			if (relTime < previousTime) {
 				totalRepetitions++;
 				if (totalRepetitions >= repetitions && repetitions > -1) {
-					destroy(stage);
+					destroy();
 				}
 			}
 			previousTime = relTime;

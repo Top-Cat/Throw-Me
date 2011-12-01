@@ -37,6 +37,14 @@ public class Camera {
 		return y;
 	}
 	
+	public int transformX(int x) {
+		return (x * getScreenWidth()) / 800;
+	}
+	
+	public int transformY(int y) {
+		return (y * getScreenHeight()) / 480;
+	}
+	
 	public int getScreenWidth() {
 		return screenWidth;
 	}

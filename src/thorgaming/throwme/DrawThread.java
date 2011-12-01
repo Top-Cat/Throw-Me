@@ -42,12 +42,13 @@ public class DrawThread extends Thread {
 		DrawThread.gradient = gradient;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		while(doRun) {
 			Canvas c = null;
 			try {
-				for (MotionEvent e : stage.mcache) {
+				for (MotionEvent e : (ArrayList<MotionEvent>) stage.mcache.clone()) {
 					stage.touch(e);
 				}
 				stage.mcache.clear();

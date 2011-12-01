@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import thorgaming.throwme.Camera;
-import thorgaming.throwme.Stage;
 
 public class Circle extends DispObj {
 
@@ -12,12 +11,9 @@ public class Circle extends DispObj {
 	public Paint paint = new Paint();
 	private int actualX;
 	private int actualY;
-	protected Stage stage;
 	
-	public Circle(Stage stage) {
+	public Circle() {
 		randomiseColor();
-		addToScreen(stage);
-		this.stage = stage;
 	}
 	
 	public int getScreenX() {

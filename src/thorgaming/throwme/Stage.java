@@ -17,7 +17,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class Stage extends SurfaceView implements SurfaceHolder.Callback {
-
+	
 	public Camera camera = new Camera();
 	
 	public List<Anim> animations = new ArrayList<Anim>();
@@ -52,12 +52,14 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 	
 	@SuppressWarnings("unchecked")
 	public void clear() {
-		for (DispObj obj : (ArrayList<DispObj>) objects.clone()) {
-			obj.destroy(this);
+		synchronized (drawThread.physicsSync) {
+			for (DispObj obj : (ArrayList<DispObj>) objects.clone()) {
+				obj.destroy();
+			}
 		}
 	}
 	
-	List<MotionEvent> mcache = new ArrayList<MotionEvent>();
+	ArrayList<MotionEvent> mcache = new ArrayList<MotionEvent>();
 	
 	public void sendtouch(MotionEvent event) {
 		mcache.add(event);

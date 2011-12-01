@@ -4,25 +4,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import thorgaming.throwme.Camera;
-import thorgaming.throwme.Stage;
 
 public class Rect extends DispObj {
 
-	protected int width;
-	protected int height;
 	public Paint paint = new Paint();
 	protected int actualX;
 	protected int actualY;
 	
-	public Rect(Stage stage, int width, int height, int x, int y, int alpha) {
+	public Rect() {
 		randomiseColor();
-
-		setSize(width, height);
-		setX(x);
-		setY(y);
-		setAlpha(alpha);
-		
-		addToScreen(stage);
 	}
 	
 	public int getScreenX() {
@@ -33,10 +23,10 @@ public class Rect extends DispObj {
 		return actualY;
 	}
 	
-	public void setSize(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
+	/*public void setSize(int width, int height) {
+		setWidth(width);
+		setHeight(height);
+	}*/
 	
 	public void randomiseColor() {
 		paint.setColor(Color.rgb((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255)));
@@ -44,7 +34,7 @@ public class Rect extends DispObj {
 	
 	@Override
 	public boolean checkPress(int x, int y) {
-		if (x > getX() && x < getX() + width && y > getY() && y < getY() + height) {
+		if (x > getX() && x < getX() + getWidth() && y > getY() && y < getY() + getHeight()) {
 			return true;
 		}
 		return false;
@@ -52,11 +42,11 @@ public class Rect extends DispObj {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		actualX = (getX() * camera.getScreenWidth()) / 800;
-		actualY = (getY() * camera.getScreenHeight()) / 480;
+		actualX = camera.transformX(getX());
+		actualY = camera.transformY(getY());
 		
 		paint.setAlpha(getAlpha());
-		canvas.drawRect(getX(), getY(), getX() + width, getY() + height, paint);
+		canvas.drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), paint);
 	}
 	
 }

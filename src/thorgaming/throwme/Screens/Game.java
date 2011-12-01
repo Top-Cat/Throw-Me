@@ -8,9 +8,9 @@ import android.view.MotionEvent;
 import thorgaming.throwme.Callback;
 import thorgaming.throwme.DrawThread;
 import thorgaming.throwme.HitListener;
-import thorgaming.throwme.Stage;
 import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
+import thorgaming.throwme.ThrowMe;
 import thorgaming.throwme.displayobjects.Character;
 import thorgaming.throwme.displayobjects.Cloud;
 import thorgaming.throwme.displayobjects.DispGif;
@@ -38,10 +38,10 @@ public class Game extends Screen {
 	private int mouseX;
 	private int mouseY;
 	
-	public Game(Stage stage, Activity activity, Object[] data) {
-		super(stage, activity, data);
+	public Game(Activity activity, Object[] data) {
+		super(activity, data);
 		
-		stage.camera.setCameraXY(0, 0);
+		ThrowMe.stage.camera.setCameraXY(0, 0);
 		
 		gradient[0][0] = 255;
 		gradient[0][1] = 255;
@@ -85,27 +85,27 @@ public class Game extends Screen {
 		
 		DrawThread.setgrad(ng);
 		
-		hills1 = new DispRes_Rel(stage, R.drawable.bg, 879, 240, 0, 300, 255, 0);
-		hills2 = new DispRes_Rel(stage, R.drawable.bg, 879, 240, 800, 300, 255, 0);
+		hills1 = (DispRes) new DispRes_Rel(R.drawable.bg).setWidth(879).setHeight(240).setY(300).addToScreen();
+		hills2 = (DispRes) new DispRes_Rel(R.drawable.bg).setWidth(879).setHeight(240).setX(800).setY(300).addToScreen();
 		
 		for (int i = 0; i < 7; i++) {
-			randomHills[i] = (Hill) new Hill(stage, 0, stage.world).setRadius((int) (Math.random() * 80) + 80).setX((160 * i) + 80).setY(480);
+			randomHills[i] = (Hill) new Hill(0).setRadius((int) (Math.random() * 80) + 80).setX((160 * i) + 80).setY(480).addToScreen();
 		}
 		
-		box = new DispRes_Rel(stage, R.drawable.box, 150, 150, 325, 105, 255, 0);
-		new Rect(stage, 800, 480, 0, 0, 0).setMouseDownEvent(new boxsplode());
+		box = (DispRes_Rel) new DispRes_Rel(R.drawable.box).setWidth(150).setHeight(150).setX(325).setY(105).addToScreen();
+		new Rect().setWidth(800).setHeight(480).setAlpha(0).addToScreen().setMouseDownEvent(new boxsplode());
 		
-		new Cloud(activity.getApplicationContext(), stage, stage.world, 850, -120);
-		new Cloud(activity.getApplicationContext(), stage, stage.world, 150, -720);
-		new Cloud(activity.getApplicationContext(), stage, stage.world, 600, -620);
-		new Cloud(activity.getApplicationContext(), stage, stage.world, 900, -920);
-		new Cloud(activity.getApplicationContext(), stage, stage.world, 300, -1120);
-		new Cloud(activity.getApplicationContext(), stage, stage.world, 550, -1920);
-		new Cloud(activity.getApplicationContext(), stage, stage.world, 800, -1320);
+		new Cloud().setX(850).setY(-120).addToScreen();
+		new Cloud().setX(150).setY(-720).addToScreen();
+		new Cloud().setX(600).setY(-620).addToScreen();
+		new Cloud().setX(900).setY(-920).addToScreen();
+		new Cloud().setX(300).setY(-1120).addToScreen();
+		new Cloud().setX(550).setY(-1920).addToScreen();
+		new Cloud().setX(800).setY(-1320).addToScreen();
 		
-		stage.world.setContactListener(new HitListener());
+		ThrowMe.stage.world.setContactListener(new HitListener());
 		
-		stage.draw = new tick();
+		ThrowMe.stage.draw = new tick();
 	}
 	
 	public class boxsplode implements MouseCallback {
@@ -113,9 +113,9 @@ public class Game extends Screen {
 		@Override
 		public void sendCallback() {
 			if (character == null) {
-				box.destroy(stage);
-				character = new Character(stage, R.drawable.eye, stage.world, 400, 240);
-				new DispGif(activity.getApplicationContext(), stage, R.drawable.explosion, 764, 556, 18, -38, 255, 0, 1, 4);
+				box.destroy();
+				character = (Character) new Character().setX(400).setY(240).addToScreen();
+				new DispGif(R.drawable.explosion, 1, 4).setWidth(764).setHeight(556).setX(18).setY(-38).addToScreen();
 			}
 		}
 
@@ -133,19 +133,19 @@ public class Game extends Screen {
 			if (character != null && character.end && !ended) {
 				activity.runOnUiThread(new Runnable() {
 					public void run() {
-						synchronized (stage.drawThread.physicsSync) {
-							new Highs(stage, activity, new Object[] {true, stage.camera.getX() / 10});
+						synchronized (ThrowMe.stage.drawThread.physicsSync) {
+							new Highs(activity, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
 						}
 					}
 				});
 				ended = true;
 			}
 			if (!ended) {
-				if (hills1.getScreenX() < -stage.camera.getScreenWidth()) {
-					hills1.setX(stage.camera.getX() + stage.camera.getScreenWidth());
+				if (hills1.getScreenX() < -ThrowMe.stage.camera.getScreenWidth()) {
+					hills1.setX(ThrowMe.stage.camera.getX() + ThrowMe.stage.camera.getScreenWidth());
 				}
-				if (hills2.getScreenX() < -stage.camera.getScreenWidth()) {
-					hills2.setX(stage.camera.getX() + stage.camera.getScreenWidth());
+				if (hills2.getScreenX() < -ThrowMe.stage.camera.getScreenWidth()) {
+					hills2.setX(ThrowMe.stage.camera.getX() + ThrowMe.stage.camera.getScreenWidth());
 				}
 				for (int i = 0; i < 7; i++) {
 					if (randomHills[i].getScreenX() < -160) {
@@ -159,19 +159,19 @@ public class Game extends Screen {
 				}
 				
 				int ng[] = new int[2];
-				if (stage.camera.getY() > 7999) {
+				if (ThrowMe.stage.camera.getY() > 7999) {
 					
 					ng[0] = Color.rgb(0, 0, 0);
 					ng[1] = Color.rgb(0, 0, 0);
 					
-				} else if (stage.camera.getY() > 0) {
+				} else if (ThrowMe.stage.camera.getY() > 0) {
 					
-					int ny = stage.camera.getY() + 10;
-					if (ny % 1000 < stage.camera.getY() % 1000) {
+					int ny = ThrowMe.stage.camera.getY() + 10;
+					if (ny % 1000 < ThrowMe.stage.camera.getY() % 1000) {
 						ny -= (ny % 1000) + 1;
 					}
-					ng[0] = blend(gradient[(int) Math.floor(stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(stage.camera.getY() / 1000)], ny % 1000);
-					ng[1] = blend(gradient[(int) Math.floor(stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(stage.camera.getY() / 1000)], stage.camera.getY() % 1000);
+					ng[0] = blend(gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000)], ny % 1000);
+					ng[1] = blend(gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000)], ThrowMe.stage.camera.getY() % 1000);
 					
 				} else {
 					ng[0] = Color.rgb(255, 255, 255);
@@ -201,16 +201,16 @@ public class Game extends Screen {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			downX = mouseX;
 			downY = mouseY;
-			cameraX = stage.camera.getX();
-			cameraY = stage.camera.getY();
+			cameraX = ThrowMe.stage.camera.getX();
+			cameraY = ThrowMe.stage.camera.getY();
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			int newX = (int) (cameraX + (downX - event.getX()));
 			int newY = (int) (cameraY + (event.getY() - downY));
 			if (newY < 0) {
 				newY = 0;
 			}
-			if (newX < stage.camera.getX()) {
-				newX = stage.camera.getX();
+			if (newX < ThrowMe.stage.camera.getX()) {
+				newX = ThrowMe.stage.camera.getX();
 			}
 			
 			if (character != null) {
@@ -228,7 +228,7 @@ public class Game extends Screen {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-			new Main(stage, activity, new Object[]{true});
+			new Main(activity, new Object[]{true});
 		}
 		return super.onKeyDown(keyCode, event);
 	}

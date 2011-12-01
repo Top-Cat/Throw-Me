@@ -8,6 +8,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 
 import thorgaming.throwme.Stage;
+import thorgaming.throwme.ThrowMe;
 
 public class PhysCircle extends Circle {
 	
@@ -16,10 +17,10 @@ public class PhysCircle extends Circle {
 	private CircleDef circle;
 	private Shape shape;
 	
-	public PhysCircle(Stage stage, int density, World world) {
-		super(stage);
+	public PhysCircle(int density) {
+		super();
 		
-		this.world = world;
+		this.world = ThrowMe.stage.world;
 		
 		circle = new CircleDef();
 		circle.radius = 1F;
@@ -48,6 +49,18 @@ public class PhysCircle extends Circle {
 	}
 	
 	@Override
+	public DispObj setX(int x) {
+		move(x, (int) (physicsBody.getWorldCenter().y * Stage.ratio));
+		return this;
+	}
+	
+	@Override
+	public DispObj setY(int y) {
+		move((int) (physicsBody.getWorldCenter().x * Stage.ratio), y);
+		return this;
+	}
+	
+	@Override
 	public void move(int x, int y) {
 		physicsBody.setXForm(new Vec2((float) x / Stage.ratio, (float) y / Stage.ratio), 0);
 	}
@@ -57,8 +70,8 @@ public class PhysCircle extends Circle {
 	}
 	
 	@Override
-	public void destroy(Stage stage) {
-		super.destroy(stage);
+	public void destroy() {
+		super.destroy();
 		world.destroyBody(physicsBody);
 	}
 	
@@ -68,7 +81,7 @@ public class PhysCircle extends Circle {
 			return 0;
 		}
 		Vec2 position = physicsBody.getPosition();
-		return (int) (position.x * Stage.ratio) - stage.camera.getX();
+		return (int) (position.x * Stage.ratio) - ThrowMe.stage.camera.getX();
 	}
 	
 	@Override
@@ -77,7 +90,7 @@ public class PhysCircle extends Circle {
 			return 0;
 		}
 		Vec2 position = physicsBody.getPosition();
-		return (int) (position.y * Stage.ratio) + stage.camera.getY();
+		return (int) (position.y * Stage.ratio) + ThrowMe.stage.camera.getY();
 	}
 	
 }

@@ -9,6 +9,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
+import org.jbox2d.dynamics.joints.Joint;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,7 +17,9 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 
 import thorgaming.throwme.Camera;
+import thorgaming.throwme.R;
 import thorgaming.throwme.Stage;
+import thorgaming.throwme.ThrowMe;
 
 public class Character extends DispObj {
 	
@@ -31,14 +34,31 @@ public class Character extends DispObj {
 	private Body bodyLeftFoot;
 	private Body bodyRightKnee;
 	private Body bodyRightFoot;
+	
+	private Joint jointNeck;
+	
+	private Joint jointUpperRightArm;
+	private Joint jointLowerRightArm;
+	private Joint jointRightArm;
+	private Joint jointUpperLeftArm;
+	private Joint jointLowerLeftArm;
+	private Joint jointLeftArm;
+	
+	private Joint jointUpperRightLeg;
+	private Joint jointLowerRightLeg;
+	private Joint jointRightLeg;
+	private Joint jointUpperLeftLeg;
+	private Joint jointLowerLeftLeg;
+	private Joint jointLeftLeg;
+	
 	public boolean end = false;
 	private HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
 	private Paint paint = new Paint();
 	private Drawable drawableEye;
 	
-	public Character(Stage stage, int eye, World world, int x, int y) {
-		drawableEye = stage.getResources().getDrawable(eye);
-		this.world = world;
+	public Character() {
+		drawableEye = ThrowMe.stage.getResources().getDrawable(R.drawable.eye);
+		this.world = ThrowMe.stage.world;
 		paint.setColor(Color.rgb(255, 153, 0));
 		paint.setTextSize(30);
 		paint.setSubpixelText(true);
@@ -53,7 +73,7 @@ public class Character extends DispObj {
 		head.userData = this;
 		
 		BodyDef headBodyDef = new BodyDef();
-		headBodyDef.position.set(new Vec2(x / Stage.ratio, y / Stage.ratio));
+		headBodyDef.position.set(new Vec2(0, 0));
 		
 		bodyHead = world.createBody(headBodyDef);
 		bodyHead.createShape(head);
@@ -70,14 +90,14 @@ public class Character extends DispObj {
 		body.userData = this;
 		
 		BodyDef bodyBodyDef = new BodyDef();
-		bodyBodyDef.position.set(new Vec2(x / Stage.ratio, (y + 60) / Stage.ratio));
+		bodyBodyDef.position.set(new Vec2(0, 60 / Stage.ratio));
 		bodyBody = world.createBody(bodyBodyDef);
 		bodyBody.createShape(body);
 		bodyBody.setMassFromShapes();
 		
 		DistanceJointDef neck = new DistanceJointDef();
-		neck.initialize(bodyHead, bodyBody, new Vec2(x / Stage.ratio, y / Stage.ratio), new Vec2(x / Stage.ratio, (y + 25) / Stage.ratio));
-		world.createJoint(neck);
+		neck.initialize(bodyHead, bodyBody, new Vec2(0, 0), new Vec2(0, 25 / Stage.ratio));
+		jointNeck = world.createJoint(neck);
 		
 		CircleDef elbow = new CircleDef();
 		elbow.radius = (float) 3 / Stage.ratio;
@@ -88,15 +108,15 @@ public class Character extends DispObj {
 		elbow.userData = this;
 		
 		BodyDef elbowDef = new BodyDef();
-		elbowDef.position.set(new Vec2((x + 40) / Stage.ratio, (y + 30) / Stage.ratio));
+		elbowDef.position.set(new Vec2(40 / Stage.ratio, 30 / Stage.ratio));
 		bodyRightElbow = world.createBody(elbowDef);
 		bodyRightElbow.createShape(elbow);
 		bodyRightElbow.setMassFromShapes();
 		bodies.put(bodyRightElbow, 3);
 		
 		DistanceJointDef uarm1 = new DistanceJointDef();
-		uarm1.initialize(bodyBody, bodyRightElbow, new Vec2((x + 15) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x + 40) / Stage.ratio, (y + 30) / Stage.ratio));
-		world.createJoint(uarm1);
+		uarm1.initialize(bodyBody, bodyRightElbow, new Vec2(15 / Stage.ratio, 30 / Stage.ratio), new Vec2(40 / Stage.ratio, 30 / Stage.ratio));
+		jointUpperRightArm = world.createJoint(uarm1);
 		
 		CircleDef hand = new CircleDef();
 		hand.radius = (float) 5 / Stage.ratio;
@@ -107,108 +127,148 @@ public class Character extends DispObj {
 		hand.userData = this;
 		
 		BodyDef handDef = new BodyDef();
-		handDef.position.set(new Vec2((x + 65) / Stage.ratio, (y + 30) / Stage.ratio));
+		handDef.position.set(new Vec2(65 / Stage.ratio, 30 / Stage.ratio));
 		bodyRightHand = world.createBody(handDef);
 		bodyRightHand.createShape(hand);
 		bodyRightHand.setMassFromShapes();
 		bodies.put(bodyRightHand, 5);
 		
 		DistanceJointDef larm1 = new DistanceJointDef();
-		larm1.initialize(bodyBody, bodyRightHand, new Vec2((x + 15) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x + 65) / Stage.ratio, (y + 30) / Stage.ratio));
-		world.createJoint(larm1);
+		larm1.initialize(bodyBody, bodyRightHand, new Vec2(15 / Stage.ratio, 30 / Stage.ratio), new Vec2(65 / Stage.ratio, 30 / Stage.ratio));
+		jointLowerRightArm = world.createJoint(larm1);
 		
 		DistanceJointDef arm1 = new DistanceJointDef();
-		arm1.initialize(bodyRightElbow, bodyRightHand, new Vec2((x + 40) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x + 65) / Stage.ratio, (y + 30) / Stage.ratio));
-		world.createJoint(arm1);
+		arm1.initialize(bodyRightElbow, bodyRightHand, new Vec2(40 / Stage.ratio, 30 / Stage.ratio), new Vec2(65 / Stage.ratio, 30 / Stage.ratio));
+		jointRightArm = world.createJoint(arm1);
 		
 		
 		
 		
-		elbowDef.position.set(new Vec2((x - 40) / Stage.ratio, (y + 30) / Stage.ratio));
+		elbowDef.position.set(new Vec2(-40 / Stage.ratio, 30 / Stage.ratio));
 		bodyLeftElbow = world.createBody(elbowDef);
 		bodyLeftElbow.createShape(elbow);
 		bodyLeftElbow.setMassFromShapes();
 		bodies.put(bodyLeftElbow, 3);
 		
 		DistanceJointDef uarm2 = new DistanceJointDef();
-		uarm2.initialize(bodyBody, bodyLeftElbow, new Vec2((x - 15) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x - 40) / Stage.ratio, (y + 30) / Stage.ratio));
-		world.createJoint(uarm2);
+		uarm2.initialize(bodyBody, bodyLeftElbow, new Vec2(-15 / Stage.ratio, 30 / Stage.ratio), new Vec2(-40 / Stage.ratio, 30 / Stage.ratio));
+		jointUpperLeftArm = world.createJoint(uarm2);
 		
-		handDef.position.set(new Vec2((x - 65) / Stage.ratio, (y + 30) / Stage.ratio));
+		handDef.position.set(new Vec2(-65 / Stage.ratio, 30 / Stage.ratio));
 		bodyLeftHand = world.createBody(handDef);
 		bodyLeftHand.createShape(hand);
 		bodyLeftHand.setMassFromShapes();
 		bodies.put(bodyLeftHand, 5);
 		
 		DistanceJointDef larm2 = new DistanceJointDef();
-		larm2.initialize(bodyBody, bodyLeftHand, new Vec2((x - 15) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x - 65) / Stage.ratio, (y + 30) / Stage.ratio));
-		world.createJoint(larm2);
+		larm2.initialize(bodyBody, bodyLeftHand, new Vec2(-15 / Stage.ratio, 30 / Stage.ratio), new Vec2(-65 / Stage.ratio, 30 / Stage.ratio));
+		jointLowerLeftArm = world.createJoint(larm2);
 		
 		DistanceJointDef arm2 = new DistanceJointDef();
-		arm2.initialize(bodyLeftElbow, bodyLeftHand, new Vec2((x - 40) / Stage.ratio, (y + 30) / Stage.ratio), new Vec2((x - 65) / Stage.ratio, (y + 30) / Stage.ratio));
-		world.createJoint(arm2);
+		arm2.initialize(bodyLeftElbow, bodyLeftHand, new Vec2(-40 / Stage.ratio, 30 / Stage.ratio), new Vec2(-65 / Stage.ratio, 30 / Stage.ratio));
+		jointLeftArm = world.createJoint(arm2);
 		
 		
 		
 		
-		elbowDef.position.set(new Vec2((x - 40) / Stage.ratio, (y + 90) / Stage.ratio));
+		elbowDef.position.set(new Vec2(-40 / Stage.ratio, 90 / Stage.ratio));
 		bodyLeftKnee = world.createBody(elbowDef);
 		bodyLeftKnee.createShape(elbow);
 		bodyLeftKnee.setMassFromShapes();
 		bodies.put(bodyLeftKnee, 3);
 		
 		DistanceJointDef uarm3 = new DistanceJointDef();
-		uarm3.initialize(bodyBody, bodyLeftKnee, new Vec2((x - 15) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x - 40) / Stage.ratio, (y + 90) / Stage.ratio));
-		world.createJoint(uarm3);
+		uarm3.initialize(bodyBody, bodyLeftKnee, new Vec2(-15 / Stage.ratio, 90 / Stage.ratio), new Vec2(-40 / Stage.ratio, 90 / Stage.ratio));
+		jointUpperLeftLeg = world.createJoint(uarm3);
 		
-		handDef.position.set(new Vec2((x - 65) / Stage.ratio, (y + 90) / Stage.ratio));
+		handDef.position.set(new Vec2(-65 / Stage.ratio, 90 / Stage.ratio));
 		bodyLeftFoot = world.createBody(handDef);
 		bodyLeftFoot.createShape(hand);
 		bodyLeftFoot.setMassFromShapes();
 		bodies.put(bodyLeftFoot, 5);
 		
 		DistanceJointDef larm3 = new DistanceJointDef();
-		larm3.initialize(bodyBody, bodyLeftFoot, new Vec2((x - 15) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x - 65) / Stage.ratio, (y + 90) / Stage.ratio));
-		world.createJoint(larm3);
+		larm3.initialize(bodyBody, bodyLeftFoot, new Vec2(-15 / Stage.ratio, 90 / Stage.ratio), new Vec2(-65 / Stage.ratio, 90 / Stage.ratio));
+		jointLowerLeftLeg = world.createJoint(larm3);
 		
 		DistanceJointDef arm3 = new DistanceJointDef();
-		arm3.initialize(bodyLeftKnee, bodyLeftFoot, new Vec2((x - 40) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x - 65) / Stage.ratio, (y + 90) / Stage.ratio));
-		world.createJoint(arm3);
+		arm3.initialize(bodyLeftKnee, bodyLeftFoot, new Vec2(-40 / Stage.ratio, 90 / Stage.ratio), new Vec2(-65 / Stage.ratio, 90 / Stage.ratio));
+		jointLeftLeg = world.createJoint(arm3);
 		
 		
 		
 		
 		
-		elbowDef.position.set(new Vec2((x + 40) / Stage.ratio, (y + 90) / Stage.ratio));
+		elbowDef.position.set(new Vec2(40 / Stage.ratio, 90 / Stage.ratio));
 		bodyRightKnee = world.createBody(elbowDef);
 		bodyRightKnee.createShape(elbow);
 		bodyRightKnee.setMassFromShapes();
 		bodies.put(bodyRightKnee, 3);
 		
 		DistanceJointDef uarm4 = new DistanceJointDef();
-		uarm4.initialize(bodyBody, bodyRightKnee, new Vec2((x + 15) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x + 40) / Stage.ratio, (y + 90) / Stage.ratio));
-		world.createJoint(uarm4);
+		uarm4.initialize(bodyBody, bodyRightKnee, new Vec2(15 / Stage.ratio, 90 / Stage.ratio), new Vec2(40 / Stage.ratio, 90 / Stage.ratio));
+		jointUpperRightLeg = world.createJoint(uarm4);
 		
-		handDef.position.set(new Vec2((x + 65) / Stage.ratio, (y + 90) / Stage.ratio));
+		handDef.position.set(new Vec2(65 / Stage.ratio, 90 / Stage.ratio));
 		bodyRightFoot = world.createBody(handDef);
 		bodyRightFoot.createShape(hand);
 		bodyRightFoot.setMassFromShapes();
 		bodies.put(bodyRightFoot, 5);
 		
 		DistanceJointDef larm4 = new DistanceJointDef();
-		larm4.initialize(bodyBody, bodyRightFoot, new Vec2((x + 15) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x + 65) / Stage.ratio, (y + 90) / Stage.ratio));
-		world.createJoint(larm4);
+		larm4.initialize(bodyBody, bodyRightFoot, new Vec2(15 / Stage.ratio, 90 / Stage.ratio), new Vec2(65 / Stage.ratio, 90 / Stage.ratio));
+		jointLowerRightLeg = world.createJoint(larm4);
 		
 		DistanceJointDef arm4 = new DistanceJointDef();
-		arm4.initialize(bodyRightKnee, bodyRightFoot, new Vec2((x + 40) / Stage.ratio, (y + 90) / Stage.ratio), new Vec2((x + 65) / Stage.ratio, (y + 90) / Stage.ratio));
-		world.createJoint(arm4);
-		
-		addToScreen(stage);
+		arm4.initialize(bodyRightKnee, bodyRightFoot, new Vec2(40 / Stage.ratio, 90 / Stage.ratio), new Vec2(65 / Stage.ratio, 90 / Stage.ratio));
+		jointRightLeg = world.createJoint(arm4);
 	}
 	
 	@Override
-	public void destroy(Stage stage) {
-		super.destroy(stage);
+	public DispObj setX(int x) {
+		move(x, (int) (bodyHead.getWorldCenter().y * Stage.ratio));
+		return this;
+	}
+	
+	@Override
+	public DispObj setY(int y) {
+		move((int) (bodyHead.getWorldCenter().x * Stage.ratio), y);
+		return this;
+	}
+	
+	@Override
+	public void move(int x, int y) {
+		bodyHead.setXForm(new Vec2((float) x / Stage.ratio, (float) y / Stage.ratio), 0);
+		bodyBody.setXForm(new Vec2((float) x / Stage.ratio, (float) (y + 60) / Stage.ratio), 0);
+		bodyRightElbow.setXForm(new Vec2((float) (x + 40) / Stage.ratio, (float) (y + 30) / Stage.ratio), 0);
+		bodyRightHand.setXForm(new Vec2((float) (x + 65) / Stage.ratio, (float) (y + 30) / Stage.ratio), 0);
+		bodyLeftElbow.setXForm(new Vec2((float) (x - 40) / Stage.ratio, (float) (y + 30) / Stage.ratio), 0);
+		bodyLeftHand.setXForm(new Vec2((float) (x - 65) / Stage.ratio, (float) (y + 30) / Stage.ratio), 0);
+		
+		bodyRightKnee.setXForm(new Vec2((float) (x + 40) / Stage.ratio, (float) (y + 90) / Stage.ratio), 0);
+		bodyRightFoot.setXForm(new Vec2((float) (x + 65) / Stage.ratio, (float) (y + 90) / Stage.ratio), 0);
+		bodyLeftKnee.setXForm(new Vec2((float) (x - 40) / Stage.ratio, (float) (y + 90) / Stage.ratio), 0);
+		bodyLeftFoot.setXForm(new Vec2((float) (x - 65) / Stage.ratio, (float) (y + 90) / Stage.ratio), 0);
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		world.destroyJoint(jointNeck);
+		world.destroyJoint(jointUpperRightArm);
+		world.destroyJoint(jointLowerRightArm);
+		world.destroyJoint(jointRightArm);
+		world.destroyJoint(jointUpperLeftArm);
+		world.destroyJoint(jointLowerLeftArm);
+		world.destroyJoint(jointLeftArm);
+		
+		world.destroyJoint(jointUpperRightLeg);
+		world.destroyJoint(jointLowerRightLeg);
+		world.destroyJoint(jointRightLeg);
+		world.destroyJoint(jointUpperLeftLeg);
+		world.destroyJoint(jointLowerLeftLeg);
+		world.destroyJoint(jointLeftLeg);
+		
 		world.destroyBody(bodyBody);
 		world.destroyBody(bodyHead);
 		world.destroyBody(bodyRightElbow);

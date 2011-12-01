@@ -8,12 +8,12 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Movie;
 import thorgaming.throwme.Camera;
 import thorgaming.throwme.Stage;
 import thorgaming.throwme.R;
+import thorgaming.throwme.ThrowMe;
 
 public class Cloud extends DispObj {
 
@@ -25,12 +25,10 @@ public class Cloud extends DispObj {
 	private int actualX;
 	private int actualY;
 	
-	public Cloud(Context context, Stage stage, World world, int x, int y) {
-		inputStream = context.getResources().openRawResource(R.drawable.cloud);
+	public Cloud() {
+		inputStream = ThrowMe.stage.getResources().openRawResource(R.drawable.cloud);
 		movie = Movie.decodeStream(inputStream);
-		setX(x);
-		setY(y);
-		this.world = world;
+		this.world = ThrowMe.stage.world;
 		
 		CircleDef cloud = new CircleDef();
 		cloud.isSensor = true;
@@ -47,8 +45,6 @@ public class Cloud extends DispObj {
 		cloud.localPosition = new Vec2(33 / Stage.ratio, 0);
 		physicsBody.createShape(cloud);
 		physicsBody.setMassFromShapes();
-		
-		addToScreen(stage);
 	}
 	
 	@Override
@@ -77,8 +73,8 @@ public class Cloud extends DispObj {
 	}
 	
 	@Override
-	public void destroy(Stage stage) {
-		super.destroy(stage);
+	public void destroy() {
+		super.destroy();
 		world.destroyBody(physicsBody);
 	}
 	

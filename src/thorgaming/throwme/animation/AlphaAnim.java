@@ -3,7 +3,7 @@ package thorgaming.throwme.animation;
 import java.util.List;
 
 import thorgaming.throwme.Callback;
-import thorgaming.throwme.Stage;
+import thorgaming.throwme.ThrowMe;
 import thorgaming.throwme.displayobjects.DispObj;
 
 public class AlphaAnim extends Anim {
@@ -12,7 +12,7 @@ public class AlphaAnim extends Anim {
 	private int start;
 	private int end;
 	
-	public AlphaAnim(Stage stage, DispObj obj, int start, int end, Callback callback, long time) {
+	public AlphaAnim(DispObj obj, int start, int end, Callback callback, long time) {
 		super(callback);
 		unit = (int) ( Math.abs(start - end) / (time / 10) );
 		setObject(obj);
@@ -20,7 +20,7 @@ public class AlphaAnim extends Anim {
 		this.start = start;
 		this.end = end;
 		
-		stage.animations.add(this);
+		ThrowMe.stage.animations.add(this);
 	}
 
 	@Override

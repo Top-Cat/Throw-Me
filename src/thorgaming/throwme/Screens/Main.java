@@ -5,7 +5,7 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import thorgaming.throwme.DrawThread;
-import thorgaming.throwme.Stage;
+import thorgaming.throwme.ThrowMe;
 import thorgaming.throwme.displayobjects.DispObj;
 import thorgaming.throwme.MouseCallback;
 import thorgaming.throwme.R;
@@ -19,12 +19,12 @@ public class Main extends Screen {
 	private Timer timer = new Timer();
 	private boolean skipIntro;
 	
-	public Main(Stage stage, Activity activity, Object[] data) {
-		super(stage, activity, data);
+	public Main(Activity activity, Object[] data) {
+		super(activity, data);
 		
 		skipIntro = data != null && data[0] != null ? (Boolean) data[0] : false;
 		skipIntro = true;
-		thorcard = new DispRes(stage, R.drawable.thorgamingcard, 800, 480, 0, 0, 0, 0);
+		thorcard = new DispRes(R.drawable.thorgamingcard).setWidth(800).setHeight(480).setAlpha(0).addToScreen();
 		timer.schedule(new waitforscreen(), 500);
 	}
 	
@@ -32,13 +32,13 @@ public class Main extends Screen {
 
 		@Override
 		public void run() {
-			if (stage.start == false) {
+			if (ThrowMe.stage.start == false) {
 				timer.schedule(new waitforscreen(), 500);
 			} else {
 				if (skipIntro) {
 					new showmenu2().run();
 				} else {
-					new AlphaAnim(stage, thorcard, 0, 255, null, 200);
+					new AlphaAnim(thorcard, 0, 255, null, 200);
 					
 					timer.schedule(new showmenu(), 4000);
 				}
@@ -51,17 +51,17 @@ public class Main extends Screen {
 
 		@Override
 		public void run() {
-			thorcard.destroy(stage);
+			thorcard.destroy();
 			DrawThread.resetGradient();
-			new DispRes(stage, R.drawable.throwmelogo, 464, 90, 168, 15, 255, 0);
-			DispObj play = new DispRes(stage, R.drawable.playgame, 500, 85, 150, 160, 255, 0);
-			new XAnim(stage, play, -500, 150, null, 500);
+			new DispRes(R.drawable.throwmelogo).setWidth(464).setHeight(90).setX(168).setY(15).addToScreen();
+			DispObj play = new DispRes(R.drawable.playgame).setWidth(500).setHeight(85).setX(150).setY(160).addToScreen();
+			new XAnim(play, -500, 150, null, 500);
 			play.setMouseUpEvent(new playgame());
-			DispObj highs = new DispRes(stage, R.drawable.highscores, 523, 85, 134, 260, 255, 0);
-			new XAnim(stage, highs, -543, 134, null, 600);
+			DispObj highs = new DispRes(R.drawable.highscores).setWidth(523).setHeight(85).setX(134).setY(260).addToScreen();
+			new XAnim(highs, -543, 134, null, 600);
 			highs.setMouseUpEvent(new showhighs());
-			DispObj power = new DispRes(stage, R.drawable.power, 475, 85, 162, 360, 255, 0);
-			new XAnim(stage, power, -515, 162, null, 700);
+			DispObj power = new DispRes(R.drawable.power).setWidth(475).setHeight(85).setX(162).setY(360).addToScreen();
+			new XAnim(power, -515, 162, null, 700);
 		}
 
 	}
@@ -70,7 +70,7 @@ public class Main extends Screen {
 
 		@Override
 		public void sendCallback(int x, int y) {
-			new Game(stage, activity, null);
+			new Game(activity, null);
 		}
 
 		@Override
@@ -84,7 +84,7 @@ public class Main extends Screen {
 
 		@Override
 		public void sendCallback(int x, int y) {
-			new Highs(stage, activity, null);
+			new Highs(activity, null);
 		}
 
 		@Override
@@ -98,8 +98,8 @@ public class Main extends Screen {
 
 		@Override
 		public void run() {
-			thorcard.destroy(stage);
-			thorcard = new DispRes(stage, R.drawable.box2dcard, 800, 480, 0, 0, 255, 0);
+			thorcard.destroy();
+			thorcard = new DispRes(R.drawable.box2dcard).setWidth(800).setHeight(480).addToScreen();
 			
 			timer.schedule(new showmenu2(), 4000);
 		}

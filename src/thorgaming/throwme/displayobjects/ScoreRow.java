@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import thorgaming.throwme.Camera;
-import thorgaming.throwme.Stage;
 import thorgaming.throwme.screens.Highs;
 
 import android.graphics.Canvas;
@@ -21,7 +20,7 @@ public class ScoreRow extends DispObj {
 	private Highs screen;
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public ScoreRow(Stage stage, Highs screen, int position, String name, int score, Date date, int y) {
+	public ScoreRow(Highs screen, int position, String name, int score, Date date, int y) {
 		this.name = name;
 		this.score = score;
 		this.date = date;
@@ -35,8 +34,6 @@ public class ScoreRow extends DispObj {
 		paint.setStrokeWidth(3);
 		
 		lpaint.setColor(Color.rgb(0, 0, 0));
-		
-		addToScreen(stage);
 	}
 
 	@Override

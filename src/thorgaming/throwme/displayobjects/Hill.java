@@ -2,30 +2,27 @@ package thorgaming.throwme.displayobjects;
 
 import java.util.Random;
 
-import org.jbox2d.dynamics.World;
-
-import thorgaming.throwme.Stage;
+import thorgaming.throwme.ThrowMe;
 
 public class Hill extends PhysCircle {
 
 	private Crane crane;
 	private Random random = new Random();
 	
-	public Hill(Stage stage, int density, World world) {
-		super(stage, density, world);
+	public Hill(int density) {
+		super(density);
 	}
 
 	public void updateCrane() {
-		if (random.nextInt(100) < 10) {
+		if (random.nextInt(100) < 15) {
 			if (crane == null) {
-				crane = new Crane(stage);
+				crane = (Crane) new Crane().addToScreen();
 			}
-			crane.setX(getX());
-			System.out.println(getX());
-			crane.setY(getY() - 200);
+			crane.setX(getX() + ThrowMe.stage.camera.getX());
+			crane.setY(getY() - 300);
 		} else {
 			if (crane != null) {
-				crane.destroy(stage);
+				crane.destroy();
 				crane = null;
 			}
 		}
