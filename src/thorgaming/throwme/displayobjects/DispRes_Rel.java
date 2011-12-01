@@ -2,13 +2,12 @@ package thorgaming.throwme.displayobjects;
 
 import thorgaming.throwme.Camera;
 import thorgaming.throwme.Stage;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 
 public class DispRes_Rel extends DispRes {
 
-	public DispRes_Rel(Stage stage, int drawableId, Resources resources, int width, int height, int x, int y, int alpha, int hitPadding) {
-		super(stage, drawableId, resources, width, height, x, y, alpha, hitPadding);
+	public DispRes_Rel(Stage stage, int drawableId, int width, int height, int x, int y, int alpha, int hitPadding) {
+		super(stage, drawableId, width, height, x, y, alpha, hitPadding);
 	}
 	
 	@Override

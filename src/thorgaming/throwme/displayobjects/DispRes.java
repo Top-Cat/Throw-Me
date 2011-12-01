@@ -1,6 +1,5 @@
 package thorgaming.throwme.displayobjects;
 
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import thorgaming.throwme.Camera;
@@ -16,12 +15,12 @@ public class DispRes extends DispObj {
 	
 	private int hitPadding = 0;
 	
-	public DispRes(Stage stage, int drawableId, Resources resources, int width, int height, int x, int y, int alpha, int hitPadding) {
+	public DispRes(Stage stage, int drawableId, int width, int height, int x, int y, int alpha, int hitPadding) {
 		this.height = height;
 		this.width = width;
 		setX(x);
 		setY(y);
-		drawable = resources.getDrawable(drawableId);
+		drawable = stage.getResources().getDrawable(drawableId);
 		setAlpha(alpha);
 		this.hitPadding = hitPadding;
 		

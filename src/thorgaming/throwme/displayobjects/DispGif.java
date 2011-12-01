@@ -3,7 +3,6 @@ package thorgaming.throwme.displayobjects;
 import java.io.InputStream;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Movie;
 import android.graphics.Paint;
@@ -23,8 +22,8 @@ public class DispGif extends DispRes {
 	private Stage stage;
 	private int previousTime = 0;
 	
-	public DispGif(Context context, Stage stage, int drawableId, Resources resources, int width, int height, int x, int y, int alpha, int hitPadding, int repetitions, double speed) {
-		super(stage, drawableId, resources, width, height, x, y, alpha, hitPadding);
+	public DispGif(Context context, Stage stage, int drawableId, int width, int height, int x, int y, int alpha, int hitPadding, int repetitions, double speed) {
+		super(stage, drawableId, width, height, x, y, alpha, hitPadding);
 		
 		this.stage = stage;
 		this.repetitions = repetitions;

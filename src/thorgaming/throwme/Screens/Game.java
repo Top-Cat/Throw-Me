@@ -16,7 +16,7 @@ import thorgaming.throwme.displayobjects.Cloud;
 import thorgaming.throwme.displayobjects.DispGif;
 import thorgaming.throwme.displayobjects.DispRes;
 import thorgaming.throwme.displayobjects.DispRes_Rel;
-import thorgaming.throwme.displayobjects.PhysCircle;
+import thorgaming.throwme.displayobjects.Hill;
 import thorgaming.throwme.displayobjects.Rect;
 
 public class Game extends Screen {
@@ -26,7 +26,7 @@ public class Game extends Screen {
 	
 	private DispRes hills1, hills2;
 	private DispRes_Rel box;
-	private PhysCircle[] randomHills = new PhysCircle[7];
+	private Hill[] randomHills = new Hill[7];
 	private Character character;
 	private int hillDistance = 6;
 	private boolean ended = false;
@@ -85,14 +85,14 @@ public class Game extends Screen {
 		
 		DrawThread.setgrad(ng);
 		
-		hills1 = new DispRes_Rel(stage, R.drawable.bg, activity.getResources(), 879, 240, 0, 300, 255, 0);
-		hills2 = new DispRes_Rel(stage, R.drawable.bg, activity.getResources(), 879, 240, 800, 300, 255, 0);
+		hills1 = new DispRes_Rel(stage, R.drawable.bg, 879, 240, 0, 300, 255, 0);
+		hills2 = new DispRes_Rel(stage, R.drawable.bg, 879, 240, 800, 300, 255, 0);
 		
 		for (int i = 0; i < 7; i++) {
-			randomHills[i] = new PhysCircle(stage, (int) (Math.random() * 80) + 80, 0, (160 * i) + 80, 480, 255, stage.world);
+			randomHills[i] = (Hill) new Hill(stage, 0, stage.world).setRadius((int) (Math.random() * 80) + 80).setX((160 * i) + 80).setY(480);
 		}
 		
-		box = new DispRes_Rel(stage, R.drawable.box, activity.getResources(), 150, 150, 325, 105, 255, 0);
+		box = new DispRes_Rel(stage, R.drawable.box, 150, 150, 325, 105, 255, 0);
 		new Rect(stage, 800, 480, 0, 0, 0).setMouseDownEvent(new boxsplode());
 		
 		new Cloud(activity.getApplicationContext(), stage, stage.world, 850, -120);
@@ -114,8 +114,8 @@ public class Game extends Screen {
 		public void sendCallback() {
 			if (character == null) {
 				box.destroy(stage);
-				character = new Character(stage, activity.getResources(), R.drawable.eye, stage.world, 400, 240);
-				new DispGif(activity.getApplicationContext(), stage, R.drawable.explosion, activity.getResources(), 764, 556, 18, -38, 255, 0, 1, 4);
+				character = new Character(stage, R.drawable.eye, stage.world, 400, 240);
+				new DispGif(activity.getApplicationContext(), stage, R.drawable.explosion, 764, 556, 18, -38, 255, 0, 1, 4);
 			}
 		}
 
@@ -153,6 +153,8 @@ public class Game extends Screen {
 						randomHills[i].move((hillDistance * 160) + 80, 480);
 						randomHills[i].randomiseColor();
 						randomHills[i].setRadius((int) (Math.random() * 80) + 80);
+						
+						randomHills[i].updateCrane();
 					}
 				}
 				

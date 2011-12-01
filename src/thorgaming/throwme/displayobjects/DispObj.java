@@ -63,12 +63,14 @@ public abstract class DispObj {
 		setY(y);
 	}
 	
-	public void setX(int x) {
+	public DispObj setX(int x) {
 		this.x = x;
+		return this;
 	}
 	
-	public void setY(int y) {
+	public DispObj setY(int y) {
 		this.y = y;
+		return this;
 	}
 	
 	public void destroy(Stage stage) {

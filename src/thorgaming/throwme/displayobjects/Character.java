@@ -10,7 +10,6 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 import org.jbox2d.dynamics.joints.DistanceJointDef;
 
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -37,8 +36,8 @@ public class Character extends DispObj {
 	private Paint paint = new Paint();
 	private Drawable drawableEye;
 	
-	public Character(Stage stage, Resources r, int eye, World world, int x, int y) {
-		drawableEye = r.getDrawable(eye);
+	public Character(Stage stage, int eye, World world, int x, int y) {
+		drawableEye = stage.getResources().getDrawable(eye);
 		this.world = world;
 		paint.setColor(Color.rgb(255, 153, 0));
 		paint.setTextSize(30);

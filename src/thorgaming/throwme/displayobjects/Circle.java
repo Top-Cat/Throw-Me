@@ -12,16 +12,12 @@ public class Circle extends DispObj {
 	public Paint paint = new Paint();
 	private int actualX;
 	private int actualY;
+	protected Stage stage;
 	
-	public Circle(Stage stage, int radius, int x, int y, int alpha) {
+	public Circle(Stage stage) {
 		randomiseColor();
-
-		setRadius(radius);
-		setX(x);
-		setY(y);
-		setAlpha(alpha);
-		
 		addToScreen(stage);
+		this.stage = stage;
 	}
 	
 	public int getScreenX() {
@@ -32,8 +28,9 @@ public class Circle extends DispObj {
 		return actualY;
 	}
 	
-	public void setRadius(int radius) {
+	public Circle setRadius(int radius) {
 		this.radius = radius;
+		return this;
 	}
 	
 	public void randomiseColor() {

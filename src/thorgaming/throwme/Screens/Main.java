@@ -24,7 +24,7 @@ public class Main extends Screen {
 		
 		skipIntro = data != null && data[0] != null ? (Boolean) data[0] : false;
 		skipIntro = true;
-		thorcard = new DispRes(stage, R.drawable.thorgamingcard, activity.getResources(), 800, 480, 0, 0, 0, 0);
+		thorcard = new DispRes(stage, R.drawable.thorgamingcard, 800, 480, 0, 0, 0, 0);
 		timer.schedule(new waitforscreen(), 500);
 	}
 	
@@ -53,14 +53,14 @@ public class Main extends Screen {
 		public void run() {
 			thorcard.destroy(stage);
 			DrawThread.resetGradient();
-			new DispRes(stage, R.drawable.throwmelogo, activity.getResources(), 464, 90, 168, 15, 255, 0);
-			DispObj play = new DispRes(stage, R.drawable.playgame, activity.getResources(), 500, 85, 150, 160, 255, 0);
+			new DispRes(stage, R.drawable.throwmelogo, 464, 90, 168, 15, 255, 0);
+			DispObj play = new DispRes(stage, R.drawable.playgame, 500, 85, 150, 160, 255, 0);
 			new XAnim(stage, play, -500, 150, null, 500);
 			play.setMouseUpEvent(new playgame());
-			DispObj highs = new DispRes(stage, R.drawable.highscores, activity.getResources(), 523, 85, 134, 260, 255, 0);
+			DispObj highs = new DispRes(stage, R.drawable.highscores, 523, 85, 134, 260, 255, 0);
 			new XAnim(stage, highs, -543, 134, null, 600);
 			highs.setMouseUpEvent(new showhighs());
-			DispObj power = new DispRes(stage, R.drawable.power, activity.getResources(), 475, 85, 162, 360, 255, 0);
+			DispObj power = new DispRes(stage, R.drawable.power, 475, 85, 162, 360, 255, 0);
 			new XAnim(stage, power, -515, 162, null, 700);
 		}
 
@@ -99,7 +99,7 @@ public class Main extends Screen {
 		@Override
 		public void run() {
 			thorcard.destroy(stage);
-			thorcard = new DispRes(stage, R.drawable.box2dcard, activity.getResources(), 800, 480, 0, 0, 255, 0);
+			thorcard = new DispRes(stage, R.drawable.box2dcard, 800, 480, 0, 0, 255, 0);
 			
 			timer.schedule(new showmenu2(), 4000);
 		}

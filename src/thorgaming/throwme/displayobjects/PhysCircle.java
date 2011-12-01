@@ -7,9 +7,6 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 
-import android.graphics.Canvas;
-
-import thorgaming.throwme.Camera;
 import thorgaming.throwme.Stage;
 
 public class PhysCircle extends Circle {
@@ -19,13 +16,13 @@ public class PhysCircle extends Circle {
 	private CircleDef circle;
 	private Shape shape;
 	
-	public PhysCircle(Stage stage, int radius, int density, int x, int y, int alpha, World world) {
-		super(stage, radius, x, y, alpha);
+	public PhysCircle(Stage stage, int density, World world) {
+		super(stage);
 		
 		this.world = world;
 		
-		circle = new CircleDef();  
-		circle.radius = (float) radius / Stage.ratio;
+		circle = new CircleDef();
+		circle.radius = 1F;
 		circle.density = density;
 		circle.friction = (float) 0.5;
 		circle.restitution = (float) 0.6;
@@ -39,7 +36,7 @@ public class PhysCircle extends Circle {
 	}
 	
 	@Override
-	public void setRadius(int radius) {
+	public Circle setRadius(int radius) {
 		super.setRadius(radius);
 		if (physicsBody != null) {
 			physicsBody.destroyShape(shape);
@@ -47,6 +44,7 @@ public class PhysCircle extends Circle {
 			shape = physicsBody.createShape(circle);
 			physicsBody.setMassFromShapes();
 		}
+		return this;
 	}
 	
 	@Override
@@ -65,13 +63,21 @@ public class PhysCircle extends Circle {
 	}
 	
 	@Override
-	public void draw(Canvas canvas, Camera camera) {
+	public int getX() {
+		if (physicsBody == null) {
+			return 0;
+		}
 		Vec2 position = physicsBody.getPosition();
-		
-		setX((int) (position.x * Stage.ratio) - camera.getX());
-		setY((int) (position.y * Stage.ratio) + camera.getY());
-		
-		super.draw(canvas, camera);
+		return (int) (position.x * Stage.ratio) - stage.camera.getX();
+	}
+	
+	@Override
+	public int getY() {
+		if (physicsBody == null) {
+			return 0;
+		}
+		Vec2 position = physicsBody.getPosition();
+		return (int) (position.y * Stage.ratio) + stage.camera.getY();
 	}
 	
 }

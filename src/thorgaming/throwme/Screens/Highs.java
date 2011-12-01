@@ -80,20 +80,20 @@ public class Highs extends Screen {
 		
 		stage.draw = null;
 		
-		loader = new DispGif(activity.getApplicationContext(), stage, R.drawable.ajax, activity.getResources(), 128, 128, 336, 176, 255, 0, -1, 1);
-		dayBW = new DispRes(stage, R.drawable.day_bw, activity.getResources(), 150, 60, 645, 10, 255, 10);
+		loader = new DispGif(activity.getApplicationContext(), stage, R.drawable.ajax, 128, 128, 336, 176, 255, 0, -1, 1);
+		dayBW = new DispRes(stage, R.drawable.day_bw, 150, 60, 645, 10, 255, 10);
 		dayBW.setMouseDownEvent(new daysel());
-		weekBW = new DispRes(stage, R.drawable.week_bw, activity.getResources(), 150, 44, 645, 90, 255, 10);
+		weekBW = new DispRes(stage, R.drawable.week_bw, 150, 44, 645, 90, 255, 10);
 		weekBW.setMouseDownEvent(new weeksel());
-		monthBW = new DispRes(stage, R.drawable.month_bw, activity.getResources(), 150, 33, 645, 154, 255, 10);
+		monthBW = new DispRes(stage, R.drawable.month_bw, 150, 33, 645, 154, 255, 10);
 		monthBW.setMouseDownEvent(new monthsel());
-		timeBW = new DispRes(stage, R.drawable.time_bw, activity.getResources(), 150, 25, 645, 207, 255, 10);
+		timeBW = new DispRes(stage, R.drawable.time_bw, 150, 25, 645, 207, 255, 10);
 		timeBW.setMouseDownEvent(new timesel());
 		
-		dayC = new DispRes(stage, R.drawable.day, activity.getResources(), 150, 60, 645, 10, 0, 0);
-		weekC = new DispRes(stage, R.drawable.week, activity.getResources(), 150, 44, 645, 90, 0, 0);
-		monthC = new DispRes(stage, R.drawable.month, activity.getResources(), 150, 33, 645, 154, 0, 0);
-		timeC = new DispRes(stage, R.drawable.time, activity.getResources(), 150, 25, 645, 207, 0, 0);
+		dayC = new DispRes(stage, R.drawable.day, 150, 60, 645, 10, 0, 0);
+		weekC = new DispRes(stage, R.drawable.week, 150, 44, 645, 90, 0, 0);
+		monthC = new DispRes(stage, R.drawable.month, 150, 33, 645, 154, 0, 0);
+		timeC = new DispRes(stage, R.drawable.time, 150, 25, 645, 207, 0, 0);
 		
 		boolean send = (data != null && data[0] != null) ? (Boolean) data[0] : false;
 		final int score = (data != null && data[1] != null) ? (Integer) data[1] : 0;
