@@ -34,6 +34,7 @@ public class Game extends Screen {
 	private PhysCircle[] randomHills = new PhysCircle[7];
 	private Character character;
 	private int hillDistance = 6;
+	private int lastCrane = 6;
 	private boolean ended = false;
 	private Random random = new Random();
 	
@@ -160,8 +161,11 @@ public class Game extends Screen {
 						randomHills[i].randomiseColor();
 						randomHills[i].setRadius((int) random.nextInt(80) + 80);
 						
-						if (random.nextInt(100) < 15) {
-							new Crane().setX((hillDistance * 160) + random.nextInt(80)/* + ThrowMe.stage.camera.getX()*/).setY(160 + random.nextInt(40)).addToScreen(RenderPriority.High);
+						if (lastCrane < hillDistance) {
+							if (random.nextInt(40) < 10) {
+								lastCrane = hillDistance + 3;
+								new Crane().setX((hillDistance * 160) + random.nextInt(80)).setY(140 + random.nextInt(40)).addToScreen(RenderPriority.High);
+							}
 						}
 					}
 				}
