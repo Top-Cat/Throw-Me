@@ -1,5 +1,7 @@
 package com.thorgaming.throwme.displayobjects;
 
+import java.util.Random;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +13,7 @@ public class Circle extends DispObj {
 	public Paint paint = new Paint();
 	private int actualX;
 	private int actualY;
+	private Random random = new Random();
 	
 	public Circle() {
 		randomiseColor();
@@ -30,7 +33,7 @@ public class Circle extends DispObj {
 	}
 	
 	public void randomiseColor() {
-		paint.setColor(Color.rgb((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255)));
+		paint.setColor(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
 	}
 	
 	@Override

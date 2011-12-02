@@ -1,15 +1,18 @@
 package com.thorgaming.throwme.screens;
 
+import java.util.Random;
+
 import com.thorgaming.throwme.DrawThread;
 import com.thorgaming.throwme.HitListener;
 import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.Character;
 import com.thorgaming.throwme.displayobjects.Cloud;
+import com.thorgaming.throwme.displayobjects.Crane;
 import com.thorgaming.throwme.displayobjects.DispGif;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
-import com.thorgaming.throwme.displayobjects.Hill;
+import com.thorgaming.throwme.displayobjects.PhysCircle;
 import com.thorgaming.throwme.displayobjects.Rect;
 
 import android.app.Activity;
@@ -28,10 +31,11 @@ public class Game extends Screen {
 	
 	private DispRes hills1, hills2;
 	private DispRes_Rel box;
-	private Hill[] randomHills = new Hill[7];
+	private PhysCircle[] randomHills = new PhysCircle[7];
 	private Character character;
 	private int hillDistance = 6;
 	private boolean ended = false;
+	private Random random = new Random();
 	
 	private int cameraX;
 	private int cameraY;
@@ -91,7 +95,7 @@ public class Game extends Screen {
 		hills2 = (DispRes) new DispRes_Rel(R.drawable.bg).setWidth(879).setHeight(240).setX(800).setY(300).addToScreen(RenderPriority.Highest);
 		
 		for (int i = 0; i < 7; i++) {
-			randomHills[i] = (Hill) new Hill(0).setRadius((int) (Math.random() * 80) + 80).setX((160 * i) + 80).setY(480).addToScreen();
+			randomHills[i] = (PhysCircle) new PhysCircle(0).setRadius(random.nextInt(80) + 80).setX((160 * i) + 80).setY(480).addToScreen();
 		}
 		
 		box = (DispRes_Rel) new DispRes_Rel(R.drawable.box).setWidth(150).setHeight(150).setX(325).setY(105).addToScreen();
@@ -154,9 +158,11 @@ public class Game extends Screen {
 						hillDistance++;
 						randomHills[i].move((hillDistance * 160) + 80, 480);
 						randomHills[i].randomiseColor();
-						randomHills[i].setRadius((int) (Math.random() * 80) + 80);
+						randomHills[i].setRadius((int) random.nextInt(80) + 80);
 						
-						randomHills[i].updateCrane();
+						if (random.nextInt(100) < 15) {
+							new Crane().setX((hillDistance * 160) + random.nextInt(80)/* + ThrowMe.stage.camera.getX()*/).setY(160 + random.nextInt(40)).addToScreen(RenderPriority.High);
+						}
 					}
 				}
 				

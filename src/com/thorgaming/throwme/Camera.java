@@ -37,8 +37,16 @@ public class Camera {
 		return y;
 	}
 	
+	public int transformRelativeX(int x) {
+		return transformX(x - this.x);
+	}
+	
 	public int transformX(int x) {
 		return (x * getScreenWidth()) / 800;
+	}
+	
+	public int transformRelativeY(int y) {
+		return transformY(y + this.y);
 	}
 	
 	public int transformY(int y) {

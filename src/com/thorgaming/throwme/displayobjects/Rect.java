@@ -1,5 +1,7 @@
 package com.thorgaming.throwme.displayobjects;
 
+import java.util.Random;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,6 +12,7 @@ public class Rect extends DispObj {
 	public Paint paint = new Paint();
 	protected int actualX;
 	protected int actualY;
+	private Random random = new Random();
 	
 	public Rect() {
 		randomiseColor();
@@ -23,13 +26,8 @@ public class Rect extends DispObj {
 		return actualY;
 	}
 	
-	/*public void setSize(int width, int height) {
-		setWidth(width);
-		setHeight(height);
-	}*/
-	
 	public void randomiseColor() {
-		paint.setColor(Color.rgb((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255)));
+		paint.setColor(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
 	}
 	
 	@Override
