@@ -1,4 +1,4 @@
-package com.thorgaming.throwme.displayobjects;
+package com.thorgaming.throwme.displayobjects.shape;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

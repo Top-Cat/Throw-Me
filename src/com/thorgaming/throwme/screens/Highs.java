@@ -23,8 +23,8 @@ import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispGif;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.DispRes;
-import com.thorgaming.throwme.displayobjects.RoundRect;
-import com.thorgaming.throwme.displayobjects.ScoreRow;
+import com.thorgaming.throwme.displayobjects.shape.RoundRect;
+import com.thorgaming.throwme.displayobjects.scores.ScoreRow;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -75,24 +75,24 @@ public class Highs extends Screen {
 		
 		DrawThread.resetGradient();
 		
-		RoundRect rr = (RoundRect) new RoundRect(20).setHeight(480).setWidth(480).setAlpha(50).setX(160).addToScreen(RenderPriority.High);
+		RoundRect rr = (RoundRect) new RoundRect(20).setHeight(480).setWidth(550).setAlpha(50).setX(40).addToScreen(RenderPriority.High);
 		rr.paint.setARGB(50, 0, 0, 0);
 		rr.stroke.setARGB(150, 0, 0, 0);
 		
-		loader = new DispGif(R.drawable.ajax, -1, 1).setWidth(128).setHeight(128).setX(336).setY(176).addToScreen();
-		dayBW = new DispRes(R.drawable.day_bw).setHitPadding(10).setWidth(150).setHeight(60).setX(645).setY(10).addToScreen();
+		loader = new DispGif(R.drawable.ajax, -1, 1).setWidth(128).setHeight(128).setX(251).setY(176).addToScreen();
+		dayBW = new DispRes(R.drawable.day_bw).setHitPadding(10).setWidth(184).setHeight(74).setX(608).setY(10).addToScreen();
 		dayBW.setMouseDownEvent(new daysel());
-		weekBW = new DispRes(R.drawable.week_bw).setHitPadding(10).setWidth(150).setHeight(44).setX(645).setY(90).addToScreen();
+		weekBW = new DispRes(R.drawable.week_bw).setHitPadding(10).setWidth(184).setHeight(54).setX(608).setY(90).addToScreen();
 		weekBW.setMouseDownEvent(new weeksel());
-		monthBW = new DispRes(R.drawable.month_bw).setHitPadding(10).setWidth(150).setHeight(33).setX(645).setY(154).addToScreen();
+		monthBW = new DispRes(R.drawable.month_bw).setHitPadding(10).setWidth(184).setHeight(40).setX(608).setY(154).addToScreen();
 		monthBW.setMouseDownEvent(new monthsel());
-		timeBW = new DispRes(R.drawable.time_bw).setHitPadding(10).setWidth(150).setHeight(25).setX(645).setY(207).addToScreen();
+		timeBW = new DispRes(R.drawable.time_bw).setHitPadding(10).setWidth(184).setHeight(31).setX(608).setY(207).addToScreen();
 		timeBW.setMouseDownEvent(new timesel());
 		
-		dayC = new DispRes(R.drawable.day).setWidth(150).setHeight(60).setX(645).setY(10).setAlpha(0).addToScreen();
-		weekC = new DispRes(R.drawable.week).setWidth(150).setHeight(44).setX(645).setY(90).setAlpha(0).addToScreen();
-		monthC = new DispRes(R.drawable.month).setWidth(150).setHeight(33).setX(645).setY(154).setAlpha(0).addToScreen();
-		timeC = new DispRes(R.drawable.time).setWidth(150).setHeight(25).setX(645).setY(207).setAlpha(0).addToScreen();
+		dayC = new DispRes(R.drawable.day).setWidth(184).setHeight(74).setX(608).setY(10).setAlpha(0).addToScreen();
+		weekC = new DispRes(R.drawable.week).setWidth(184).setHeight(54).setX(608).setY(90).setAlpha(0).addToScreen();
+		monthC = new DispRes(R.drawable.month).setWidth(184).setHeight(40).setX(608).setY(154).setAlpha(0).addToScreen();
+		timeC = new DispRes(R.drawable.time).setWidth(184).setHeight(31).setX(608).setY(207).setAlpha(0).addToScreen();
 		
 		boolean send = (data != null && data[0] != null) ? (Boolean) data[0] : false;
 		final int score = (data != null && data[1] != null) ? (Integer) data[1] : 0;
@@ -285,12 +285,12 @@ public class Highs extends Screen {
 							roundedBorder.destroy();
 						}
 						
-						roundedBorderBackground = (RoundRect) new RoundRect(24).setWidth(491).setHeight(490).setAlpha(0).setX(155).setY(-5).addToScreen(RenderPriority.Low);
+						roundedBorderBackground = (RoundRect) new RoundRect(24).setWidth(561).setHeight(490).setAlpha(0).setX(35).setY(-5).addToScreen(RenderPriority.Low);
 						roundedBorderBackground.paint.setARGB(0, 0, 0, 0);
 						roundedBorderBackground.stroke.setStrokeWidth(10);
 						roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, 480, Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
 						
-						roundedBorder = (RoundRect) new RoundRect(20).setWidth(480).setHeight(480).setAlpha(0).setX(160).setY(0).addToScreen();
+						roundedBorder = (RoundRect) new RoundRect(20).setWidth(550).setHeight(480).setAlpha(0).setX(40).setY(0).addToScreen();
 						roundedBorder.paint.setARGB(0, 0, 0, 0);
 						roundedBorder.stroke.setARGB(255, 0, 0, 0);
 						roundedBorder.stroke.setStrokeWidth(1);

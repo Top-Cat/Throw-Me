@@ -1,8 +1,9 @@
-package com.thorgaming.throwme.displayobjects;
+package com.thorgaming.throwme.displayobjects.scores;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.screens.Highs;
 
 import com.thorgaming.throwme.Camera;
@@ -41,11 +42,11 @@ public class ScoreRow extends DispObj {
 	public void draw(Canvas canvas, Camera camera) {
 		int scroll = screen.scroll;
 		
-		canvas.drawText(name, 210, scroll + getY() + 30, paint);
-		canvas.drawText(Integer.toString(score), 210, scroll + getY() + 60, paint);
-		canvas.drawText(Integer.toString(position), 165, scroll + getY() + 30, paint);
-		canvas.drawText(dateFormat.format(date), 480, scroll + getY() + 30, paint);
-		canvas.drawLine(160, scroll + getY() + 63, 640, scroll + getY() + 63, lpaint);
+		canvas.drawText(name, 90, scroll + getY() + 30, paint);
+		canvas.drawText(Integer.toString(score), 90, scroll + getY() + 60, paint);
+		canvas.drawText(Integer.toString(position), 45, scroll + getY() + 30, paint);
+		canvas.drawText(dateFormat.format(date), 430, scroll + getY() + 30, paint);
+		canvas.drawLine(40, scroll + getY() + 63, 590, scroll + getY() + 63, lpaint);
 	}
 
 	@Override

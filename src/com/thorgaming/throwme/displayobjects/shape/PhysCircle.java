@@ -1,4 +1,4 @@
-package com.thorgaming.throwme.displayobjects;
+package com.thorgaming.throwme.displayobjects.shape;
 
 import org.jbox2d.collision.CircleDef;
 import org.jbox2d.collision.Shape;
@@ -9,7 +9,7 @@ import org.jbox2d.dynamics.World;
 
 import com.thorgaming.throwme.Stage;
 import com.thorgaming.throwme.ThrowMe;
-
+import com.thorgaming.throwme.displayobjects.DispObj;
 
 public class PhysCircle extends Circle {
 	

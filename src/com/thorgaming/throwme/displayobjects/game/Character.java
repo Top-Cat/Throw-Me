@@ -1,4 +1,4 @@
-package com.thorgaming.throwme.displayobjects;
+package com.thorgaming.throwme.displayobjects.game;
 
 import java.util.HashMap;
 
@@ -21,6 +21,7 @@ import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
+import com.thorgaming.throwme.displayobjects.DispObj;
 
 public class Character extends DispObj {
 	
@@ -52,6 +53,9 @@ public class Character extends DispObj {
 	private Joint jointLowerLeftLeg;
 	private Joint jointLeftLeg;
 	
+	private float mouseX, mouseY;
+	public boolean lose = false;
+	private boolean balloons = false;
 	public boolean end = false;
 	private HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
 	private Paint paint = new Paint();
@@ -339,14 +343,19 @@ public class Character extends DispObj {
 		drawableEye.setBounds(actualX - 20, actualY - 20, actualX + 20, actualY + 20);
 		drawableEye.draw(canvas);
 		canvas.restore();
-	}
-
-	float mouseX, mouseY;
-	public boolean lose = false;
+		
+		if (balloons) {
+			bodyHead.applyForce(new Vec2(2, -12), bodyHead.getWorldCenter());
+		}
+	} 
 	
 	public void mouse(float x, float y) {
 		mouseX = x;
 		mouseY = y;
+		
+		if (lose) {
+			balloons = true;
+		}
 	}
 	
 	@Override

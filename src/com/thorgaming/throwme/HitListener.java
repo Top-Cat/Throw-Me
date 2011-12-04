@@ -1,29 +1,29 @@
 package com.thorgaming.throwme;
 
 import org.jbox2d.collision.Shape;
-import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.ContactListener;
 import org.jbox2d.dynamics.contacts.ContactPoint;
 import org.jbox2d.dynamics.contacts.ContactResult;
 
-import com.thorgaming.throwme.displayobjects.Character;
-import com.thorgaming.throwme.displayobjects.Cloud;
+import com.thorgaming.throwme.displayobjects.game.Character;
+import com.thorgaming.throwme.displayobjects.Sensor;
+import com.thorgaming.throwme.displayobjects.cloud.Cloud;
 
 
 public class HitListener implements ContactListener {
 
 	@Override
 	public void add(ContactPoint arg0) {
-		Object i = arg0.shape1.getUserData();
-		Object j = arg0.shape2.getUserData();
-		Object t = null;
-		if (i instanceof Cloud) {
+		Shape i = arg0.shape1;
+		Shape j = arg0.shape2;
+		Shape t = null;
+		if (i.getUserData() instanceof Cloud) {
 			t = i;
 			i = j;
 			j = t;
 		}
-		if (i instanceof Character && j instanceof Cloud) {
-			((Cloud) j).animate();
+		if (i.getUserData() instanceof Character && j.getUserData() instanceof Sensor) {
+			((Sensor) j.getUserData()).hit(arg0.shape1);
 		}
 	}
 
@@ -37,8 +37,8 @@ public class HitListener implements ContactListener {
 			i = j;
 			j = t;
 		}
-		if (i.getUserData() instanceof Character && j.getUserData() instanceof Cloud) {
-			i.getBody().applyForce(new Vec2(3, -10), i.getBody().getWorldCenter());
+		if (i.getUserData() instanceof Character && j.getUserData() instanceof Sensor) {
+			((Sensor) j.getUserData()).persistContact(arg0.shape1);
 		}
 	}
 

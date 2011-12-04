@@ -2,6 +2,7 @@ package com.thorgaming.throwme.displayobjects;
 
 import java.io.InputStream;
 
+import com.thorgaming.throwme.DrawThread;
 import com.thorgaming.throwme.ThrowMe;
 
 import android.graphics.Canvas;
@@ -41,7 +42,7 @@ public class DispGif extends DispRes {
 			if (relTime < previousTime) {
 				totalRepetitions++;
 				if (totalRepetitions >= repetitions && repetitions > -1) {
-					destroy();
+					DrawThread.toRemove.add(this);
 				}
 			}
 			previousTime = relTime;

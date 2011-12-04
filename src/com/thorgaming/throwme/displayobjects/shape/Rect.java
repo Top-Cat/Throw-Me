@@ -1,4 +1,4 @@
-package com.thorgaming.throwme.displayobjects;
+package com.thorgaming.throwme.displayobjects.shape;
 
 import java.util.Random;
 
@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import com.thorgaming.throwme.Camera;
+import com.thorgaming.throwme.displayobjects.DispObj;
 
 public class Rect extends DispObj {
 

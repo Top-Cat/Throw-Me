@@ -21,9 +21,7 @@ public abstract class DispObj {
 	private int alpha = 255;
 	
 	public DispObj addToScreen(RenderPriority priority) {
-		synchronized (ThrowMe.stage.objects) {
-			ThrowMe.stage.registerForRender(priority, this);
-		}
+		ThrowMe.stage.registerForRender(priority, this);
 		return this;
 	}
 	
@@ -110,9 +108,7 @@ public abstract class DispObj {
 		}
 		ThrowMe.stage.animations.removeAll(over);
 		
-		synchronized (ThrowMe.stage.objects) {
-			ThrowMe.stage.unregisterForRender(this);
-		}
+		ThrowMe.stage.unregisterForRender(this);
 	}
 	
 	public abstract boolean checkPress(int x, int y);

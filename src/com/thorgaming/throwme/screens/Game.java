@@ -6,14 +6,16 @@ import com.thorgaming.throwme.DrawThread;
 import com.thorgaming.throwme.HitListener;
 import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.ThrowMe;
-import com.thorgaming.throwme.displayobjects.Character;
-import com.thorgaming.throwme.displayobjects.Cloud;
-import com.thorgaming.throwme.displayobjects.Crane;
+import com.thorgaming.throwme.displayobjects.game.Character;
+import com.thorgaming.throwme.displayobjects.cloud.BoostCloud;
+import com.thorgaming.throwme.displayobjects.cloud.ColouredCloud;
+import com.thorgaming.throwme.displayobjects.cloud.LightningCloud;
+import com.thorgaming.throwme.displayobjects.game.Crane;
 import com.thorgaming.throwme.displayobjects.DispGif;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
-import com.thorgaming.throwme.displayobjects.PhysCircle;
-import com.thorgaming.throwme.displayobjects.Rect;
+import com.thorgaming.throwme.displayobjects.shape.PhysCircle;
+import com.thorgaming.throwme.displayobjects.shape.Rect;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -102,13 +104,15 @@ public class Game extends Screen {
 		box = (DispRes_Rel) new DispRes_Rel(R.drawable.box).setWidth(150).setHeight(150).setX(325).setY(105).addToScreen();
 		new Rect().setWidth(800).setHeight(480).setAlpha(0).addToScreen().setMouseDownEvent(new boxsplode());
 		
-		new Cloud().setX(850).setY(-120).addToScreen(RenderPriority.High);
-		new Cloud().setX(150).setY(-720).addToScreen(RenderPriority.High);
-		new Cloud().setX(600).setY(-620).addToScreen(RenderPriority.High);
-		new Cloud().setX(900).setY(-920).addToScreen(RenderPriority.High);
-		new Cloud().setX(300).setY(-1120).addToScreen(RenderPriority.High);
-		new Cloud().setX(550).setY(-1920).addToScreen(RenderPriority.High);
-		new Cloud().setX(800).setY(-1320).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(850).setY(-120).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(150).setY(-720).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(600).setY(-620).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(900).setY(-920).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(300).setY(-1120).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(550).setY(-1920).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(800).setY(-1320).addToScreen(RenderPriority.High);
+		new ColouredCloud().setWidth(133).setHeight(75).setX(800).setY(-2500).addToScreen(RenderPriority.High);
+		new LightningCloud().setWidth(133).setHeight(75).setX(500).setY(-2800).addToScreen(RenderPriority.High);
 		
 		ThrowMe.stage.world.setContactListener(new HitListener());
 		
@@ -140,9 +144,7 @@ public class Game extends Screen {
 			if (character != null && character.end && !ended) {
 				activity.runOnUiThread(new Runnable() {
 					public void run() {
-						synchronized (ThrowMe.stage.drawThread.physicsSync) {
-							new Highs(activity, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
-						}
+						new Highs(activity, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
 					}
 				});
 				ended = true;
@@ -164,7 +166,7 @@ public class Game extends Screen {
 						if (lastCrane < hillDistance) {
 							if (random.nextInt(40) < 10) {
 								lastCrane = hillDistance + 3;
-								new Crane().setX((hillDistance * 160) + random.nextInt(80)).setY(140 + random.nextInt(40)).addToScreen(RenderPriority.High);
+								new Crane().setX((hillDistance * 160) + random.nextInt(80)).setY(90 + random.nextInt(40)).addToScreen(RenderPriority.High);
 							}
 						}
 					}

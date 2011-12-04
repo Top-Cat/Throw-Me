@@ -1,7 +1,9 @@
 package com.thorgaming.throwme;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.thorgaming.throwme.animation.Anim;
 import com.thorgaming.throwme.displayobjects.DispObj;
@@ -20,12 +22,11 @@ public class DrawThread extends Thread {
 	private static int[] gradient = {Color.rgb(0, 0, 0), Color.rgb(0, 0, 0)};
 	private SurfaceHolder surfaceHolder;
 	private boolean doRun = false;
-	private Stage stage;
 	public Integer physicsSync = 0;
+	public static Set<DispObj> toRemove = new HashSet<DispObj>();
 	
-	public DrawThread(SurfaceHolder surfaceHolder, Context context, Stage stage) {
+	public DrawThread(SurfaceHolder surfaceHolder, Context context) {
 		this.surfaceHolder = surfaceHolder;
-		this.stage = stage;
 	}
 	
 	public void setRunning(boolean running) {
@@ -49,41 +50,45 @@ public class DrawThread extends Thread {
 		while(doRun) {
 			Canvas c = null;
 			try {
-				for (MotionEvent e : (ArrayList<MotionEvent>) stage.mcache.clone()) {
-					stage.touch(e);
+				for (MotionEvent e : (ArrayList<MotionEvent>) ThrowMe.stage.mcache.clone()) {
+					ThrowMe.stage.touch(e);
 				}
-				stage.mcache.clear();
+				ThrowMe.stage.mcache.clear();
 				c = surfaceHolder.lockCanvas(null);
 				synchronized (physicsSync) {
-					stage.world.step((float) 0.01, 5);					
+					ThrowMe.stage.world.step((float) 0.01, 5);					
 				}
 				
-				if (stage.draw != null) {
-					stage.draw.sendCallback();
+				if (ThrowMe.stage.draw != null) {
+					ThrowMe.stage.draw.sendCallback();
 				}
 				
 				if (c != null) {
-					stage.start = true;
+					ThrowMe.stage.start = true;
 					
 					GradientDrawable g = new GradientDrawable(Orientation.TOP_BOTTOM, gradient);
-					g.setBounds(0, 0, stage.camera.getScreenWidth(), stage.camera.getScreenHeight());
+					g.setBounds(0, 0, ThrowMe.stage.camera.getScreenWidth(), ThrowMe.stage.camera.getScreenHeight());
 					g.draw(c);
 					
 					List<Anim> over = new ArrayList<Anim>();
-					for (Anim i : stage.animations) {
+					for (Anim i : ThrowMe.stage.animations) {
 						i.process(over);
 					}
-					stage.animations.removeAll(over);
+					ThrowMe.stage.animations.removeAll(over);
 					
-					synchronized (stage.objects) {
+					synchronized (ThrowMe.stage.objects) {
 						for (int i = 0; i <= 4; i++) {
-							if (stage.objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
-								for (DispObj obj : stage.objects.get(RenderPriority.getRenderPriorityFromId(i))) {
-									obj.draw(c, stage.camera);
+							if (ThrowMe.stage.objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
+								for (DispObj obj : ThrowMe.stage.objects.get(RenderPriority.getRenderPriorityFromId(i))) {
+									obj.draw(c, ThrowMe.stage.camera);
 								}
 							}
 						}
 					}
+					for (DispObj obj : toRemove) {
+						obj.destroy();
+					}
+					
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

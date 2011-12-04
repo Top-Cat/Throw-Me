@@ -43,7 +43,7 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 		SurfaceHolder holder = getHolder();
 		holder.addCallback(this);
 		
-		drawThread = new DrawThread(holder, context, this);
+		drawThread = new DrawThread(holder, context);
 		
 		worldAABB = new AABB();
 		worldAABB.lowerBound.set(new Vec2((float) -1000.0 / ratio, (float) -9000.0 / ratio));
@@ -55,15 +55,19 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 	}
 	
 	public void registerForRender(RenderPriority priority, DispObj object) {
-		if (!objects.containsKey(priority)) {
-			objects.put(priority, new HashSet<DispObj>());
+		synchronized (ThrowMe.stage.objects) {
+			if (!objects.containsKey(priority)) {
+				objects.put(priority, new HashSet<DispObj>());
+			}
+			objects.get(priority).add(object);
 		}
-		objects.get(priority).add(object);
 	}
 	
 	public void unregisterForRender(DispObj object) {
-		for (RenderPriority priority : objects.keySet()) {
-			objects.get(priority).remove(object);
+		synchronized (ThrowMe.stage.objects) {
+			for (RenderPriority priority : objects.keySet()) {
+				objects.get(priority).remove(object);
+			}
 		}
 	}
 	
@@ -78,7 +82,7 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 			for (DispObj obj : allObjects) {
 				obj.destroy();
 			}
-			objects.clear(); // Just in case :3
+			objects.clear();
 		}
 	}
 	
@@ -146,7 +150,7 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 	
 	public void createThread() {
 		drawThread.setRunning(false);
-		drawThread = new DrawThread(getHolder(), getContext(), this);
+		drawThread = new DrawThread(getHolder(), getContext());
 		drawThread.setRunning(true);
 		drawThread.start();
 	}
