@@ -219,6 +219,9 @@ public class Game extends Screen {
 			downY = mouseY;
 			cameraX = ThrowMe.stage.camera.getX();
 			cameraY = ThrowMe.stage.camera.getY();
+			if (character != null) {
+				character.mouseDown(event.getX(), event.getY());
+			}
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			int newX = (int) (cameraX + (downX - event.getX()));
 			int newY = (int) (cameraY + (event.getY() - downY));

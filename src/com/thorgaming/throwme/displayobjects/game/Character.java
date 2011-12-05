@@ -345,7 +345,7 @@ public class Character extends DispObj {
 		canvas.restore();
 		
 		if (balloons) {
-			bodyHead.applyImpulse(new Vec2(0.02F, -0.13F), bodyHead.getWorldCenter());
+			bodyHead.applyImpulse(new Vec2(0.02F, -0.13F), bodyHead.getWorldCenter().add(new Vec2((float) (20 * Math.cos(bodyHead.getAngle())) / Stage.ratio, (float) (20 * Math.sin(bodyHead.getAngle()))  / Stage.ratio)));
 			balloons = false;
 		}
 	} 
@@ -356,6 +356,14 @@ public class Character extends DispObj {
 		
 		if (lose) {
 			balloons = true;
+		}
+	}
+	
+	public void mouseDown(float x, float y) {
+		System.out.println("Impulse");
+		synchronized (ThrowMe.stage.drawThread.physicsSync) {
+			Vec2 linearVelocity = bodyHead.getLinearVelocity();
+			bodyHead.setLinearVelocity(new Vec2(Math.max(linearVelocity.x, 3), Math.min(linearVelocity.y, -3)));
 		}
 	}
 	
