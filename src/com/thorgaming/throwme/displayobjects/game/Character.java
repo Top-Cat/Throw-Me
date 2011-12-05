@@ -27,7 +27,7 @@ public class Character extends DispObj {
 	
 	private World world;
 	private Body bodyBody;
-	private Body bodyHead;
+	public Body bodyHead;
 	private Body bodyRightElbow;
 	private Body bodyRightHand;
 	private Body bodyLeftElbow;
@@ -345,7 +345,8 @@ public class Character extends DispObj {
 		canvas.restore();
 		
 		if (balloons) {
-			bodyHead.applyForce(new Vec2(2, -12), bodyHead.getWorldCenter());
+			bodyHead.applyImpulse(new Vec2(0.02F, -0.13F), bodyHead.getWorldCenter());
+			balloons = false;
 		}
 	} 
 	

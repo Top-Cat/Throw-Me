@@ -28,7 +28,7 @@ import com.thorgaming.throwme.RenderPriority;
 
 public class Game extends Screen {
 	
-	static { @SuppressWarnings("unused") byte dummy[] = new byte[ 8*1024*1024 ]; }	
+	static { @SuppressWarnings("unused") byte dummy[] = new byte[ 9*1024*1024 ]; }
 	private int gradient[][] = new int[9][3];
 	
 	private DispRes hills1, hills2;
@@ -144,7 +144,9 @@ public class Game extends Screen {
 			if (character != null && character.end && !ended) {
 				activity.runOnUiThread(new Runnable() {
 					public void run() {
-						new Highs(activity, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
+						synchronized (ThrowMe.stage.drawThread.physicsSync) {
+							new Highs(activity, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
+						}
 					}
 				});
 				ended = true;

@@ -38,9 +38,8 @@ public class Crane extends DispRes_Rel implements Sensor {
 		
 		CircleDef wreckingBall = new CircleDef();
 		wreckingBall.isSensor = true;
-		wreckingBall.radius = (float) 30 / Stage.ratio;
+		wreckingBall.radius = (float) 40 / Stage.ratio;
 		wreckingBall.density = (float) 0;
-		//wreckingBall.localPosition = new Vec2(0, 0);
 		wreckingBall.userData = this; 	
 		
 		BodyDef wreckingBallBodyDef = new BodyDef();
@@ -78,7 +77,9 @@ public class Crane extends DispRes_Rel implements Sensor {
 
 	@Override
 	public void hit(Shape otherShape) {
-		System.out.println("wrecking!");
+		if (((Character) otherShape.getUserData()).bodyHead.getShapeList() == otherShape) {
+			System.out.println("eye hit!");
+		}
 	}
 
 	@Override
