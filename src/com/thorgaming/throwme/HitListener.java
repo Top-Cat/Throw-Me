@@ -5,10 +5,9 @@ import org.jbox2d.dynamics.ContactListener;
 import org.jbox2d.dynamics.contacts.ContactPoint;
 import org.jbox2d.dynamics.contacts.ContactResult;
 
-import com.thorgaming.throwme.displayobjects.game.Character;
 import com.thorgaming.throwme.displayobjects.Sensor;
 import com.thorgaming.throwme.displayobjects.cloud.Cloud;
-
+import com.thorgaming.throwme.displayobjects.game.Character;
 
 public class HitListener implements ContactListener {
 
@@ -44,12 +43,12 @@ public class HitListener implements ContactListener {
 
 	@Override
 	public void remove(ContactPoint arg0) {
-		
+
 	}
 
 	@Override
 	public void result(ContactResult arg0) {
-		
+
 	}
-	
+
 }

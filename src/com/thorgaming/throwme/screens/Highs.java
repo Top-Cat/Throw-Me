@@ -17,15 +17,6 @@ import java.util.UUID;
 
 import org.yaml.snakeyaml.Yaml;
 
-import com.thorgaming.throwme.DrawThread;
-import com.thorgaming.throwme.MouseCallback;
-import com.thorgaming.throwme.ThrowMe;
-import com.thorgaming.throwme.displayobjects.DispGif;
-import com.thorgaming.throwme.displayobjects.DispObj;
-import com.thorgaming.throwme.displayobjects.DispRes;
-import com.thorgaming.throwme.displayobjects.shape.RoundRect;
-import com.thorgaming.throwme.displayobjects.scores.ScoreRow;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -37,11 +28,20 @@ import android.graphics.Shader;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.EditText;
+
+import com.thorgaming.throwme.DrawThread;
+import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.RenderPriority;
+import com.thorgaming.throwme.ThrowMe;
+import com.thorgaming.throwme.displayobjects.DispGif;
+import com.thorgaming.throwme.displayobjects.DispObj;
+import com.thorgaming.throwme.displayobjects.DispRes;
+import com.thorgaming.throwme.displayobjects.scores.ScoreRow;
+import com.thorgaming.throwme.displayobjects.shape.RoundRect;
 
 public class Highs extends Screen {
-	
+
 	private DispObj loader;
 	private DispObj dayBW;
 	private DispObj weekBW;
@@ -51,34 +51,34 @@ public class Highs extends Screen {
 	private DispObj weekC;
 	private DispObj monthC;
 	private DispObj timeC;
-	
+
 	private RoundRect roundedBorderBackground, roundedBorder;
 	public static final String PREFS_NAME = "throwmedevicekey";
 	private String deviceid = "";
 	//private SecureRandom gen = new SecureRandom();
-	
+
 	private int mouseY;
 	private int downY;
 	private int scrollStart;
 	private int previousMovement;
 	private int movement;
-	
+
 	public int scroll = 0;
-	
+
 	private List<ScoreRow> highScores = new ArrayList<ScoreRow>();
-	
+
 	public Highs(Activity activity, Object[] data) {
 		super(activity, data);
-		
+
 		SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, 0);
 		deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
-		
+
 		DrawThread.resetGradient();
-		
+
 		RoundRect rr = (RoundRect) new RoundRect(20).setHeight(480).setWidth(550).setAlpha(50).setX(40).addToScreen(RenderPriority.High);
 		rr.paint.setARGB(50, 0, 0, 0);
 		rr.stroke.setARGB(150, 0, 0, 0);
-		
+
 		loader = new DispGif(R.drawable.ajax, -1, 1).setWidth(128).setHeight(128).setX(251).setY(176).addToScreen();
 		dayBW = new DispRes(R.drawable.day_bw).setHitPadding(10).setWidth(184).setHeight(74).setX(608).setY(10).addToScreen();
 		dayBW.setMouseDownEvent(new daysel());
@@ -88,14 +88,14 @@ public class Highs extends Screen {
 		monthBW.setMouseDownEvent(new monthsel());
 		timeBW = new DispRes(R.drawable.time_bw).setHitPadding(10).setWidth(184).setHeight(31).setX(608).setY(207).addToScreen();
 		timeBW.setMouseDownEvent(new timesel());
-		
+
 		dayC = new DispRes(R.drawable.day).setWidth(184).setHeight(74).setX(608).setY(10).setAlpha(0).addToScreen();
 		weekC = new DispRes(R.drawable.week).setWidth(184).setHeight(54).setX(608).setY(90).setAlpha(0).addToScreen();
 		monthC = new DispRes(R.drawable.month).setWidth(184).setHeight(40).setX(608).setY(154).setAlpha(0).addToScreen();
 		timeC = new DispRes(R.drawable.time).setWidth(184).setHeight(31).setX(608).setY(207).setAlpha(0).addToScreen();
-		
-		boolean send = (data != null && data[0] != null) ? (Boolean) data[0] : false;
-		final int score = (data != null && data[1] != null) ? (Integer) data[1] : 0;
+
+		boolean send = data != null && data[0] != null ? (Boolean) data[0] : false;
+		final int score = data != null && data[1] != null ? (Integer) data[1] : 0;
 		if (send) {
 			final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
 			final EditText input = new EditText(activity);
@@ -106,22 +106,26 @@ public class Highs extends Screen {
 					String value = input.getText().toString().trim();
 					System.out.println(value + " scored " + score);
 					MessageDigest digest;
-		
+
 					try {
 						digest = java.security.MessageDigest.getInstance("MD5");
-						digest.update((value+score+"ZDbVEKAx5PAEe5Z"+deviceid).getBytes());
+						digest.update((value + score + "ZDbVEKAx5PAEe5Z" + deviceid).getBytes());
 						byte[] messageDigest = digest.digest();
 						StringBuffer hexString = new StringBuffer();
-						for (int i=0;i<messageDigest.length;i++) {
-							int j = 0xFF & messageDigest[i];
-							if (j < 16) hexString.append("0");
+						for (byte element : messageDigest) {
+							int j = 0xFF & element;
+							if (j < 16) {
+								hexString.append("0");
+							}
 							hexString.append(Integer.toHexString(j));
 						}
 						try {
 							URL url = new URL("http://thomasc.co.uk/throwme/api.php?action=submit&score=" + score + "&name=" + value + "&deviceid=" + deviceid + "&checkstring=" + hexString);
-							HttpURLConnection con = (HttpURLConnection)(url.openConnection());
+							HttpURLConnection con = (HttpURLConnection) url.openConnection();
 							BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-							while ((in.readLine()) != null);
+							while (in.readLine() != null) {
+								;
+							}
 							in.close();
 						} catch (MalformedURLException e) {
 							e.printStackTrace();
@@ -135,38 +139,37 @@ public class Highs extends Screen {
 				}
 			});
 
-			alert.setNegativeButton("Discard score",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							dialog.cancel();
-						}
-					});
+			alert.setNegativeButton("Discard score", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					dialog.cancel();
+				}
+			});
 			alert.setOnCancelListener(new OnCancelListener() {
 
 				@Override
 				public void onCancel(DialogInterface arg0) {
 					new daysel().sendCallback();
 				}
-				
+
 			});
 			alert.show();
 		} else {
 			new daysel().sendCallback();
 		}
 	}
-	
+
 	public void resetOptions() {
 		dayC.setAlpha(0);
 		weekC.setAlpha(0);
 		monthC.setAlpha(0);
 		timeC.setAlpha(0);
-		
+
 		dayBW.setAlpha(255);
 		weekBW.setAlpha(255);
 		monthBW.setAlpha(255);
 		timeBW.setAlpha(255);
 	}
-	
+
 	public class timesel implements MouseCallback {
 
 		@Override
@@ -183,7 +186,7 @@ public class Highs extends Screen {
 		}
 
 	}
-	
+
 	public class monthsel implements MouseCallback {
 
 		@Override
@@ -200,7 +203,7 @@ public class Highs extends Screen {
 		}
 
 	}
-	
+
 	public class weeksel implements MouseCallback {
 
 		@Override
@@ -217,7 +220,7 @@ public class Highs extends Screen {
 		}
 
 	}
-	
+
 	public class daysel implements MouseCallback {
 
 		@Override
@@ -234,38 +237,40 @@ public class Highs extends Screen {
 		}
 
 	}
-	
+
 	boolean loading = false;
+
 	private class loader extends Thread {
-		
+
 		String type = "";
-		
+
 		public loader(String type) {
 			this.type = type;
 		}
-		
+
+		@Override
 		@SuppressWarnings("unchecked")
 		public void run() {
 			try {
 				if (!loading) {
 					loading = true;
-					
+
 					for (ScoreRow i : highScores) {
 						i.destroy();
 					}
 					highScores.clear();
 					loader.setAlpha(255);
-					
+
 					URL url = new URL("http://thomasc.co.uk/throwme/api.php?type=" + type);
 					BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 					Yaml yaml = new Yaml();
 					Object yamlObj = yaml.load(reader);
 					reader.close();
-					
+
 					if (activity.screen == Highs.this) {
 						if (yamlObj instanceof ArrayList<?>) {
 							ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yamlObj;
-							
+
 							int a = 0;
 							SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 							for (Map<String, String> i : list) {
@@ -278,18 +283,18 @@ public class Highs extends Screen {
 								}
 							}
 						}
-						
+
 						loader.setAlpha(0);
 						if (roundedBorderBackground != null) {
 							roundedBorderBackground.destroy();
 							roundedBorder.destroy();
 						}
-						
+
 						roundedBorderBackground = (RoundRect) new RoundRect(24).setWidth(561).setHeight(490).setAlpha(0).setX(35).setY(-5).addToScreen(RenderPriority.Low);
 						roundedBorderBackground.paint.setARGB(0, 0, 0, 0);
 						roundedBorderBackground.stroke.setStrokeWidth(10);
 						roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, 480, Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
-						
+
 						roundedBorder = (RoundRect) new RoundRect(20).setWidth(550).setHeight(480).setAlpha(0).setX(40).setY(0).addToScreen();
 						roundedBorder.paint.setARGB(0, 0, 0, 0);
 						roundedBorder.stroke.setARGB(255, 0, 0, 0);
@@ -297,29 +302,38 @@ public class Highs extends Screen {
 					}
 					loading = false;
 				}
-			} catch (MalformedURLException e) { } catch (IOException e) { }
+			} catch (MalformedURLException e) {
+			} catch (IOException e) {
+			}
 		}
 	}
-	
+
 	private int scrollBound(int scroll) {
-		if (scroll > 0) { scroll = 0; }
-		int maximum = -((60 * highScores.size()) - 400);
-		if (maximum > 0) { maximum = 0; }
-		if (scroll < maximum) { scroll = maximum; }
+		if (scroll > 0) {
+			scroll = 0;
+		}
+		int maximum = -(60 * highScores.size() - 400);
+		if (maximum > 0) {
+			maximum = 0;
+		}
+		if (scroll < maximum) {
+			scroll = maximum;
+		}
 		return scroll;
 	}
-	
+
+	@Override
 	public boolean onTouch(MotionEvent event) {
 		mouseY = (int) event.getY();
-		
+
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			downY = mouseY;
 			scrollStart = scroll;
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			if (Math.abs(mouseY - downY) > 10) {
-				scroll = scrollBound(scrollStart + (mouseY - downY));
+				scroll = scrollBound(scrollStart + mouseY - downY);
 				movement = previousMovement - (mouseY - downY);
-				previousMovement = (mouseY - downY);
+				previousMovement = mouseY - downY;
 			} else {
 				movement = 0;
 			}
@@ -329,20 +343,20 @@ public class Highs extends Screen {
 				scroll -= movement;
 				scroll = scrollBound(scroll);
 				movement -= direction;
-				
+
 				ThrowMe.waiting(10);
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			new Main(activity, new Object[] {true});
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 }

@@ -3,32 +3,32 @@ package com.thorgaming.throwme.screens;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Activity;
+
 import com.thorgaming.throwme.DrawThread;
 import com.thorgaming.throwme.MouseCallback;
+import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.AlphaAnim;
 import com.thorgaming.throwme.animation.XAnim;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.DispRes;
 
-import android.app.Activity;
-import com.thorgaming.throwme.R;
-
 public class Main extends Screen {
-	
+
 	private DispObj thorcard;
 	private Timer timer = new Timer();
 	private boolean skipIntro;
-	
+
 	public Main(Activity activity, Object[] data) {
 		super(activity, data);
-		
+
 		skipIntro = data != null && data[0] != null ? (Boolean) data[0] : false;
 		skipIntro = true;
 		thorcard = new DispRes(R.drawable.thorgamingcard).setWidth(800).setHeight(480).setAlpha(0).addToScreen();
 		timer.schedule(new waitforscreen(), 500);
 	}
-	
+
 	public class waitforscreen extends TimerTask {
 
 		@Override
@@ -40,14 +40,14 @@ public class Main extends Screen {
 					new showmenu2().run();
 				} else {
 					new AlphaAnim(thorcard, 0, 255, null, 200);
-					
+
 					timer.schedule(new showmenu(), 4000);
 				}
 			}
 		}
-		
+
 	}
-	
+
 	public class showmenu2 extends TimerTask {
 
 		@Override
@@ -66,7 +66,7 @@ public class Main extends Screen {
 		}
 
 	}
-	
+
 	public class playgame implements MouseCallback {
 
 		@Override
@@ -80,7 +80,7 @@ public class Main extends Screen {
 		}
 
 	}
-	
+
 	public class showhighs implements MouseCallback {
 
 		@Override
@@ -94,17 +94,17 @@ public class Main extends Screen {
 		}
 
 	}
-	
+
 	public class showmenu extends TimerTask {
 
 		@Override
 		public void run() {
 			thorcard.destroy();
 			thorcard = new DispRes(R.drawable.box2dcard).setWidth(800).setHeight(480).addToScreen();
-			
+
 			timer.schedule(new showmenu2(), 4000);
 		}
-		
+
 	}
 
 }
