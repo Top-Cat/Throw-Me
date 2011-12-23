@@ -22,6 +22,7 @@ public class DrawThread extends Thread {
 	private static int[] gradient = {Color.rgb(0, 0, 0), Color.rgb(0, 0, 0)};
 	private SurfaceHolder surfaceHolder;
 	private boolean doRun = false;
+	private boolean doPhysics = true;
 	public Integer physicsSync = 0;
 	public static Set<DispObj> toRemove = new HashSet<DispObj>();
 	
@@ -31,6 +32,10 @@ public class DrawThread extends Thread {
 	
 	public void setRunning(boolean running) {
 		doRun = running;
+	}
+	
+	public void setPhysics(boolean physics) {
+		doPhysics = physics;
 	}
 	
 	public static void resetGradient() {
@@ -55,8 +60,10 @@ public class DrawThread extends Thread {
 				}
 				ThrowMe.stage.mcache.clear();
 				c = surfaceHolder.lockCanvas(null);
-				synchronized (physicsSync) {
-					ThrowMe.stage.world.step((float) 0.01, 5);					
+				if (doPhysics) {
+					synchronized (physicsSync) {
+						ThrowMe.stage.world.step((float) 0.01, 5);					
+					}
 				}
 				
 				if (ThrowMe.stage.draw != null) {

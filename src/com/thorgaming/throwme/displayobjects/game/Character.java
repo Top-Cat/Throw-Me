@@ -360,7 +360,6 @@ public class Character extends DispObj {
 	}
 	
 	public void mouseDown(float x, float y) {
-		System.out.println("Impulse");
 		synchronized (ThrowMe.stage.drawThread.physicsSync) {
 			Vec2 linearVelocity = bodyHead.getLinearVelocity();
 			bodyHead.setLinearVelocity(new Vec2(Math.max(linearVelocity.x, 3), Math.min(linearVelocity.y, -3)));
