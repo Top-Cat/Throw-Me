@@ -17,6 +17,7 @@ import com.thorgaming.throwme.ThrowMe;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.Camera;
@@ -59,7 +60,10 @@ public class Character extends DispObj {
 	public boolean end = false;
 	private HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
 	private Paint paint = new Paint();
+	private Paint barPaint = new Paint();
+	private Paint barSurroundPaint = new Paint();
 	private Drawable drawableEye;
+	private int balloonBar = 500;
 	
 	public Character() {
 		drawableEye = ThrowMe.stage.getResources().getDrawable(R.drawable.eye);
@@ -68,6 +72,10 @@ public class Character extends DispObj {
 		paint.setTextSize(30);
 		paint.setSubpixelText(true);
 		paint.setStrokeWidth(1);
+		
+		barPaint.setColor(Color.rgb(40, 69, 255));
+		barSurroundPaint.setColor(Color.rgb(40, 69, 255));
+		barSurroundPaint.setStyle(Style.STROKE);
 
 		CircleDef head = new CircleDef();  
 		head.radius = (float) 20 / Stage.ratio;
@@ -344,8 +352,12 @@ public class Character extends DispObj {
 		drawableEye.draw(canvas);
 		canvas.restore();
 		
+		canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX((int) ((balloonBar / 2.777) + 610)), camera.transformY(75), barPaint);
+		canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX(790), camera.transformY(75), barSurroundPaint);
+		
 		if (balloons) {
-			bodyHead.applyImpulse(new Vec2(0.02F, -0.13F), bodyHead.getWorldCenter().add(new Vec2((float) (20 * Math.cos(bodyHead.getAngle())) / Stage.ratio, (float) (20 * Math.sin(bodyHead.getAngle()))  / Stage.ratio)));
+			bodyHead.applyImpulse(new Vec2(0.02F, -0.13F), bodyHead.getWorldCenter().add(new Vec2((float) (20 * Math.sin(bodyHead.getAngle())) / Stage.ratio, (float) (20 * Math.cos(bodyHead.getAngle()))  / Stage.ratio)));
+			balloonBar--;
 			balloons = false;
 		}
 	} 
@@ -354,16 +366,17 @@ public class Character extends DispObj {
 		mouseX = x;
 		mouseY = y;
 		
-		if (lose) {
+		if (lose && balloonBar > 0) {
 			balloons = true;
 		}
 	}
 	
 	public void mouseDown(float x, float y) {
-		System.out.println("Impulse");
-		synchronized (ThrowMe.stage.drawThread.physicsSync) {
-			Vec2 linearVelocity = bodyHead.getLinearVelocity();
-			bodyHead.setLinearVelocity(new Vec2(Math.max(linearVelocity.x, 3), Math.min(linearVelocity.y, -3)));
+		if (balloonBar > 0) {
+			synchronized (ThrowMe.stage.drawThread.physicsSync) {
+				Vec2 linearVelocity = bodyHead.getLinearVelocity();
+				bodyHead.setLinearVelocity(new Vec2(Math.max(linearVelocity.x, 3), Math.min(linearVelocity.y, -3)));
+			}
 		}
 	}
 	
