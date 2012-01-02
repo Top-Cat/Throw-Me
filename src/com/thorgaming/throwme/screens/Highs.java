@@ -102,6 +102,7 @@ public class Highs extends Screen {
 			alert.setView(input);
 			alert.setMessage("Enter name:");
 			alert.setPositiveButton("Submit score", new DialogInterface.OnClickListener() {
+				@Override
 				public void onClick(DialogInterface dialog, int whichButton) {
 					String value = input.getText().toString().trim();
 					System.out.println(value + " scored " + score);
@@ -140,6 +141,7 @@ public class Highs extends Screen {
 			});
 
 			alert.setNegativeButton("Discard score", new DialogInterface.OnClickListener() {
+				@Override
 				public void onClick(DialogInterface dialog, int whichButton) {
 					dialog.cancel();
 				}
@@ -275,7 +277,7 @@ public class Highs extends Screen {
 							SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 							for (Map<String, String> i : list) {
 								try {
-									highScores.add((ScoreRow) new ScoreRow(Highs.this, a + 1, i.get("name"), Integer.valueOf(i.get("score")), sdf.parse(i.get("date")), (a++ * 60)).addToScreen());
+									highScores.add((ScoreRow) new ScoreRow(Highs.this, a + 1, i.get("name"), Integer.valueOf(i.get("score")), sdf.parse(i.get("date")), a++ * 60).addToScreen());
 								} catch (NumberFormatException e) {
 									e.printStackTrace();
 								} catch (ParseException e) {
@@ -293,7 +295,7 @@ public class Highs extends Screen {
 						roundedBorderBackground = (RoundRect) new RoundRect(24).setWidth(561).setHeight(490).setAlpha(0).setX(35).setY(-5).addToScreen(RenderPriority.Low);
 						roundedBorderBackground.paint.setARGB(0, 0, 0, 0);
 						roundedBorderBackground.stroke.setStrokeWidth(10);
-						roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, 480, Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
+						roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, ThrowMe.stage.camera.getScreenHeight(), Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
 
 						roundedBorder = (RoundRect) new RoundRect(20).setWidth(550).setHeight(480).setAlpha(0).setX(40).setY(0).addToScreen();
 						roundedBorder.paint.setARGB(0, 0, 0, 0);
@@ -324,7 +326,7 @@ public class Highs extends Screen {
 
 	@Override
 	public boolean onTouch(MotionEvent event) {
-		mouseY = (int) event.getY();
+		mouseY = ThrowMe.stage.camera.rTransformY((int) event.getY());
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			downY = mouseY;

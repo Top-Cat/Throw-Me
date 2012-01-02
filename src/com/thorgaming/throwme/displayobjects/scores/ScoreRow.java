@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.thorgaming.throwme.Camera;
+import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.screens.Highs;
 
@@ -30,7 +31,7 @@ public class ScoreRow extends DispObj {
 		setY(y);
 
 		paint.setColor(Color.rgb(255, 255, 255));
-		paint.setTextSize(30);
+		paint.setTextSize(ThrowMe.stage.camera.transformY(30));
 		paint.setSubpixelText(true);
 		paint.setStrokeWidth(3);
 
@@ -39,13 +40,13 @@ public class ScoreRow extends DispObj {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		int scroll = screen.scroll;
+		int scroll = camera.transformY(screen.scroll);
 
-		canvas.drawText(name, 90, scroll + getY() + 30, paint);
-		canvas.drawText(Integer.toString(score), 90, scroll + getY() + 60, paint);
-		canvas.drawText(Integer.toString(position), 45, scroll + getY() + 30, paint);
-		canvas.drawText(dateFormat.format(date), 430, scroll + getY() + 30, paint);
-		canvas.drawLine(40, scroll + getY() + 63, 590, scroll + getY() + 63, lpaint);
+		canvas.drawText(name, camera.transformX(90), scroll + camera.transformY(getY() + 30), paint);
+		canvas.drawText(Integer.toString(score), camera.transformX(90), scroll + camera.transformY(getY() + 60), paint);
+		canvas.drawText(Integer.toString(position), camera.transformX(45), scroll + camera.transformY(getY() + 30), paint);
+		canvas.drawText(dateFormat.format(date), camera.transformX(430), scroll + camera.transformY(getY() + 30), paint);
+		canvas.drawLine(camera.transformX(40), scroll + camera.transformY(getY() + 63), camera.transformX(590), scroll + camera.transformY(getY() + 63), lpaint);
 	}
 
 	@Override

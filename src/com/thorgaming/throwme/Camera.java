@@ -45,12 +45,20 @@ public class Camera {
 		return x * getScreenWidth() / 800;
 	}
 
+	public int rTransformX(int x) {
+		return x * 800 / getScreenWidth();
+	}
+
 	public int transformRelativeY(int y) {
 		return transformY(y + this.y);
 	}
 
 	public int transformY(int y) {
 		return y * getScreenHeight() / 480;
+	}
+
+	public int rTransformY(int x) {
+		return x * 480 / getScreenHeight();
 	}
 
 	public int getScreenWidth() {

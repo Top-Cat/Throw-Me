@@ -23,7 +23,6 @@ public class BoostCloud extends Cloud {
 		super(R.drawable.cloud);
 		inputStream = ThrowMe.stage.getResources().openRawResource(R.drawable.cloud);
 		movie = Movie.decodeStream(inputStream);
-
 	}
 
 	@Override

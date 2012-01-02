@@ -306,7 +306,7 @@ public class Character extends DispObj {
 			Vec2 dampingForce = d.clone();
 			dampingForce = dampingForce.mul((float) (Vec2.dot(v, d) * damping));
 			bodyHead.applyForce(dampingForce, world1);
-			canvas.drawLine(bodyHead.getWorldCenter().x * Stage.ratio, bodyHead.getWorldCenter().y * Stage.ratio, mouseX, mouseY, paint);
+			canvas.drawLine(camera.transformX((int) (bodyHead.getWorldCenter().x * Stage.ratio)), camera.transformY((int) (bodyHead.getWorldCenter().y * Stage.ratio)), camera.transformX((int) mouseX), camera.transformY((int) mouseY), paint);
 		} else {
 			avgSpeed -= (avgSpeed - (bodyHead.getWorldCenter().x - previousHeadX)) / 100;
 			previousHeadX = bodyHead.getWorldCenter().x;
@@ -328,13 +328,13 @@ public class Character extends DispObj {
 		}
 		for (Body i : bodies.keySet()) {
 			Vec2 p = i.getPosition();
-			canvas.drawCircle((p.x * Stage.ratio - camera.getX()) * camera.getScreenWidth() / 800, (p.y * Stage.ratio + camera.getY()) * camera.getScreenHeight() / 480, bodies.get(i), paint);
+			canvas.drawCircle(camera.transformX((int) (p.x * Stage.ratio - camera.getX())), camera.transformY((int) (p.y * Stage.ratio + camera.getY())), bodies.get(i), paint);
 		}
 
 		Vec2 p = bodyHead.getPosition();
 
-		int actualX = (int) ((p.x * Stage.ratio - camera.getX()) * camera.getScreenWidth() / 800);
-		int actualY = (int) ((p.y * Stage.ratio + camera.getY()) * camera.getScreenHeight() / 480);
+		int actualX = camera.transformX((int) (p.x * Stage.ratio - camera.getX()));
+		int actualY = camera.transformY((int) (p.y * Stage.ratio + camera.getY()));
 
 		canvas.rotate((float) Math.toDegrees(bodyHead.getAngle()), actualX, actualY);
 		drawableEye.setBounds(actualX - 20, actualY - 20, actualX + 20, actualY + 20);

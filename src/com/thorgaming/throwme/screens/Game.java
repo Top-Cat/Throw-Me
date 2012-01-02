@@ -145,6 +145,7 @@ public class Game extends Screen {
 		public void sendCallback() {
 			if (character != null && character.end && !ended) {
 				activity.runOnUiThread(new Runnable() {
+					@Override
 					public void run() {
 						synchronized (ThrowMe.stage.drawThread.physicsSync) {
 							new Highs(activity, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
@@ -211,8 +212,8 @@ public class Game extends Screen {
 
 	@Override
 	public boolean onTouch(MotionEvent event) {
-		mouseX = (int) event.getX();
-		mouseY = (int) event.getY();
+		mouseX = ThrowMe.stage.camera.rTransformX((int) event.getX());
+		mouseY = ThrowMe.stage.camera.rTransformY((int) event.getY());
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			downX = mouseX;
@@ -220,11 +221,11 @@ public class Game extends Screen {
 			cameraX = ThrowMe.stage.camera.getX();
 			cameraY = ThrowMe.stage.camera.getY();
 			if (character != null) {
-				character.mouseDown(event.getX(), event.getY());
+				character.mouseDown(mouseX, mouseY);
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			int newX = (int) (cameraX + (downX - event.getX()));
-			int newY = (int) (cameraY + (event.getY() - downY));
+			int newX = (cameraX + downX - mouseX);
+			int newY = (cameraY + mouseY - downY);
 			if (newY < 0) {
 				newY = 0;
 			}
@@ -233,7 +234,7 @@ public class Game extends Screen {
 			}
 
 			if (character != null) {
-				character.mouse(event.getX(), event.getY());
+				character.mouse(mouseX, mouseY);
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
 			if (character != null) {

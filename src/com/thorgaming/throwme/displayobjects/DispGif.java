@@ -48,7 +48,7 @@ public class DispGif extends DispRes {
 			previousTime = relTime;
 			movie.setTime(relTime);
 			paint.setAlpha(getAlpha());
-			movie.draw(canvas, getX(), getY(), paint);
+			movie.draw(canvas, camera.transformX(getX()), camera.transformY(getY()), paint);
 		}
 	}
 

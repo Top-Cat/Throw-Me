@@ -32,7 +32,7 @@ public class RoundRect extends Rect {
 		actualY = camera.transformY(getY());
 
 		paint.setAlpha(getAlpha());
-		RectF rectangle = new RectF(getX(), getY(), getX() + getWidth(), getY() + getHeight());
+		RectF rectangle = new RectF(actualX, actualY, actualX + camera.transformX(getWidth()), actualY + camera.transformY(getHeight()));
 		canvas.drawRoundRect(rectangle, cornerRadius, cornerRadius, paint);
 		canvas.drawRoundRect(rectangle, cornerRadius, cornerRadius, stroke);
 	}
