@@ -29,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.EditText;
 
+import com.thorgaming.throwme.Callback;
 import com.thorgaming.throwme.DrawThread;
 import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.R;
@@ -63,7 +64,8 @@ public class Highs extends Screen {
 	private int previousMovement;
 	private int movement;
 
-	public int scroll = 0;
+	public int scrollDraw = 0;
+	private int scroll = 0;
 
 	private List<ScoreRow> highScores = new ArrayList<ScoreRow>();
 
@@ -78,6 +80,13 @@ public class Highs extends Screen {
 		RoundRect rr = (RoundRect) new RoundRect(20).setHeight(480).setWidth(550).setAlpha(50).setX(40).addToScreen(RenderPriority.High);
 		rr.paint.setARGB(50, 0, 0, 0);
 		rr.stroke.setARGB(150, 0, 0, 0);
+
+		ThrowMe.stage.draw = new Callback() {
+			@Override
+			public void sendCallback() {
+				scrollDraw = scroll;
+			}
+		};
 
 		loader = new DispGif(R.drawable.ajax, -1, 1).setWidth(128).setHeight(128).setX(251).setY(176).addToScreen();
 		dayBW = new DispRes(R.drawable.day_bw).setHitPadding(10).setWidth(184).setHeight(74).setX(608).setY(10).addToScreen();
@@ -340,14 +349,28 @@ public class Highs extends Screen {
 				movement = 0;
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			int direction = movement > 0 ? 1 : -1;
-			while (Math.abs(movement) > 1) {
-				scroll -= movement;
-				scroll = scrollBound(scroll);
-				movement -= direction;
+			new Thread() {
+				@Override
+				public void run() {
+					int direction = movement > 0 ? 1 : -1;
+					while (Math.abs(movement) > 1) {
+						scroll -= movement;
+						int scroll2 = scrollBound(scroll);
+						if (scroll != scroll2) {
+							scroll = scroll2;
+							movement = 0;
+						} else {
+							movement -= direction;
+						}
 
-				ThrowMe.waiting(10);
-			}
+						try {
+							sleep(10);
+						} catch (InterruptedException e) {
+							System.out.println("o noes, thread interupted!");
+						}
+					}
+				}
+			}.start();
 		}
 
 		return false;
