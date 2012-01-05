@@ -114,7 +114,7 @@ public class Game extends Screen {
 		new BoostCloud().setX(550).setY(-1920).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(800).setY(-1320).addToScreen(RenderPriority.High);
 		new ColouredCloud().setWidth(133).setHeight(75).setX(800).setY(-2500).addToScreen(RenderPriority.High);
-		new LightningCloud().setWidth(133).setHeight(75).setX(500).setY(-2800).addToScreen(RenderPriority.High);
+		new LightningCloud().setWidth(133).setHeight(175).setX(500).setY(-2800).addToScreen(RenderPriority.High);
 
 		ThrowMe.stage.world.setContactListener(new HitListener());
 
@@ -224,8 +224,8 @@ public class Game extends Screen {
 				character.mouseDown(mouseX, mouseY);
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			int newX = (cameraX + downX - mouseX);
-			int newY = (cameraY + mouseY - downY);
+			int newX = cameraX + downX - mouseX;
+			int newY = cameraY + mouseY - downY;
 			if (newY < 0) {
 				newY = 0;
 			}
