@@ -14,14 +14,13 @@ import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.RenderPriority;
 import com.thorgaming.throwme.ThrowMe;
-import com.thorgaming.throwme.displayobjects.DispGif;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
-import com.thorgaming.throwme.displayobjects.cloud.BoostCloud;
-import com.thorgaming.throwme.displayobjects.cloud.ColouredCloud;
-import com.thorgaming.throwme.displayobjects.cloud.LightningCloud;
 import com.thorgaming.throwme.displayobjects.game.Character;
 import com.thorgaming.throwme.displayobjects.game.Crane;
+import com.thorgaming.throwme.displayobjects.game.cloud.BoostCloud;
+import com.thorgaming.throwme.displayobjects.game.cloud.ColouredCloud;
+import com.thorgaming.throwme.displayobjects.game.cloud.LightningCloud;
 import com.thorgaming.throwme.displayobjects.shape.PhysCircle;
 import com.thorgaming.throwme.displayobjects.shape.Rect;
 

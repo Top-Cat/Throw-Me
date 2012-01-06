@@ -1,4 +1,4 @@
-package com.thorgaming.throwme.displayobjects.cloud;
+package com.thorgaming.throwme.displayobjects.game.cloud;
 
 import java.io.InputStream;
 
