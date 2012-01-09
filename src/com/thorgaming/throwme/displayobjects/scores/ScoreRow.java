@@ -40,7 +40,7 @@ public class ScoreRow extends DispObj {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		int scroll = camera.transformY(screen.scroll);
+		int scroll = camera.transformY(screen.scrollDraw);
 
 		canvas.drawText(name, camera.transformX(90), scroll + camera.transformY(getY() + 30), paint);
 		canvas.drawText(Integer.toString(score), camera.transformX(90), scroll + camera.transformY(getY() + 60), paint);

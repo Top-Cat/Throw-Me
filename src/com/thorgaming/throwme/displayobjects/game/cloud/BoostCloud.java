@@ -1,4 +1,4 @@
-package com.thorgaming.throwme.displayobjects.cloud;
+package com.thorgaming.throwme.displayobjects.game.cloud;
 
 import java.io.InputStream;
 
@@ -27,8 +27,8 @@ public class BoostCloud extends Cloud {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		actualX = camera.transformRelativeX(getX() - 200);
-		actualY = camera.transformRelativeY(getY() - 200);
+		actualX = camera.transformRelativeX(getX() - 133);
+		actualY = camera.transformRelativeY(getY() - 163);
 
 		if (actualX < -266) {
 			setX(getX() + 1000);
@@ -53,6 +53,7 @@ public class BoostCloud extends Cloud {
 
 	@Override
 	public void persistContact(Shape character) {
+		System.out.println("<");
 		character.getBody().applyForce(new Vec2(3, -10), character.getBody().getWorldCenter());
 	}
 

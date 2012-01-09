@@ -1,4 +1,4 @@
-package com.thorgaming.throwme.displayobjects.cloud;
+package com.thorgaming.throwme.displayobjects.game.cloud;
 
 import org.jbox2d.collision.Shape;
 import org.jbox2d.common.Vec2;
@@ -14,6 +14,11 @@ public class LightningCloud extends Cloud {
 	@Override
 	public void persistContact(Shape character) {
 		character.getBody().applyForce(new Vec2(8, 20), character.getBody().getWorldCenter());
+	}
+	
+	@Override
+	public int getY() {
+		return super.getY() - 40;
 	}
 
 }

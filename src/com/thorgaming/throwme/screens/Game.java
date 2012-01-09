@@ -14,14 +14,13 @@ import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.RenderPriority;
 import com.thorgaming.throwme.ThrowMe;
-import com.thorgaming.throwme.displayobjects.DispGif;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
-import com.thorgaming.throwme.displayobjects.cloud.BoostCloud;
-import com.thorgaming.throwme.displayobjects.cloud.ColouredCloud;
-import com.thorgaming.throwme.displayobjects.cloud.LightningCloud;
 import com.thorgaming.throwme.displayobjects.game.Character;
 import com.thorgaming.throwme.displayobjects.game.Crane;
+import com.thorgaming.throwme.displayobjects.game.cloud.BoostCloud;
+import com.thorgaming.throwme.displayobjects.game.cloud.ColouredCloud;
+import com.thorgaming.throwme.displayobjects.game.cloud.LightningCloud;
 import com.thorgaming.throwme.displayobjects.shape.PhysCircle;
 import com.thorgaming.throwme.displayobjects.shape.Rect;
 
@@ -115,7 +114,7 @@ public class Game extends Screen {
 		new BoostCloud().setX(550).setY(-1920).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(800).setY(-1320).addToScreen(RenderPriority.High);
 		new ColouredCloud().setWidth(133).setHeight(75).setX(800).setY(-2500).addToScreen(RenderPriority.High);
-		new LightningCloud().setWidth(133).setHeight(75).setX(500).setY(-2800).addToScreen(RenderPriority.High);
+		new LightningCloud().setWidth(133).setHeight(175).setX(500).setY(-2800).addToScreen(RenderPriority.High);
 
 		ThrowMe.stage.world.setContactListener(new HitListener());
 
@@ -225,8 +224,8 @@ public class Game extends Screen {
 				character.mouseDown(mouseX, mouseY);
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			int newX = (cameraX + downX - mouseX);
-			int newY = (cameraY + mouseY - downY);
+			int newX = cameraX + downX - mouseX;
+			int newY = cameraY + mouseY - downY;
 			if (newY < 0) {
 				newY = 0;
 			}

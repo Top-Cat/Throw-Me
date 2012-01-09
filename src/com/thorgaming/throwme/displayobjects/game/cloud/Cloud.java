@@ -1,4 +1,4 @@
-package com.thorgaming.throwme.displayobjects.cloud;
+package com.thorgaming.throwme.displayobjects.game.cloud;
 
 import org.jbox2d.collision.CircleDef;
 import org.jbox2d.collision.Shape;
@@ -30,7 +30,7 @@ public class Cloud extends DispRes_Rel implements Sensor {
 		cloud.isSensor = true;
 		cloud.radius = 38 / Stage.ratio;
 		cloud.density = 0;
-		cloud.localPosition = new Vec2(-33 / Stage.ratio, 0);
+		cloud.localPosition = new Vec2(33 / Stage.ratio, 19 / Stage.ratio);
 		cloud.userData = this;
 
 		BodyDef headBodyDef = new BodyDef();
@@ -38,7 +38,7 @@ public class Cloud extends DispRes_Rel implements Sensor {
 
 		physicsBody = world.createBody(headBodyDef);
 		physicsBody.createShape(cloud);
-		cloud.localPosition = new Vec2(33 / Stage.ratio, 0);
+		cloud.localPosition = new Vec2(100 / Stage.ratio, 19 / Stage.ratio);
 		physicsBody.createShape(cloud);
 		physicsBody.setMassFromShapes();
 	}
