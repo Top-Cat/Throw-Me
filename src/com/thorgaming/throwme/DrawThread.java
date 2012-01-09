@@ -37,6 +37,10 @@ public class DrawThread extends Thread {
 		doPhysics = physics;
 	}
 
+	public boolean isPhysicsRunning() {
+		return doPhysics;
+	}
+
 	public static void resetGradient() {
 		int[] gr = new int[2];
 		gr[0] = Color.rgb(0, 102, 204);

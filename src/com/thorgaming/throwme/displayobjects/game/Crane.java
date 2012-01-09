@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
+import com.thorgaming.throwme.RenderPriority;
 import com.thorgaming.throwme.Stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
@@ -60,9 +61,11 @@ public class Crane extends DispRes_Rel implements Sensor {
 
 		physicsBody.setXForm(new Vec2((float) (getX() + 207 - 97 * Math.sin(Math.toRadians(angle)) - 9 * Math.cos(Math.toRadians(angle))) / Stage.ratio, (float) (getY() + 41 + 97 * Math.cos(Math.toRadians(angle)) + 9 * Math.sin(Math.toRadians(angle))) / Stage.ratio), 0);
 
-		time += speed;
-		if (time > 360) {
-			time = time % 360;
+		if (ThrowMe.stage.drawThread.isPhysicsRunning()) {
+			time += speed;
+			if (time > 360) {
+				time = time % 360;
+			}
 		}
 		notes.setBounds(camera.transformRelativeX(getX()) + 173, camera.transformRelativeY(getY()) + 30, camera.transformRelativeX(getX()) + 231, camera.transformRelativeY(getY()) + 170);
 		notes.draw(canvas);
@@ -77,7 +80,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 	@Override
 	public void hit(Shape otherShape) {
 		if (((Character) otherShape.getUserData()).bodyHead.getShapeList() == otherShape) {
-			System.out.println("eye hit!");
+			new Launcher((Character) otherShape.getUserData()).addToScreen(RenderPriority.Lowest);
 		}
 	}
 

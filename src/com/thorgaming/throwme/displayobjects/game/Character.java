@@ -63,6 +63,7 @@ public class Character extends DispObj {
 	private Paint barSurroundPaint = new Paint();
 	private Drawable drawableEye;
 	private int balloonBar = 500;
+	private byte coolDown = 0;
 
 	public Character() {
 		drawableEye = ThrowMe.stage.getResources().getDrawable(R.drawable.eye);
@@ -308,10 +309,12 @@ public class Character extends DispObj {
 			bodyHead.applyForce(dampingForce, world1);
 			canvas.drawLine(camera.transformX((int) (bodyHead.getWorldCenter().x * Stage.ratio)), camera.transformY((int) (bodyHead.getWorldCenter().y * Stage.ratio)), camera.transformX((int) mouseX), camera.transformY((int) mouseY), paint);
 		} else {
-			avgSpeed -= (avgSpeed - (bodyHead.getWorldCenter().x - previousHeadX)) / 100;
-			previousHeadX = bodyHead.getWorldCenter().x;
-			if (avgSpeed < 1 / Stage.ratio) {
-				end = true;
+			if (ThrowMe.stage.drawThread.isPhysicsRunning()) {
+				avgSpeed -= (avgSpeed - (bodyHead.getWorldCenter().x - previousHeadX)) / 100;
+				previousHeadX = bodyHead.getWorldCenter().x;
+				if (avgSpeed < 1 / Stage.ratio) {
+					end = true;
+				}
 			}
 
 			int nx = (int) (camera.getX() - (camera.getX() + (-Stage.ratio * bodyHead.getWorldCenter().x + camera.getScreenWidth() / 2)) / 10);
@@ -344,6 +347,10 @@ public class Character extends DispObj {
 		canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX((int) (balloonBar / 2.777 + 610)), camera.transformY(75), barPaint);
 		canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX(790), camera.transformY(75), barSurroundPaint);
 
+		if (coolDown > -50) {
+			coolDown--;
+		}
+		System.out.println(coolDown);
 		if (balloons) {
 			bodyHead.applyImpulse(new Vec2(0.02F, -0.13F), bodyHead.getWorldCenter().add(new Vec2((float) (20 * Math.sin(bodyHead.getAngle())) / Stage.ratio, (float) (20 * Math.cos(bodyHead.getAngle())) / Stage.ratio)));
 			balloonBar--;
@@ -361,7 +368,8 @@ public class Character extends DispObj {
 	}
 
 	public void mouseDown(float x, float y) {
-		if (balloonBar > 0) {
+		if (balloonBar > 0 && coolDown == -50) {
+			coolDown = 127;
 			synchronized (ThrowMe.stage.drawThread.physicsSync) {
 				Vec2 linearVelocity = bodyHead.getLinearVelocity();
 				bodyHead.setLinearVelocity(new Vec2(Math.max(linearVelocity.x, 3), Math.min(linearVelocity.y, -3)));

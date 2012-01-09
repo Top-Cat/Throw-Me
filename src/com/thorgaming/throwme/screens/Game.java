@@ -53,6 +53,7 @@ public class Game extends Screen {
 		super(activity, data);
 
 		ThrowMe.stage.camera.setCameraXY(0, 0);
+		ThrowMe.stage.drawThread.setPhysics(true);
 
 		gradient[0][0] = 255;
 		gradient[0][1] = 255;
