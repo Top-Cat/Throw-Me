@@ -7,7 +7,6 @@ import org.jbox2d.dynamics.contacts.ContactResult;
 
 import com.thorgaming.throwme.displayobjects.Sensor;
 import com.thorgaming.throwme.displayobjects.game.Character;
-import com.thorgaming.throwme.displayobjects.game.cloud.Cloud;
 
 public class HitListener implements ContactListener {
 
@@ -16,7 +15,7 @@ public class HitListener implements ContactListener {
 		Shape i = arg0.shape1;
 		Shape j = arg0.shape2;
 		Shape t = null;
-		if (i.getUserData() instanceof Cloud) {
+		if (i.getUserData() instanceof Sensor) {
 			t = i;
 			i = j;
 			j = t;
@@ -31,7 +30,7 @@ public class HitListener implements ContactListener {
 		Shape i = arg0.shape1;
 		Shape j = arg0.shape2;
 		Shape t = null;
-		if (i.getUserData() instanceof Cloud) {
+		if (i.getUserData() instanceof Sensor) {
 			t = i;
 			i = j;
 			j = t;
