@@ -22,7 +22,7 @@ public class HitListener implements ContactListener {
 			j = t;
 		}
 		if (i.getUserData() instanceof Character && j.getUserData() instanceof Sensor) {
-			((Sensor) j.getUserData()).hit(arg0.shape1);
+			((Sensor) j.getUserData()).hit(i);
 		}
 	}
 
@@ -37,7 +37,7 @@ public class HitListener implements ContactListener {
 			j = t;
 		}
 		if (i.getUserData() instanceof Character && j.getUserData() instanceof Sensor) {
-			((Sensor) j.getUserData()).persistContact(arg0.shape1);
+			((Sensor) j.getUserData()).persistContact(i);
 		}
 	}
 

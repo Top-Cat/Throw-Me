@@ -20,17 +20,22 @@ public class Launcher extends DispObj {
 	private Paint paint = new Paint();
 	private Paint paintStroke = new Paint();
 
-	public Launcher(final Character character) {
+	public Launcher(Character character) {
+		this(character, 1);
+	}
+	
+	public Launcher(final Character character, final float multiplier) {
 		ThrowMe.stage.drawThread.setPhysics(false);
-		paint.setColor(Color.rgb(43, 53, 255));
-		paintStroke.setColor(Color.rgb(43, 53, 255));
+		paint.setColor(Color.rgb(255, 32, 20));
+		paintStroke.setColor(Color.rgb(220, 220, 220));
 		paintStroke.setStyle(Style.STROKE);
+		paintStroke.setStrokeWidth(10);
 
 		setMouseDownEvent(new MouseCallback() {
 			@Override
 			public void sendCallback() {
 				ThrowMe.stage.drawThread.setPhysics(true);
-				character.bodyHead.applyImpulse(new Vec2(55F, -80F).mul((float) bar), character.bodyHead.getWorldCenter().add(new Vec2((float) (20 * Math.sin(character.bodyHead.getAngle())) / Stage.ratio, (float) (20 * Math.cos(character.bodyHead.getAngle())) / Stage.ratio)));
+				character.bodyHead.applyImpulse(new Vec2(55F, -80F).mul((float) bar * multiplier), character.bodyHead.getWorldCenter().add(new Vec2((float) (20 * Math.sin(character.bodyHead.getAngle())) / Stage.ratio, (float) (20 * Math.cos(character.bodyHead.getAngle())) / Stage.ratio)));
 				destroy();
 			}
 
@@ -43,7 +48,7 @@ public class Launcher extends DispObj {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		step += 0.1;
+		step += 0.15;
 		bar = Math.abs(Math.sin(step) / Math.pow(1.12, step / 2.2));
 
 		canvas.drawRect(10, (float) (400 - bar * 300), 50, 400, paint);

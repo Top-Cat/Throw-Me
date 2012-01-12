@@ -5,22 +5,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 import com.thorgaming.throwme.animation.Anim;
 import com.thorgaming.throwme.displayobjects.DispObj;
+import com.thorgaming.throwme.screens.Highs;
+import com.thorgaming.throwme.screens.Main;
 
 public class DrawThread extends Thread {
 
 	private static int[] gradient = {Color.rgb(0, 0, 0), Color.rgb(0, 0, 0)};
 	private SurfaceHolder surfaceHolder;
 	private boolean doRun = false;
+	private Activity goMain = null;
+	private boolean activityRet = false;
 	private boolean doPhysics = true;
 	public Integer physicsSync = 0;
 	public static Set<DispObj> toRemove = new HashSet<DispObj>();
@@ -51,6 +55,19 @@ public class DrawThread extends Thread {
 	public static void setgrad(int[] gradient) {
 		DrawThread.gradient = gradient;
 	}
+	
+	public void returnMain(Activity activity) {
+		returnAct(activity, false);
+	}
+	
+	public void returnHighs(Activity activity) {
+		returnAct(activity, true);
+	}
+	
+	private void returnAct(Activity activity, boolean a) {
+		goMain = activity;
+		activityRet = a;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -58,7 +75,7 @@ public class DrawThread extends Thread {
 		while (doRun) {
 			Canvas c = null;
 			try {
-				for (MotionEvent e : (ArrayList<MotionEvent>) ThrowMe.stage.mcache.clone()) {
+				for (MotionEventStore e : (ArrayList<MotionEventStore>) ThrowMe.stage.mcache.clone()) {
 					ThrowMe.stage.touch(e);
 				}
 				ThrowMe.stage.mcache.clear();
@@ -100,17 +117,33 @@ public class DrawThread extends Thread {
 					}
 
 				}
+				
+				if (goMain != null) {
+					if (activityRet) {
+						goMain.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								new Highs(goMain, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
+							}
+						});
+					} else {
+						goMain.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								new Main(goMain, new Object[] {true});
+							}
+						});	
+					}
+					while (goMain != null) {};
+				}
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
-				// do this in a finally so that if an exception is thrown
-				// during the above, we don't leave the Surface in an
-				// inconsistent state
 				if (c != null) {
 					surfaceHolder.unlockCanvasAndPost(c);
 				}
 			}
 		}
-
 	}
 }

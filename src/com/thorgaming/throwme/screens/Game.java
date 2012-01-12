@@ -14,6 +14,7 @@ import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.RenderPriority;
 import com.thorgaming.throwme.ThrowMe;
+import com.thorgaming.throwme.displayobjects.DispGif;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
 import com.thorgaming.throwme.displayobjects.game.Character;
@@ -144,14 +145,7 @@ public class Game extends Screen {
 		@Override
 		public void sendCallback() {
 			if (character != null && character.end && !ended) {
-				activity.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						synchronized (ThrowMe.stage.drawThread.physicsSync) {
-							new Highs(activity, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
-						}
-					}
-				});
+				ThrowMe.stage.drawThread.returnHighs(activity);
 				ended = true;
 			}
 			if (!ended) {
@@ -169,7 +163,7 @@ public class Game extends Screen {
 						randomHills[i].setRadius(random.nextInt(80) + 80);
 
 						if (lastCrane < hillDistance) {
-							if (random.nextInt(40) < 10) {
+							if (random.nextInt(40) < 5) {
 								lastCrane = hillDistance + 3;
 								new Crane().setX(hillDistance * 160 + random.nextInt(80)).setY(90 + random.nextInt(40)).addToScreen(RenderPriority.High);
 							}
@@ -248,7 +242,7 @@ public class Game extends Screen {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			new Main(activity, new Object[] {true});
+			ThrowMe.stage.drawThread.returnMain(activity);
 		}
 		return super.onKeyDown(keyCode, event);
 	}

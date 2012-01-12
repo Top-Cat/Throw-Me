@@ -13,6 +13,7 @@ public class Screen {
 	public Screen(Activity activity, Object[] data) {
 		ThrowMe.stage.clear();
 		ThrowMe.stage.draw = null;
+		ThrowMe.stage.drawThread.returnMain(null);
 		this.activity = (ThrowMe) activity;
 		this.activity.screen = this;
 	}

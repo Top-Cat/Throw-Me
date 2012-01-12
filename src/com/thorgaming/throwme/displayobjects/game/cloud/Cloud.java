@@ -28,7 +28,7 @@ public class Cloud extends DispRes_Rel implements Sensor {
 
 		CircleDef cloud = new CircleDef();
 		cloud.isSensor = true;
-		cloud.radius = 38 / Stage.ratio;
+		cloud.radius = 33 / Stage.ratio;
 		cloud.density = 0;
 		cloud.localPosition = new Vec2(33 / Stage.ratio, 19 / Stage.ratio);
 		cloud.userData = this;
@@ -59,11 +59,15 @@ public class Cloud extends DispRes_Rel implements Sensor {
 	public void move(int x, int y) {
 		physicsBody.setXForm(new Vec2(x / Stage.ratio, y / Stage.ratio), 0);
 	}
+	
+	protected void scrollMove() {
+		setX(getX() + 1000);
+	}
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
 		if (camera.transformRelativeX(getX() - 67) < -266) {
-			setX(getX() + 1000);
+			scrollMove();
 			physicsBody.setXForm(new Vec2(getX() / Stage.ratio, getY() / Stage.ratio), 0);
 		}
 
@@ -78,7 +82,7 @@ public class Cloud extends DispRes_Rel implements Sensor {
 
 	@Override
 	public void hit(Shape otherShape) {
-
+		
 	}
 
 	@Override

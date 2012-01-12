@@ -74,8 +74,9 @@ public class Character extends DispObj {
 		paint.setStrokeWidth(1);
 
 		barPaint.setColor(Color.rgb(40, 69, 255));
-		barSurroundPaint.setColor(Color.rgb(40, 69, 255));
+		barSurroundPaint.setColor(Color.rgb(220, 220, 220));
 		barSurroundPaint.setStyle(Style.STROKE);
+		barSurroundPaint.setStrokeWidth(4);
 
 		CircleDef head = new CircleDef();
 		head.radius = 20 / Stage.ratio;
@@ -289,6 +290,7 @@ public class Character extends DispObj {
 	int length = 1;
 	int backwards = 0;
 	float previousHeadX = 0;
+	float previousHeadY = 0;
 	double avgSpeed = 1;
 
 	@Override
@@ -309,9 +311,20 @@ public class Character extends DispObj {
 			bodyHead.applyForce(dampingForce, world1);
 			canvas.drawLine(camera.transformX((int) (bodyHead.getWorldCenter().x * Stage.ratio)), camera.transformY((int) (bodyHead.getWorldCenter().y * Stage.ratio)), camera.transformX((int) mouseX), camera.transformY((int) mouseY), paint);
 		} else {
+			canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX((int) (balloonBar / 2.777 + 610)), camera.transformY(75), barPaint);
+			canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX(790), camera.transformY(75), barSurroundPaint);
+			
 			if (ThrowMe.stage.drawThread.isPhysicsRunning()) {
-				avgSpeed -= (avgSpeed - (bodyHead.getWorldCenter().x - previousHeadX)) / 100;
+				float speedX = (bodyHead.getWorldCenter().x - previousHeadX);
+				float speedY = (bodyHead.getWorldCenter().y - previousHeadY);
+				if (speedX < 0) {
+					//Compensate for pythag ignoring direction
+					speedX = 0;
+					speedY *= 0.7;
+				}
+				avgSpeed -= (avgSpeed - Math.sqrt(speedX * speedX + speedY * speedY)) / 100;
 				previousHeadX = bodyHead.getWorldCenter().x;
+				previousHeadY = bodyHead.getWorldCenter().y;
 				if (avgSpeed < 1 / Stage.ratio) {
 					end = true;
 				}
@@ -324,7 +337,7 @@ public class Character extends DispObj {
 			camera.setCameraXY(nx, ny);
 
 			canvas.drawText("Distance: " + nx / 10 + "m", 10, 40, paint);
-			String altitudeText = "Altitude: " + (int) -(bodyHead.getWorldCenter().y - 12) * 2 + "m";
+			String altitudeText = "Altitude: " + (int) (-(bodyHead.getWorldCenter().y - 12) * 1.9) + "m";
 			android.graphics.Rect bounds = new android.graphics.Rect();
 			paint.getTextBounds(altitudeText, 0, altitudeText.length(), bounds);
 			canvas.drawText(altitudeText, camera.getScreenWidth() - bounds.width() - 10, 40, paint);
@@ -336,21 +349,18 @@ public class Character extends DispObj {
 
 		Vec2 p = bodyHead.getPosition();
 
-		int actualX = camera.transformX((int) (p.x * Stage.ratio - camera.getX()));
-		int actualY = camera.transformY((int) (p.y * Stage.ratio + camera.getY()));
+		int actualX = camera.transformRelativeX((int) (p.x * Stage.ratio));
+		int actualY = camera.transformRelativeY((int) (p.y * Stage.ratio));
 
 		canvas.rotate((float) Math.toDegrees(bodyHead.getAngle()), actualX, actualY);
 		drawableEye.setBounds(actualX - 20, actualY - 20, actualX + 20, actualY + 20);
 		drawableEye.draw(canvas);
 		canvas.restore();
 
-		canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX((int) (balloonBar / 2.777 + 610)), camera.transformY(75), barPaint);
-		canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX(790), camera.transformY(75), barSurroundPaint);
-
 		if (coolDown > -50) {
 			coolDown--;
 		}
-		System.out.println(coolDown);
+
 		if (balloons) {
 			bodyHead.applyImpulse(new Vec2(0.02F, -0.13F), bodyHead.getWorldCenter().add(new Vec2((float) (20 * Math.sin(bodyHead.getAngle())) / Stage.ratio, (float) (20 * Math.cos(bodyHead.getAngle())) / Stage.ratio)));
 			balloonBar--;

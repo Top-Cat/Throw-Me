@@ -28,6 +28,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 	private float speed = random.nextFloat() * 2 + 1;
 	private World world;
 	protected Body physicsBody;
+	private boolean hit = false;
 
 	public Crane() {
 		super(R.drawable.crane);
@@ -57,8 +58,6 @@ public class Crane extends DispRes_Rel implements Sensor {
 		super.draw(canvas, camera);
 		canvas.save();
 		float angle = (float) (40 * Math.sin(Math.toRadians(time)));
-		canvas.rotate(angle, camera.transformRelativeX(getX()) + 195, camera.transformRelativeY(getY()) + 41);
-
 		physicsBody.setXForm(new Vec2((float) (getX() + 207 - 97 * Math.sin(Math.toRadians(angle)) - 9 * Math.cos(Math.toRadians(angle))) / Stage.ratio, (float) (getY() + 41 + 97 * Math.cos(Math.toRadians(angle)) + 9 * Math.sin(Math.toRadians(angle))) / Stage.ratio), 0);
 
 		if (ThrowMe.stage.drawThread.isPhysicsRunning()) {
@@ -67,7 +66,9 @@ public class Crane extends DispRes_Rel implements Sensor {
 				time = time % 360;
 			}
 		}
-		notes.setBounds(camera.transformRelativeX(getX()) + 173, camera.transformRelativeY(getY()) + 30, camera.transformRelativeX(getX()) + 231, camera.transformRelativeY(getY()) + 170);
+		
+		canvas.rotate(angle, camera.transformRelativeX(getX() + 198), camera.transformRelativeY(getY() + 54));
+		notes.setBounds(camera.transformRelativeX(getX() + 175), camera.transformRelativeY(getY() + 43), camera.transformRelativeX(getX()) + 231, camera.transformRelativeY(getY()) + 170);
 		notes.draw(canvas);
 		canvas.restore();
 	}
@@ -79,7 +80,8 @@ public class Crane extends DispRes_Rel implements Sensor {
 
 	@Override
 	public void hit(Shape otherShape) {
-		if (((Character) otherShape.getUserData()).bodyHead.getShapeList() == otherShape) {
+		if (((Character) otherShape.getUserData()).bodyHead.getShapeList() == otherShape && !hit) {
+			hit = true;
 			new Launcher((Character) otherShape.getUserData()).addToScreen(RenderPriority.Lowest);
 		}
 	}
@@ -87,6 +89,12 @@ public class Crane extends DispRes_Rel implements Sensor {
 	@Override
 	public void persistContact(Shape otherShape) {
 
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		world.destroyBody(physicsBody);
 	}
 
 }
