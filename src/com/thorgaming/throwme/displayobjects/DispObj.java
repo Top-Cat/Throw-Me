@@ -28,7 +28,7 @@ public abstract class DispObj {
 		return addToScreen(RenderPriority.Normal);
 	}
 
-	private MouseCallback onMouseUpEvent, onMouseDownEvent;
+	private MouseCallback onMouseUpEvent, onMouseDownEvent, onMouseMoveEvent;
 
 	public abstract void draw(Canvas canvas, Camera camera);
 
@@ -38,6 +38,14 @@ public abstract class DispObj {
 
 	public MouseCallback getMouseUpEvent() {
 		return onMouseUpEvent;
+	}
+	
+	public void setMouseMoveEvent(MouseCallback event) {
+		onMouseMoveEvent = event;
+	}
+
+	public MouseCallback getMouseMoveEvent() {
+		return onMouseMoveEvent;
 	}
 
 	public void setMouseDownEvent(MouseCallback event) {

@@ -55,15 +55,15 @@ public class DrawThread extends Thread {
 	public static void setgrad(int[] gradient) {
 		DrawThread.gradient = gradient;
 	}
-	
+
 	public void returnMain(Activity activity) {
 		returnAct(activity, false);
 	}
-	
+
 	public void returnHighs(Activity activity) {
 		returnAct(activity, true);
 	}
-	
+
 	private void returnAct(Activity activity, boolean a) {
 		goMain = activity;
 		activityRet = a;
@@ -117,7 +117,7 @@ public class DrawThread extends Thread {
 					}
 
 				}
-				
+
 				if (goMain != null) {
 					if (activityRet) {
 						goMain.runOnUiThread(new Runnable() {
@@ -132,11 +132,12 @@ public class DrawThread extends Thread {
 							public void run() {
 								new Main(goMain, new Object[] {true});
 							}
-						});	
+						});
 					}
-					while (goMain != null) {};
+					while (goMain != null) {
+					}
 				}
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {

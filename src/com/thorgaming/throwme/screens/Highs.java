@@ -90,13 +90,53 @@ public class Highs extends Screen {
 
 		loader = new DispGif(R.drawable.ajax, -1, 1).setWidth(128).setHeight(128).setX(251).setY(176).addToScreen();
 		dayBW = new DispRes(R.drawable.day_bw).setHitPadding(15).setWidth(184).setHeight(74).setX(608).setY(10).addToScreen();
-		dayBW.setMouseDownEvent(new daysel());
+		dayBW.setMouseDownEvent(new MouseCallback() {
+			@Override
+			public void sendCallback(int x, int y) {
+				if (!loading) {
+					resetOptions();
+					dayBW.setAlpha(0);
+					dayC.setAlpha(255);
+					new loader("day").start();
+				}
+			}
+		});
 		weekBW = new DispRes(R.drawable.week_bw).setHitPadding(15).setWidth(184).setHeight(54).setX(608).setY(120).addToScreen();
-		weekBW.setMouseDownEvent(new weeksel());
+		weekBW.setMouseDownEvent(new MouseCallback() {
+			@Override
+			public void sendCallback(int x, int y) {
+				if (!loading) {
+					resetOptions();
+					weekBW.setAlpha(0);
+					weekC.setAlpha(255);
+					new loader("week").start();
+				}
+			}
+		});
 		monthBW = new DispRes(R.drawable.month_bw).setHitPadding(15).setWidth(184).setHeight(40).setX(608).setY(214).addToScreen();
-		monthBW.setMouseDownEvent(new monthsel());
+		monthBW.setMouseDownEvent(new MouseCallback() {
+			@Override
+			public void sendCallback(int x, int y) {
+				if (!loading) {
+					resetOptions();
+					monthBW.setAlpha(0);
+					monthC.setAlpha(255);
+					new loader("month").start();
+				}
+			}
+		});
 		timeBW = new DispRes(R.drawable.time_bw).setHitPadding(15).setWidth(184).setHeight(31).setX(608).setY(297).addToScreen();
-		timeBW.setMouseDownEvent(new timesel());
+		timeBW.setMouseDownEvent(new MouseCallback() {
+			@Override
+			public void sendCallback(int x, int y) {
+				if (!loading) {
+					resetOptions();
+					timeBW.setAlpha(0);
+					timeC.setAlpha(255);
+					new loader("").start();
+				}
+			}
+		});
 
 		dayC = new DispRes(R.drawable.day).setWidth(184).setHeight(74).setX(608).setY(10).setAlpha(0).addToScreen();
 		weekC = new DispRes(R.drawable.week).setWidth(184).setHeight(54).setX(608).setY(120).setAlpha(0).addToScreen();
@@ -142,7 +182,7 @@ public class Highs extends Screen {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						new daysel().sendCallback();
+						dayBW.getMouseDownEvent().sendCallback();
 					} catch (NoSuchAlgorithmException e) {
 						e.printStackTrace();
 					}
@@ -159,13 +199,13 @@ public class Highs extends Screen {
 
 				@Override
 				public void onCancel(DialogInterface arg0) {
-					new daysel().sendCallback();
+					dayBW.getMouseDownEvent().sendCallback();
 				}
 
 			});
 			alert.show();
 		} else {
-			new daysel().sendCallback();
+			dayBW.getMouseDownEvent().sendCallback();
 		}
 	}
 
@@ -179,74 +219,6 @@ public class Highs extends Screen {
 		weekBW.setAlpha(255);
 		monthBW.setAlpha(255);
 		timeBW.setAlpha(255);
-	}
-
-	public class timesel implements MouseCallback {
-		@Override
-		public void sendCallback(int x, int y) {
-			sendCallback();
-		}
-
-		@Override
-		public void sendCallback() {
-			if (!loading) {
-				resetOptions();
-				timeBW.setAlpha(0);
-				timeC.setAlpha(255);
-				new loader("").start();
-			}
-		}
-	}
-
-	public class monthsel implements MouseCallback {
-		@Override
-		public void sendCallback(int x, int y) {
-			sendCallback();
-		}
-
-		@Override
-		public void sendCallback() {
-			if (!loading) {
-				resetOptions();
-				monthBW.setAlpha(0);
-				monthC.setAlpha(255);
-				new loader("month").start();
-			}
-		}
-	}
-
-	public class weeksel implements MouseCallback {
-		@Override
-		public void sendCallback(int x, int y) {
-			sendCallback();
-		}
-
-		@Override
-		public void sendCallback() {
-			if (!loading) {
-				resetOptions();
-				weekBW.setAlpha(0);
-				weekC.setAlpha(255);
-				new loader("week").start();
-			}
-		}
-	}
-
-	public class daysel implements MouseCallback {
-		@Override
-		public void sendCallback(int x, int y) {
-			sendCallback();
-		}
-
-		@Override
-		public void sendCallback() {
-			if (!loading) {
-				resetOptions();
-				dayBW.setAlpha(0);
-				dayC.setAlpha(255);
-				new loader("day").start();
-			}
-		}
 	}
 
 	boolean loading = false;

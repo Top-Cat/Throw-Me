@@ -66,7 +66,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 				time = time % 360;
 			}
 		}
-		
+
 		canvas.rotate(angle, camera.transformRelativeX(getX() + 198), camera.transformRelativeY(getY() + 54));
 		notes.setBounds(camera.transformRelativeX(getX() + 175), camera.transformRelativeY(getY() + 43), camera.transformRelativeX(getX()) + 231, camera.transformRelativeY(getY()) + 170);
 		notes.draw(canvas);
@@ -90,7 +90,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 	public void persistContact(Shape otherShape) {
 
 	}
-	
+
 	@Override
 	public void destroy() {
 		super.destroy();

@@ -94,40 +94,55 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 	public void touch(MotionEventStore event) {
 		int x = (int) event.getX();
 		int y = (int) event.getY();
-
+		MouseCallback callback = null;
+		
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			MouseCallback callback = null;
-			findObject: for (int i = 4; i >= 0; i--) {
+			/*findObject: */for (int i = 4; i >= 0; i--) {
 				if (objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
 					for (DispObj obj : objects.get(RenderPriority.getRenderPriorityFromId(i))) {
 						if (obj.checkPress(x, y)) {
 							callback = obj.getMouseDownEvent();
 							if (callback != null) {
-								break findObject;
+								callback.sendCallback(x, y);
 							}
+							/*if (callback != null) { Cascade?
+								break findObject;
+							}*/
 						}
 					}
 				}
 			}
-			if (callback != null) {
-				callback.sendCallback(x, y);
+		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			/*findObject: */for (int i = 4; i >= 0; i--) {
+				if (objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
+					for (DispObj obj : objects.get(RenderPriority.getRenderPriorityFromId(i))) {
+						if (obj.checkPress(x, y)) {
+							callback = obj.getMouseMoveEvent();
+							if (callback != null) {
+								callback.sendCallback(x, y);
+							}
+							/*if (callback != null) { Cascade?
+								break findObject;
+							}*/
+						}
+					}
+				}
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			MouseCallback callback = null;
-			findObject: for (int i = 4; i >= 0; i--) {
+			/*findObject: */for (int i = 4; i >= 0; i--) {
 				if (objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
 					for (DispObj obj : objects.get(RenderPriority.getRenderPriorityFromId(i))) {
 						if (obj.checkPress(x, y)) {
 							callback = obj.getMouseUpEvent();
 							if (callback != null) {
-								break findObject;
+								callback.sendCallback(x, y);
 							}
+							/*if (callback != null) { Cascade?
+								break findObject;
+							}*/
 						}
 					}
 				}
-			}
-			if (callback != null) {
-				callback.sendCallback(x, y);
 			}
 		}
 	}

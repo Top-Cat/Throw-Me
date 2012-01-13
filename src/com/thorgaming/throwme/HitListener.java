@@ -14,8 +14,8 @@ public class HitListener implements ContactListener {
 	public void add(ContactPoint arg0) {
 		Shape i = arg0.shape1;
 		Shape j = arg0.shape2;
-		Shape t = null;
 		if (i.getUserData() instanceof Sensor) {
+			Shape t = null;
 			t = i;
 			i = j;
 			j = t;
@@ -29,8 +29,8 @@ public class HitListener implements ContactListener {
 	public void persist(ContactPoint arg0) {
 		Shape i = arg0.shape1;
 		Shape j = arg0.shape2;
-		Shape t = null;
 		if (i.getUserData() instanceof Sensor) {
+			Shape t = null;
 			t = i;
 			i = j;
 			j = t;

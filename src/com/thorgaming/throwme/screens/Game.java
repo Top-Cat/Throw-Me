@@ -19,6 +19,7 @@ import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
 import com.thorgaming.throwme.displayobjects.game.Character;
 import com.thorgaming.throwme.displayobjects.game.Crane;
+import com.thorgaming.throwme.displayobjects.game.HUD;
 import com.thorgaming.throwme.displayobjects.game.cloud.BoostCloud;
 import com.thorgaming.throwme.displayobjects.game.cloud.ColouredCloud;
 import com.thorgaming.throwme.displayobjects.game.cloud.LightningCloud;
@@ -105,7 +106,7 @@ public class Game extends Screen {
 		}
 
 		box = (DispRes_Rel) new DispRes_Rel(R.drawable.box).setWidth(150).setHeight(150).setX(325).setY(105).addToScreen();
-		new Rect().setWidth(800).setHeight(480).setAlpha(0).addToScreen().setMouseDownEvent(new boxsplode());
+		new Rect().setWidth(800).setHeight(480).setAlpha(0).addToScreen().setMouseDownEvent(new BoxSplode());
 
 		new BoostCloud().setX(850).setY(-120).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(150).setY(-720).addToScreen(RenderPriority.High);
@@ -119,29 +120,22 @@ public class Game extends Screen {
 
 		ThrowMe.stage.world.setContactListener(new HitListener());
 
-		ThrowMe.stage.draw = new tick();
+		ThrowMe.stage.draw = new Tick();
 	}
 
-	public class boxsplode implements MouseCallback {
-
+	public class BoxSplode implements MouseCallback {
 		@Override
-		public void sendCallback() {
+		public void sendCallback(int x, int y) {
 			if (character == null) {
 				box.destroy();
 				character = (Character) new Character().setX(400).setY(240).addToScreen();
+				new HUD(character).addToScreen(RenderPriority.Low);
 				new DispGif(R.drawable.explosion, 1, 4).setWidth(764).setHeight(556).setX(18).setY(-38).addToScreen();
 			}
 		}
-
-		@Override
-		public void sendCallback(int x, int y) {
-			sendCallback();
-		}
-
 	}
 
-	public class tick implements Callback {
-
+	public class Tick implements Callback {
 		@Override
 		public void sendCallback() {
 			if (character != null && character.end && !ended) {
@@ -193,7 +187,6 @@ public class Game extends Screen {
 				DrawThread.setgrad(ng);
 			}
 		}
-
 	}
 
 	public static int blend(int[] rgb1, int[] rgb2, double ratio) {
@@ -214,9 +207,6 @@ public class Game extends Screen {
 			downY = mouseY;
 			cameraX = ThrowMe.stage.camera.getX();
 			cameraY = ThrowMe.stage.camera.getY();
-			if (character != null) {
-				character.mouseDown(mouseX, mouseY);
-			}
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			int newX = cameraX + downX - mouseX;
 			int newY = cameraY + mouseY - downY;
@@ -225,10 +215,6 @@ public class Game extends Screen {
 			}
 			if (newX < ThrowMe.stage.camera.getX()) {
 				newX = ThrowMe.stage.camera.getX();
-			}
-
-			if (character != null) {
-				character.mouse(mouseX, mouseY);
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
 			if (character != null) {

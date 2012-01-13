@@ -21,24 +21,19 @@ public class ColouredCloud extends Cloud {
 		super(R.drawable.colouredcloud);
 		randomiseColor();
 	}
-	
+
 	@Override
 	protected void scrollMove() {
 		setX(getX() + 2000);
 		randomiseColor();
 	}
-	
+
 	private void randomiseColor() {
 		int color = Color.HSVToColor(new float[] {random.nextInt(360), 1, 0.75f + random.nextFloat() / 4});
 		float r = Color.red(color) / 255f;
 		float g = Color.green(color) / 255f;
 		float b = Color.blue(color) / 255f;
-		ColorMatrix cm = new ColorMatrix(new float[]
-			{	r, r, r, 0, 0,
-				g, g, g, 0, 0,
-				b, b, b, 0, 0,
-				0, 0, 0, 1, 0
-		});
+		ColorMatrix cm = new ColorMatrix(new float[] {r, r, r, 0, 0, g, g, g, 0, 0, b, b, b, 0, 0, 0, 0, 0, 1, 0});
 		setColorMatrix(cm);
 	}
 

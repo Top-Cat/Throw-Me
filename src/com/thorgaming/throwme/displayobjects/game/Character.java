@@ -14,10 +14,10 @@ import org.jbox2d.dynamics.joints.Joint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.Camera;
+import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.Stage;
 import com.thorgaming.throwme.ThrowMe;
@@ -55,28 +55,25 @@ public class Character extends DispObj {
 
 	private float mouseX, mouseY;
 	public boolean lose = false;
-	private boolean balloons = false;
 	public boolean end = false;
 	private HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
 	private Paint paint = new Paint();
-	private Paint barPaint = new Paint();
-	private Paint barSurroundPaint = new Paint();
 	private Drawable drawableEye;
-	private int balloonBar = 500;
-	private byte coolDown = 0;
-
+	
 	public Character() {
 		drawableEye = ThrowMe.stage.getResources().getDrawable(R.drawable.eye);
+		
+		setMouseMoveEvent(new MouseCallback() {
+			@Override
+			public void sendCallback(int x, int y) {
+				mouseX = x;
+				mouseY = y;
+			}
+		});
+		
 		world = ThrowMe.stage.world;
 		paint.setColor(Color.rgb(255, 153, 0));
-		paint.setTextSize(30);
-		paint.setSubpixelText(true);
-		paint.setStrokeWidth(1);
-
-		barPaint.setColor(Color.rgb(40, 69, 255));
-		barSurroundPaint.setColor(Color.rgb(220, 220, 220));
-		barSurroundPaint.setStyle(Style.STROKE);
-		barSurroundPaint.setStrokeWidth(4);
+		paint.setStrokeWidth(1.2f);
 
 		CircleDef head = new CircleDef();
 		head.radius = 20 / Stage.ratio;
@@ -311,12 +308,9 @@ public class Character extends DispObj {
 			bodyHead.applyForce(dampingForce, world1);
 			canvas.drawLine(camera.transformX((int) (bodyHead.getWorldCenter().x * Stage.ratio)), camera.transformY((int) (bodyHead.getWorldCenter().y * Stage.ratio)), camera.transformX((int) mouseX), camera.transformY((int) mouseY), paint);
 		} else {
-			canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX((int) (balloonBar / 2.777 + 610)), camera.transformY(75), barPaint);
-			canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX(790), camera.transformY(75), barSurroundPaint);
-			
 			if (ThrowMe.stage.drawThread.isPhysicsRunning()) {
-				float speedX = (bodyHead.getWorldCenter().x - previousHeadX);
-				float speedY = (bodyHead.getWorldCenter().y - previousHeadY);
+				float speedX = bodyHead.getWorldCenter().x - previousHeadX;
+				float speedY = bodyHead.getWorldCenter().y - previousHeadY;
 				if (speedX < 0) {
 					//Compensate for pythag ignoring direction
 					speedX = 0;
@@ -335,12 +329,6 @@ public class Character extends DispObj {
 			ny = ny < 0 ? camera.getY() : ny;
 			nx = nx < camera.getX() ? camera.getX() : nx;
 			camera.setCameraXY(nx, ny);
-
-			canvas.drawText("Distance: " + nx / 10 + "m", 10, 40, paint);
-			String altitudeText = "Altitude: " + (int) (-(bodyHead.getWorldCenter().y - 12) * 1.9) + "m";
-			android.graphics.Rect bounds = new android.graphics.Rect();
-			paint.getTextBounds(altitudeText, 0, altitudeText.length(), bounds);
-			canvas.drawText(altitudeText, camera.getScreenWidth() - bounds.width() - 10, 40, paint);
 		}
 		for (Body i : bodies.keySet()) {
 			Vec2 p = i.getPosition();
@@ -352,44 +340,16 @@ public class Character extends DispObj {
 		int actualX = camera.transformRelativeX((int) (p.x * Stage.ratio));
 		int actualY = camera.transformRelativeY((int) (p.y * Stage.ratio));
 
+		canvas.save();
 		canvas.rotate((float) Math.toDegrees(bodyHead.getAngle()), actualX, actualY);
 		drawableEye.setBounds(actualX - 20, actualY - 20, actualX + 20, actualY + 20);
 		drawableEye.draw(canvas);
 		canvas.restore();
-
-		if (coolDown > -50) {
-			coolDown--;
-		}
-
-		if (balloons) {
-			bodyHead.applyImpulse(new Vec2(0.02F, -0.13F), bodyHead.getWorldCenter().add(new Vec2((float) (20 * Math.sin(bodyHead.getAngle())) / Stage.ratio, (float) (20 * Math.cos(bodyHead.getAngle())) / Stage.ratio)));
-			balloonBar--;
-			balloons = false;
-		}
-	}
-
-	public void mouse(float x, float y) {
-		mouseX = x;
-		mouseY = y;
-
-		if (lose && balloonBar > 0) {
-			balloons = true;
-		}
-	}
-
-	public void mouseDown(float x, float y) {
-		if (balloonBar > 0 && coolDown == -50) {
-			coolDown = 127;
-			synchronized (ThrowMe.stage.drawThread.physicsSync) {
-				Vec2 linearVelocity = bodyHead.getLinearVelocity();
-				bodyHead.setLinearVelocity(new Vec2(Math.max(linearVelocity.x, 3), Math.min(linearVelocity.y, -3)));
-			}
-		}
 	}
 
 	@Override
 	public boolean checkPress(int x, int y) {
-		return false;
+		return true;
 	}
 
 }

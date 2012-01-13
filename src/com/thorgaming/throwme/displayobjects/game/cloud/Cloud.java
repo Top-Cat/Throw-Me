@@ -59,7 +59,7 @@ public class Cloud extends DispRes_Rel implements Sensor {
 	public void move(int x, int y) {
 		physicsBody.setXForm(new Vec2(x / Stage.ratio, y / Stage.ratio), 0);
 	}
-	
+
 	protected void scrollMove() {
 		setX(getX() + 1000);
 	}
@@ -82,7 +82,7 @@ public class Cloud extends DispRes_Rel implements Sensor {
 
 	@Override
 	public void hit(Shape otherShape) {
-		
+
 	}
 
 	@Override

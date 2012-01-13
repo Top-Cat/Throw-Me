@@ -23,7 +23,7 @@ public class Launcher extends DispObj {
 	public Launcher(Character character) {
 		this(character, 1);
 	}
-	
+
 	public Launcher(final Character character, final float multiplier) {
 		ThrowMe.stage.drawThread.setPhysics(false);
 		paint.setColor(Color.rgb(255, 32, 20));

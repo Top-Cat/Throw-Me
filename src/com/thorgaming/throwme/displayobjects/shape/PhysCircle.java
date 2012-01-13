@@ -44,7 +44,7 @@ public class PhysCircle extends Circle {
 			if (shape != null) {
 				physicsBody.destroyShape(shape);
 			} else {
-				System.out.println("null shape D:"); 
+				System.out.println("null shape D:");
 			}
 			circle.radius = radius / Stage.ratio;
 			shape = physicsBody.createShape(circle);

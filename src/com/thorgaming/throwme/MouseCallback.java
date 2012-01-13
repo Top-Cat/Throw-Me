@@ -1,7 +1,11 @@
 package com.thorgaming.throwme;
 
-public interface MouseCallback extends Callback {
-
-	public void sendCallback(int x, int y);
+public abstract class MouseCallback implements Callback {
+	
+	public void sendCallback() {
+		sendCallback(0, 0);
+	}
+	
+	public abstract void sendCallback(int x, int y);
 
 }
