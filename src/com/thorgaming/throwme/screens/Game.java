@@ -97,6 +97,14 @@ public class Game extends Screen {
 		ng[1] = Color.rgb(255, 255, 255);
 
 		DrawThread.setgrad(ng);
+		
+		new DispRes(R.drawable.back2).setWidth(48).setHeight(48).setX(736).setY(416).setMouseDownEvent(new MouseCallback() {
+			@Override
+			public boolean sendCallback(int x, int y) {
+				new Main(Game.this.activity, new Object[] {true});
+				return true;
+			}
+		}).addToScreen(RenderPriority.Lowest);
 
 		hills1 = (DispRes) new DispRes_Rel(R.drawable.bg).setWidth(879).setHeight(240).setY(300).addToScreen(RenderPriority.Highest);
 		hills2 = (DispRes) new DispRes_Rel(R.drawable.bg).setWidth(879).setHeight(240).setX(800).setY(300).addToScreen(RenderPriority.Highest);
@@ -106,32 +114,38 @@ public class Game extends Screen {
 		}
 
 		box = (DispRes_Rel) new DispRes_Rel(R.drawable.box).setWidth(150).setHeight(150).setX(325).setY(105).addToScreen();
-		new Rect().setWidth(800).setHeight(480).setAlpha(0).addToScreen().setMouseDownEvent(new BoxSplode());
+		new Rect().setWidth(800).setHeight(480).setAlpha(0).addToScreen().setMouseDownEvent(new boxsplode());
 
-		new BoostCloud().setX(850).setY(-120).addToScreen(RenderPriority.High);
-		new BoostCloud().setX(150).setY(-720).addToScreen(RenderPriority.High);
-		new BoostCloud().setX(600).setY(-620).addToScreen(RenderPriority.High);
-		new BoostCloud().setX(900).setY(-920).addToScreen(RenderPriority.High);
-		new BoostCloud().setX(300).setY(-1120).addToScreen(RenderPriority.High);
+		new LightningCloud().setWidth(133).setHeight(175).setX(1000).setY(-3200).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(800).setY(-3100).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(300).setY(-3000).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(550).setY(-2900).addToScreen(RenderPriority.High);
+		new LightningCloud().setWidth(133).setHeight(175).setX(500).setY(-2800).addToScreen(RenderPriority.High);
+		new ColouredCloud().setWidth(133).setHeight(75).setX(800).setY(-2500).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(550).setY(-1920).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(800).setY(-1320).addToScreen(RenderPriority.High);
-		new ColouredCloud().setWidth(133).setHeight(75).setX(800).setY(-2500).addToScreen(RenderPriority.High);
-		new LightningCloud().setWidth(133).setHeight(175).setX(500).setY(-2800).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(300).setY(-1120).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(900).setY(-920).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(150).setY(-720).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(600).setY(-620).addToScreen(RenderPriority.High);
+		new BoostCloud().setX(850).setY(-120).addToScreen(RenderPriority.High);
+		
 
 		ThrowMe.stage.world.setContactListener(new HitListener());
 
 		ThrowMe.stage.draw = new Tick();
 	}
 
-	public class BoxSplode implements MouseCallback {
+	public class BoxSplode extends MouseCallback {
 		@Override
-		public void sendCallback(int x, int y) {
+		public boolean sendCallback(int x, int y) {
 			if (character == null) {
 				box.destroy();
 				character = (Character) new Character().setX(400).setY(240).addToScreen();
 				new HUD(character).addToScreen(RenderPriority.Low);
 				new DispGif(R.drawable.explosion, 1, 4).setWidth(764).setHeight(556).setX(18).setY(-38).addToScreen();
 			}
+			return true;
 		}
 	}
 

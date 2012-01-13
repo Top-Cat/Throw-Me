@@ -96,50 +96,25 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 		int y = (int) event.getY();
 		MouseCallback callback = null;
 		
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			/*findObject: */for (int i = 4; i >= 0; i--) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE || event.getAction() == MotionEvent.ACTION_UP) {
+			findObject: for (int i = 4; i >= 0; i--) {
 				if (objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
-					for (DispObj obj : objects.get(RenderPriority.getRenderPriorityFromId(i))) {
-						if (obj.checkPress(x, y)) {
-							callback = obj.getMouseDownEvent();
-							if (callback != null) {
-								callback.sendCallback(x, y);
+					synchronized (ThrowMe.stage.objects) {
+						for (DispObj obj : objects.get(RenderPriority.getRenderPriorityFromId(i))) {
+							if (obj.checkPress(x, y)) {
+								if (event.getAction() == MotionEvent.ACTION_DOWN) {
+									callback = obj.getMouseDownEvent();
+								} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+									callback = obj.getMouseMoveEvent();
+								} else if (event.getAction() == MotionEvent.ACTION_UP) {
+									callback = obj.getMouseUpEvent();
+								}
+								if (callback != null) {
+									if (callback.sendCallback(x, y)) {
+										break findObject;
+									}
+								}
 							}
-							/*if (callback != null) { Cascade?
-								break findObject;
-							}*/
-						}
-					}
-				}
-			}
-		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			/*findObject: */for (int i = 4; i >= 0; i--) {
-				if (objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
-					for (DispObj obj : objects.get(RenderPriority.getRenderPriorityFromId(i))) {
-						if (obj.checkPress(x, y)) {
-							callback = obj.getMouseMoveEvent();
-							if (callback != null) {
-								callback.sendCallback(x, y);
-							}
-							/*if (callback != null) { Cascade?
-								break findObject;
-							}*/
-						}
-					}
-				}
-			}
-		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			/*findObject: */for (int i = 4; i >= 0; i--) {
-				if (objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
-					for (DispObj obj : objects.get(RenderPriority.getRenderPriorityFromId(i))) {
-						if (obj.checkPress(x, y)) {
-							callback = obj.getMouseUpEvent();
-							if (callback != null) {
-								callback.sendCallback(x, y);
-							}
-							/*if (callback != null) { Cascade?
-								break findObject;
-							}*/
 						}
 					}
 				}

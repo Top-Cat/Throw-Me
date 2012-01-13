@@ -6,6 +6,6 @@ public abstract class MouseCallback implements Callback {
 		sendCallback(0, 0);
 	}
 	
-	public abstract void sendCallback(int x, int y);
+	public abstract boolean sendCallback(int x, int y);
 
 }

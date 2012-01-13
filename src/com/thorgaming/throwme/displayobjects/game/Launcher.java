@@ -33,15 +33,11 @@ public class Launcher extends DispObj {
 
 		setMouseDownEvent(new MouseCallback() {
 			@Override
-			public void sendCallback() {
+			public boolean sendCallback(int x, int y) {
 				ThrowMe.stage.drawThread.setPhysics(true);
 				character.bodyHead.applyImpulse(new Vec2(55F, -80F).mul((float) bar * multiplier), character.bodyHead.getWorldCenter().add(new Vec2((float) (20 * Math.sin(character.bodyHead.getAngle())) / Stage.ratio, (float) (20 * Math.cos(character.bodyHead.getAngle())) / Stage.ratio)));
 				destroy();
-			}
-
-			@Override
-			public void sendCallback(int x, int y) {
-				sendCallback();
+				return false;
 			}
 		});
 	}

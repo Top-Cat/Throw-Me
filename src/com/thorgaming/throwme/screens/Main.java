@@ -56,16 +56,18 @@ public class Main extends Screen {
 			new XAnim(play, -500, 150, null, 500);
 			play.setMouseUpEvent(new MouseCallback() {
 				@Override
-				public void sendCallback(int x, int y) {
+				public boolean sendCallback(int x, int y) {
 					new Game(activity, null);
+					return true;
 				}
 			});
 			DispObj highs = new DispRes(R.drawable.highscores).setWidth(523).setHeight(85).setX(134).setY(260).addToScreen();
 			new XAnim(highs, -543, 134, null, 600);
 			highs.setMouseUpEvent(new MouseCallback() {
 				@Override
-				public void sendCallback(int x, int y) {
+				public boolean sendCallback(int x, int y) {
 					new Highs(activity, null);
+					return true;
 				}
 			});
 			DispObj power = new DispRes(R.drawable.power).setWidth(475).setHeight(85).setX(162).setY(360).addToScreen();

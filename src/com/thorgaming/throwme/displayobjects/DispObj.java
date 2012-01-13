@@ -32,24 +32,27 @@ public abstract class DispObj {
 
 	public abstract void draw(Canvas canvas, Camera camera);
 
-	public void setMouseUpEvent(MouseCallback event) {
+	public DispObj setMouseUpEvent(MouseCallback event) {
 		onMouseUpEvent = event;
+		return this;
 	}
 
 	public MouseCallback getMouseUpEvent() {
 		return onMouseUpEvent;
 	}
 	
-	public void setMouseMoveEvent(MouseCallback event) {
+	public DispObj setMouseMoveEvent(MouseCallback event) {
 		onMouseMoveEvent = event;
+		return this;
 	}
 
 	public MouseCallback getMouseMoveEvent() {
 		return onMouseMoveEvent;
 	}
 
-	public void setMouseDownEvent(MouseCallback event) {
+	public DispObj setMouseDownEvent(MouseCallback event) {
 		onMouseDownEvent = event;
+		return this;
 	}
 
 	public MouseCallback getMouseDownEvent() {

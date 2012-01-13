@@ -137,7 +137,6 @@ public class DrawThread extends Thread {
 					while (goMain != null) {
 					}
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {

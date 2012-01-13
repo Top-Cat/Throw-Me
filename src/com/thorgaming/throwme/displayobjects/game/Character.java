@@ -65,9 +65,10 @@ public class Character extends DispObj {
 		
 		setMouseMoveEvent(new MouseCallback() {
 			@Override
-			public void sendCallback(int x, int y) {
+			public boolean sendCallback(int x, int y) {
 				mouseX = x;
 				mouseY = y;
+				return false;
 			}
 		});
 		

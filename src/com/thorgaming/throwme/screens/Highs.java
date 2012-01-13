@@ -89,52 +89,63 @@ public class Highs extends Screen {
 		};
 
 		loader = new DispGif(R.drawable.ajax, -1, 1).setWidth(128).setHeight(128).setX(251).setY(176).addToScreen();
+		new DispRes(R.drawable.back2).setHitPadding(16).setWidth(48).setHeight(48).setX(736).setY(416).setMouseDownEvent(new MouseCallback() {
+			@Override
+			public boolean sendCallback(int x, int y) {
+				new Main(Highs.this.activity, new Object[] {true});
+				return true;
+			}
+		}).addToScreen();
 		dayBW = new DispRes(R.drawable.day_bw).setHitPadding(15).setWidth(184).setHeight(74).setX(608).setY(10).addToScreen();
 		dayBW.setMouseDownEvent(new MouseCallback() {
 			@Override
-			public void sendCallback(int x, int y) {
+			public boolean sendCallback(int x, int y) {
 				if (!loading) {
 					resetOptions();
 					dayBW.setAlpha(0);
 					dayC.setAlpha(255);
 					new loader("day").start();
 				}
+				return false;
 			}
 		});
 		weekBW = new DispRes(R.drawable.week_bw).setHitPadding(15).setWidth(184).setHeight(54).setX(608).setY(120).addToScreen();
 		weekBW.setMouseDownEvent(new MouseCallback() {
 			@Override
-			public void sendCallback(int x, int y) {
+			public boolean sendCallback(int x, int y) {
 				if (!loading) {
 					resetOptions();
 					weekBW.setAlpha(0);
 					weekC.setAlpha(255);
 					new loader("week").start();
 				}
+				return false;
 			}
 		});
 		monthBW = new DispRes(R.drawable.month_bw).setHitPadding(15).setWidth(184).setHeight(40).setX(608).setY(214).addToScreen();
 		monthBW.setMouseDownEvent(new MouseCallback() {
 			@Override
-			public void sendCallback(int x, int y) {
+			public boolean sendCallback(int x, int y) {
 				if (!loading) {
 					resetOptions();
 					monthBW.setAlpha(0);
 					monthC.setAlpha(255);
 					new loader("month").start();
 				}
+				return false;
 			}
 		});
 		timeBW = new DispRes(R.drawable.time_bw).setHitPadding(15).setWidth(184).setHeight(31).setX(608).setY(297).addToScreen();
 		timeBW.setMouseDownEvent(new MouseCallback() {
 			@Override
-			public void sendCallback(int x, int y) {
+			public boolean sendCallback(int x, int y) {
 				if (!loading) {
 					resetOptions();
 					timeBW.setAlpha(0);
 					timeC.setAlpha(255);
 					new loader("").start();
 				}
+				return false;
 			}
 		});
 

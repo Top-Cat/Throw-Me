@@ -29,16 +29,17 @@ public class HUD extends DispObj {
 	public HUD(Character character) {
 		setMouseMoveEvent(new MouseCallback() {
 			@Override
-			public void sendCallback(int x, int y) {
+			public boolean sendCallback(int x, int y) {
 				if (HUD.this.character.lose && balloonBar > 0) {
 					balloons = true;
 				}
+				return false;
 			}
 		});
 		
 		setMouseDownEvent(new MouseCallback() {
 			@Override
-			public void sendCallback(int x, int y) {
+			public boolean sendCallback(int x, int y) {
 				if (balloonBar > 0 && coolDown == -50) {
 					coolDown = 127;
 					synchronized (ThrowMe.stage.drawThread.physicsSync) {
@@ -46,6 +47,7 @@ public class HUD extends DispObj {
 						HUD.this.character.bodyHead.setLinearVelocity(new Vec2(Math.max(linearVelocity.x, 3), Math.min(linearVelocity.y, -3)));
 					}
 				}
+				return false;
 			}
 		});
 		
