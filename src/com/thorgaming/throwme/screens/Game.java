@@ -20,6 +20,7 @@ import com.thorgaming.throwme.displayobjects.DispRes_Rel;
 import com.thorgaming.throwme.displayobjects.game.Character;
 import com.thorgaming.throwme.displayobjects.game.Crane;
 import com.thorgaming.throwme.displayobjects.game.HUD;
+import com.thorgaming.throwme.displayobjects.game.PauseMenu;
 import com.thorgaming.throwme.displayobjects.game.cloud.BoostCloud;
 import com.thorgaming.throwme.displayobjects.game.cloud.ColouredCloud;
 import com.thorgaming.throwme.displayobjects.game.cloud.LightningCloud;
@@ -97,14 +98,8 @@ public class Game extends Screen {
 		ng[1] = Color.rgb(255, 255, 255);
 
 		DrawThread.setgrad(ng);
-		
-		new DispRes(R.drawable.back2).setWidth(48).setHeight(48).setX(736).setY(416).setMouseDownEvent(new MouseCallback() {
-			@Override
-			public boolean sendCallback(int x, int y) {
-				new Main(Game.this.activity, new Object[] {true});
-				return true;
-			}
-		}).addToScreen(RenderPriority.Lowest);
+
+		new PauseMenu(activity);
 
 		hills1 = (DispRes) new DispRes_Rel(R.drawable.bg).setWidth(879).setHeight(240).setY(300).addToScreen(RenderPriority.Highest);
 		hills2 = (DispRes) new DispRes_Rel(R.drawable.bg).setWidth(879).setHeight(240).setX(800).setY(300).addToScreen(RenderPriority.Highest);
@@ -114,7 +109,18 @@ public class Game extends Screen {
 		}
 
 		box = (DispRes_Rel) new DispRes_Rel(R.drawable.box).setWidth(150).setHeight(150).setX(325).setY(105).addToScreen();
-		new Rect().setWidth(800).setHeight(480).setAlpha(0).addToScreen().setMouseDownEvent(new boxsplode());
+		new Rect().setWidth(800).setHeight(480).setAlpha(0).setMouseDownEvent(new MouseCallback() {
+			@Override
+			public boolean sendCallback(int x, int y) {
+				if (character == null) {
+					box.destroy();
+					character = (Character) new Character().setX(400).setY(240).addToScreen();
+					new HUD(character).addToScreen(RenderPriority.Low);
+					new DispGif(R.drawable.explosion, 1, 4).setWidth(764).setHeight(556).setX(18).setY(-38).addToScreen();
+				}
+				return true;
+			}
+		}).addToScreen();
 
 		new LightningCloud().setWidth(133).setHeight(175).setX(1000).setY(-3200).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(800).setY(-3100).addToScreen(RenderPriority.High);
@@ -129,78 +135,62 @@ public class Game extends Screen {
 		new BoostCloud().setX(150).setY(-720).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(600).setY(-620).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(850).setY(-120).addToScreen(RenderPriority.High);
-		
 
 		ThrowMe.stage.world.setContactListener(new HitListener());
 
-		ThrowMe.stage.draw = new Tick();
-	}
-
-	public class BoxSplode extends MouseCallback {
-		@Override
-		public boolean sendCallback(int x, int y) {
-			if (character == null) {
-				box.destroy();
-				character = (Character) new Character().setX(400).setY(240).addToScreen();
-				new HUD(character).addToScreen(RenderPriority.Low);
-				new DispGif(R.drawable.explosion, 1, 4).setWidth(764).setHeight(556).setX(18).setY(-38).addToScreen();
-			}
-			return true;
-		}
-	}
-
-	public class Tick implements Callback {
-		@Override
-		public void sendCallback() {
-			if (character != null && character.end && !ended) {
-				ThrowMe.stage.drawThread.returnHighs(activity);
-				ended = true;
-			}
-			if (!ended) {
-				if (hills1.getScreenX() < -ThrowMe.stage.camera.getScreenWidth()) {
-					hills1.setX(ThrowMe.stage.camera.getX() + ThrowMe.stage.camera.getScreenWidth());
+		ThrowMe.stage.draw = new Callback() {
+			@Override
+			public void sendCallback() {
+				if (character != null && character.end && !ended) {
+					ThrowMe.stage.drawThread.returnHighs(Game.this.activity);
+					ended = true;
 				}
-				if (hills2.getScreenX() < -ThrowMe.stage.camera.getScreenWidth()) {
-					hills2.setX(ThrowMe.stage.camera.getX() + ThrowMe.stage.camera.getScreenWidth());
-				}
-				for (int i = 0; i < 7; i++) {
-					if (randomHills[i].getScreenX() < -160) {
-						hillDistance++;
-						randomHills[i].move(hillDistance * 160 + 80, 480);
-						randomHills[i].randomiseColor();
-						randomHills[i].setRadius(random.nextInt(80) + 80);
+				if (!ended) {
+					if (hills1.getScreenX() < -ThrowMe.stage.camera.getScreenWidth()) {
+						hills1.setX(ThrowMe.stage.camera.getX() + ThrowMe.stage.camera.getScreenWidth());
+					}
+					if (hills2.getScreenX() < -ThrowMe.stage.camera.getScreenWidth()) {
+						hills2.setX(ThrowMe.stage.camera.getX() + ThrowMe.stage.camera.getScreenWidth());
+					}
+					for (int i = 0; i < 7; i++) {
+						if (randomHills[i].getScreenX() < -160) {
+							hillDistance++;
+							randomHills[i].move(hillDistance * 160 + 80, 480);
+							randomHills[i].randomiseColor();
+							randomHills[i].setRadius(random.nextInt(80) + 80);
 
-						if (lastCrane < hillDistance) {
-							if (random.nextInt(40) < 5) {
-								lastCrane = hillDistance + 3;
-								new Crane().setX(hillDistance * 160 + random.nextInt(80)).setY(90 + random.nextInt(40)).addToScreen(RenderPriority.High);
+							if (lastCrane < hillDistance) {
+								if (random.nextInt(40) < 5) {
+									lastCrane = hillDistance + 3;
+									new Crane().setX(hillDistance * 160 + random.nextInt(80)).setY(90 + random.nextInt(40)).addToScreen(RenderPriority.High);
+								}
 							}
 						}
 					}
-				}
 
-				int ng[] = new int[2];
-				if (ThrowMe.stage.camera.getY() > 7999) {
+					int ng[] = new int[2];
+					if (ThrowMe.stage.camera.getY() > 7999) {
 
-					ng[0] = Color.rgb(0, 0, 0);
-					ng[1] = Color.rgb(0, 0, 0);
+						ng[0] = Color.rgb(0, 0, 0);
+						ng[1] = Color.rgb(0, 0, 0);
 
-				} else if (ThrowMe.stage.camera.getY() > 0) {
+					} else if (ThrowMe.stage.camera.getY() > 0) {
 
-					int ny = ThrowMe.stage.camera.getY() + 10;
-					if (ny % 1000 < ThrowMe.stage.camera.getY() % 1000) {
-						ny -= ny % 1000 + 1;
+						int ny = ThrowMe.stage.camera.getY() + 10;
+						if (ny % 1000 < ThrowMe.stage.camera.getY() % 1000) {
+							ny -= ny % 1000 + 1;
+						}
+						ng[0] = blend(gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000)], ny % 1000);
+						ng[1] = blend(gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000)], ThrowMe.stage.camera.getY() % 1000);
+
+					} else {
+						ng[0] = Color.rgb(255, 255, 255);
+						ng[1] = Color.rgb(255, 255, 255);
 					}
-					ng[0] = blend(gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000)], ny % 1000);
-					ng[1] = blend(gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000)], ThrowMe.stage.camera.getY() % 1000);
-
-				} else {
-					ng[0] = Color.rgb(255, 255, 255);
-					ng[1] = Color.rgb(255, 255, 255);
+					DrawThread.setgrad(ng);
 				}
-				DrawThread.setgrad(ng);
 			}
-		}
+		};
 	}
 
 	public static int blend(int[] rgb1, int[] rgb2, double ratio) {

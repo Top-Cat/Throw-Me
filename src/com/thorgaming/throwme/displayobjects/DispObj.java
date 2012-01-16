@@ -18,6 +18,7 @@ public abstract class DispObj {
 	private int x = 0;
 	private int y = 0;
 	private int alpha = 255;
+	private boolean ignorePause = false;
 
 	public DispObj addToScreen(RenderPriority priority) {
 		ThrowMe.stage.registerForRender(priority, this);
@@ -38,16 +39,16 @@ public abstract class DispObj {
 	}
 
 	public MouseCallback getMouseUpEvent() {
-		return onMouseUpEvent;
+		return (!ThrowMe.stage.drawThread.getPaused() || ignorePause) ? onMouseUpEvent : null;
 	}
-	
+
 	public DispObj setMouseMoveEvent(MouseCallback event) {
 		onMouseMoveEvent = event;
 		return this;
 	}
 
 	public MouseCallback getMouseMoveEvent() {
-		return onMouseMoveEvent;
+		return (!ThrowMe.stage.drawThread.getPaused() || ignorePause) ? onMouseMoveEvent : null;
 	}
 
 	public DispObj setMouseDownEvent(MouseCallback event) {
@@ -56,11 +57,16 @@ public abstract class DispObj {
 	}
 
 	public MouseCallback getMouseDownEvent() {
-		return onMouseDownEvent;
+		return (!ThrowMe.stage.drawThread.getPaused() || ignorePause) ? onMouseDownEvent : null;
 	}
 
 	public DispObj setAlpha(int alpha) {
 		this.alpha = alpha;
+		return this;
+	}
+
+	public DispObj setIgnorePause() {
+		ignorePause = true;
 		return this;
 	}
 

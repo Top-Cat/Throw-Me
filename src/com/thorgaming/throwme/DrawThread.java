@@ -28,6 +28,8 @@ public class DrawThread extends Thread {
 	private boolean doPhysics = true;
 	public Integer physicsSync = 0;
 	public static Set<DispObj> toRemove = new HashSet<DispObj>();
+	private boolean paused = false;
+	private boolean pausedInternal = false;
 
 	public DrawThread(SurfaceHolder surfaceHolder, Context context) {
 		this.surfaceHolder = surfaceHolder;
@@ -43,6 +45,17 @@ public class DrawThread extends Thread {
 
 	public boolean isPhysicsRunning() {
 		return doPhysics;
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+		if (!paused) {
+			pausedInternal = false;
+		}
+	}
+
+	public boolean getPaused() {
+		return paused;
 	}
 
 	public static void resetGradient() {
@@ -78,64 +91,68 @@ public class DrawThread extends Thread {
 				for (MotionEventStore e : (ArrayList<MotionEventStore>) ThrowMe.stage.mcache.clone()) {
 					ThrowMe.stage.touch(e);
 				}
-				ThrowMe.stage.mcache.clear();
-				c = surfaceHolder.lockCanvas(null);
-				if (doPhysics) {
-					synchronized (physicsSync) {
-						ThrowMe.stage.world.step((float) 0.01, 5);
+				if (!pausedInternal) {
+					ThrowMe.stage.mcache.clear();
+					c = surfaceHolder.lockCanvas(null);
+					if (doPhysics) {
+						synchronized (physicsSync) {
+							ThrowMe.stage.world.step((float) 0.01, 5);
+						}
 					}
-				}
 
-				if (ThrowMe.stage.draw != null) {
-					ThrowMe.stage.draw.sendCallback();
-				}
-
-				if (c != null) {
-					ThrowMe.stage.start = true;
-
-					GradientDrawable g = new GradientDrawable(Orientation.TOP_BOTTOM, gradient);
-					g.setBounds(0, 0, ThrowMe.stage.camera.getScreenWidth(), ThrowMe.stage.camera.getScreenHeight());
-					g.draw(c);
-
-					List<Anim> over = new ArrayList<Anim>();
-					for (Anim i : ThrowMe.stage.animations) {
-						i.process(over);
+					if (ThrowMe.stage.draw != null) {
+						ThrowMe.stage.draw.sendCallback();
 					}
-					ThrowMe.stage.animations.removeAll(over);
 
-					synchronized (ThrowMe.stage.objects) {
-						for (int i = 0; i <= 4; i++) {
-							if (ThrowMe.stage.objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
-								for (DispObj obj : ThrowMe.stage.objects.get(RenderPriority.getRenderPriorityFromId(i))) {
-									obj.draw(c, ThrowMe.stage.camera);
+					if (c != null) {
+						ThrowMe.stage.start = true;
+
+						GradientDrawable g = new GradientDrawable(Orientation.TOP_BOTTOM, gradient);
+						g.setBounds(0, 0, ThrowMe.stage.camera.getScreenWidth(), ThrowMe.stage.camera.getScreenHeight());
+						g.draw(c);
+
+						List<Anim> over = new ArrayList<Anim>();
+						for (Anim i : ThrowMe.stage.animations) {
+							i.process(over);
+						}
+						ThrowMe.stage.animations.removeAll(over);
+
+						synchronized (ThrowMe.stage.objects) {
+							for (int i = 0; i <= 4; i++) {
+								if (ThrowMe.stage.objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
+									for (DispObj obj : ThrowMe.stage.objects.get(RenderPriority.getRenderPriorityFromId(i))) {
+										obj.draw(c, ThrowMe.stage.camera);
+									}
 								}
 							}
 						}
-					}
-					for (DispObj obj : toRemove) {
-						obj.destroy();
+						for (DispObj obj : toRemove) {
+							obj.destroy();
+						}
+
 					}
 
-				}
+					if (goMain != null) {
+						if (activityRet) {
+							goMain.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									new Highs(goMain, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
+								}
+							});
+						} else {
+							goMain.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									new Main(goMain, new Object[] {true});
+								}
+							});
+						}
+						while (goMain != null) {
+						}
+					}
 
-				if (goMain != null) {
-					if (activityRet) {
-						goMain.runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								new Highs(goMain, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
-							}
-						});
-					} else {
-						goMain.runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								new Main(goMain, new Object[] {true});
-							}
-						});
-					}
-					while (goMain != null) {
-					}
+					pausedInternal = paused;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

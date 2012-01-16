@@ -14,6 +14,7 @@ public class Screen {
 		ThrowMe.stage.clear();
 		ThrowMe.stage.draw = null;
 		ThrowMe.stage.drawThread.returnMain(null);
+		ThrowMe.stage.drawThread.setPaused(false);
 		this.activity = (ThrowMe) activity;
 		this.activity.screen = this;
 	}

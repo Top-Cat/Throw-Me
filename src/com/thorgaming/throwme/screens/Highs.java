@@ -22,6 +22,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -56,7 +57,6 @@ public class Highs extends Screen {
 	private RoundRect roundedBorderBackground, roundedBorder;
 	public static final String PREFS_NAME = "throwmedevicekey";
 	private String deviceid = "";
-	//private SecureRandom gen = new SecureRandom();
 
 	private int mouseY;
 	private int downY;
@@ -74,6 +74,9 @@ public class Highs extends Screen {
 
 		SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, 0);
 		deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
+		Editor editor = settings.edit();
+		editor.putString("deviceid", deviceid);
+		editor.commit();
 
 		DrawThread.resetGradient();
 
@@ -89,7 +92,7 @@ public class Highs extends Screen {
 		};
 
 		loader = new DispGif(R.drawable.ajax, -1, 1).setWidth(128).setHeight(128).setX(251).setY(176).addToScreen();
-		new DispRes(R.drawable.back2).setHitPadding(16).setWidth(48).setHeight(48).setX(736).setY(416).setMouseDownEvent(new MouseCallback() {
+		new DispRes(R.drawable.back).setHitPadding(16).setWidth(48).setHeight(48).setX(736).setY(416).setMouseDownEvent(new MouseCallback() {
 			@Override
 			public boolean sendCallback(int x, int y) {
 				new Main(Highs.this.activity, new Object[] {true});

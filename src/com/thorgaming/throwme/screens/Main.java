@@ -24,7 +24,7 @@ public class Main extends Screen {
 		super(activity, data);
 
 		skipIntro = data != null && data[0] != null ? (Boolean) data[0] : false;
-		skipIntro = true;
+		//skipIntro = true; //for debugging
 		thorcard = new DispRes(R.drawable.thorgamingcard).setWidth(800).setHeight(480).setAlpha(0).addToScreen();
 		timer.schedule(new WaitForScreen(), 500);
 	}
@@ -70,8 +70,8 @@ public class Main extends Screen {
 					return true;
 				}
 			});
-			DispObj power = new DispRes(R.drawable.power).setWidth(475).setHeight(85).setX(162).setY(360).addToScreen();
-			new XAnim(power, -515, 162, null, 700);
+			//DispObj power = new DispRes(R.drawable.power).setWidth(475).setHeight(85).setX(162).setY(360).addToScreen(); There are no powerups :/
+			//new XAnim(power, -515, 162, null, 700);
 		}
 	}
 
