@@ -39,7 +39,7 @@ public class ColouredCloud extends Cloud {
 
 	@Override
 	public void hit(Shape character) {
-		if (((Character) character.getUserData()).bodyHead.getShapeList() == character && !hit) {
+		if (((Character) character.getUserData()).getMainBody().getShapeList() == character && !hit) {
 			hit = true;
 			new Launcher((Character) character.getUserData(), 0.7f).addToScreen(RenderPriority.Lowest);
 		}

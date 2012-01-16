@@ -80,7 +80,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 
 	@Override
 	public void hit(Shape otherShape) {
-		if (((Character) otherShape.getUserData()).bodyHead.getShapeList() == otherShape && !hit) {
+		if (((Character) otherShape.getUserData()).getMainBody().getShapeList() == otherShape && !hit) {
 			hit = true;
 			new Launcher((Character) otherShape.getUserData()).addToScreen(RenderPriority.Lowest);
 		}

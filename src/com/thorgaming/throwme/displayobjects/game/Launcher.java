@@ -9,7 +9,6 @@ import android.graphics.Paint.Style;
 
 import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.MouseCallback;
-import com.thorgaming.throwme.Stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
@@ -35,7 +34,7 @@ public class Launcher extends DispObj {
 			@Override
 			public boolean sendCallback(int x, int y) {
 				ThrowMe.stage.drawThread.setPhysics(true);
-				character.bodyHead.applyImpulse(new Vec2(55F, -80F).mul((float) bar * multiplier), character.bodyHead.getWorldCenter().add(new Vec2((float) (20 * Math.sin(character.bodyHead.getAngle())) / Stage.ratio, (float) (20 * Math.cos(character.bodyHead.getAngle())) / Stage.ratio)));
+				character.applyImpulse(new Vec2(55F, -80F).mul((float) bar * multiplier));
 				destroy();
 				return false;
 			}
