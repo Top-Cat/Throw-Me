@@ -118,7 +118,7 @@ public class Game extends Screen {
 		}
 
 		box = (DispRes_Rel) new DispRes_Rel(R.drawable.box).setWidth(150).setHeight(150).setX(325).setY(105).addToScreen();
-		new Rect().setWidth(800).setHeight(480).setAlpha(0).addToScreen().setMouseDownEvent(new boxsplode());
+		new Rect().setWidth(800).setHeight(480).setAlpha(0).addToScreen().setMouseDownEvent(new BoxSplode());
 
 		new LightningCloud().setWidth(133).setHeight(175).setX(1000).setY(-3400).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(800).setY(-3200).addToScreen(RenderPriority.High);
