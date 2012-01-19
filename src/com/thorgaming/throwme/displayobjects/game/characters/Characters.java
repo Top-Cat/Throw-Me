@@ -4,31 +4,38 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import com.thorgaming.throwme.R;
+
 public enum Characters {
-	GUY(0, "Throw Me Guy", Guy.class),
-	SNAKE(1, "Snake", Snake.class),
-	CAR(2, "Car", Car.class),
-	CIRCLE(3, "Ball", Circle.class),
-	;
-	
+	GUY(0, "Throw Me Guy", R.drawable.ss0, Guy.class),
+	SNAKE(1, "Snake", R.drawable.ss1, Snake.class),
+	CAR(2, "Car", R.drawable.ss2, Car.class),
+	CIRCLE(3, "Ball", R.drawable.ss3, Circle.class);
+
 	private Class<? extends Character> clazz;
 	private int id;
 	private String name;
-	
-	private Characters(int id, String name, Class<? extends Character> clazz) {
+	private int drawableId;
+
+	private Characters(int id, String name, int drawableId, Class<? extends Character> clazz) {
 		this.clazz = clazz;
 		this.id = id;
 		this.name = name;
+		this.drawableId = drawableId;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
+	public int getDrawableId() {
+		return drawableId;
+	}
+
 	public Character createNew() {
 		try {
 			Constructor<? extends Character> c = clazz.getDeclaredConstructor(new Class[] {});
@@ -48,15 +55,15 @@ public enum Characters {
 		}
 		return null;
 	}
-	
+
 	private static HashMap<Integer, Characters> map = new HashMap<Integer, Characters>();
-	
+
 	static {
 		for (Characters ch : values()) {
 			map.put(ch.getId(), ch);
 		}
 	}
-	
+
 	public static Characters getFromId(int id) {
 		return map.get(id);
 	}

@@ -18,10 +18,10 @@ import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispGif;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
-import com.thorgaming.throwme.displayobjects.game.characters.Character;
 import com.thorgaming.throwme.displayobjects.game.Crane;
 import com.thorgaming.throwme.displayobjects.game.HUD;
 import com.thorgaming.throwme.displayobjects.game.PauseMenu;
+import com.thorgaming.throwme.displayobjects.game.characters.Character;
 import com.thorgaming.throwme.displayobjects.game.characters.Characters;
 import com.thorgaming.throwme.displayobjects.game.cloud.BoostCloud;
 import com.thorgaming.throwme.displayobjects.game.cloud.ColouredCloud;
@@ -54,7 +54,7 @@ public class Game extends Screen {
 	private int mouseY;
 
 	private Characters currentChar = Characters.SNAKE;
-	
+
 	public Game(Activity activity, Object[] data) {
 		super(activity, data);
 
