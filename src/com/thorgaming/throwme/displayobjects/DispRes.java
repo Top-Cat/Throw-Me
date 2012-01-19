@@ -16,8 +16,13 @@ public class DispRes extends DispObj {
 	protected ColorMatrix colorMatrix = new ColorMatrix();
 
 	private int hitPadding = 0;
+	private float angle = 0;
 
 	public DispRes(int drawableId) {
+		setDrawable(drawableId);
+	}
+	
+	public void setDrawable(int drawableId) {
 		drawable = ThrowMe.stage.getResources().getDrawable(drawableId);
 	}
 
@@ -42,6 +47,11 @@ public class DispRes extends DispObj {
 		this.colorMatrix = colorMatrix;
 	}
 
+	public DispRes setAngle(float angle) {
+		this.angle = angle;
+		return this;
+	}
+	
 	@Override
 	public boolean checkPress(int x, int y) {
 		if (actualX <= x + hitPadding && actualX + getWidth() >= x - hitPadding && actualY <= y + hitPadding && actualY + getHeight() >= y - hitPadding) {
@@ -55,10 +65,13 @@ public class DispRes extends DispObj {
 		actualX = camera.transformX(getX());
 		actualY = camera.transformY(getY());
 
+		canvas.save();
+		canvas.rotate(angle, actualX + getWidth() / 2, actualY + getHeight() / 2);
 		drawable.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
 		drawable.setBounds(actualX, actualY, (getX() + getWidth()) * camera.getScreenWidth() / 800, (getY() + getHeight()) * camera.getScreenHeight() / 480);
 		drawable.setAlpha(getAlpha());
 		drawable.draw(canvas);
+		canvas.restore();
 	}
 
 }

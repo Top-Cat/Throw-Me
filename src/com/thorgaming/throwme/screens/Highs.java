@@ -185,6 +185,7 @@ public class Highs extends Screen {
 						}
 						try {
 							URL url = new URL("http://thomasc.co.uk/throwme/api.php?action=submit&score=" + score + "&name=" + value + "&deviceid=" + deviceid + "&checkstring=" + hexString);
+							System.out.println("http://thomasc.co.uk/throwme/api.php?action=submit&score=" + score + "&name=" + value + "&deviceid=" + deviceid + "&checkstring=" + hexString); //TODO: Check this
 							HttpURLConnection con = (HttpURLConnection) url.openConnection();
 							BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 							while (in.readLine() != null) {
@@ -292,7 +293,7 @@ public class Highs extends Screen {
 						roundedBorderBackground.stroke.setStrokeWidth(10);
 						roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, ThrowMe.stage.camera.getScreenHeight(), Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
 
-						roundedBorder = (RoundRect) new RoundRect(20).setWidth(550).setHeight(480).setAlpha(0).setX(40).setY(0).addToScreen();
+						roundedBorder = (RoundRect) new RoundRect(20).setWidth(550).setHeight(480).setAlpha(0).setX(40).addToScreen();
 						roundedBorder.paint.setARGB(0, 0, 0, 0);
 						roundedBorder.stroke.setARGB(255, 0, 0, 0);
 						roundedBorder.stroke.setStrokeWidth(1);

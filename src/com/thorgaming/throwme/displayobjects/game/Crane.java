@@ -19,6 +19,7 @@ import com.thorgaming.throwme.Stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
 import com.thorgaming.throwme.displayobjects.Sensor;
+import com.thorgaming.throwme.displayobjects.game.characters.Character;
 
 public class Crane extends DispRes_Rel implements Sensor {
 

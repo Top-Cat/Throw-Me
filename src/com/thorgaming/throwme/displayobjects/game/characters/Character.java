@@ -1,4 +1,4 @@
-package com.thorgaming.throwme.displayobjects.game;
+package com.thorgaming.throwme.displayobjects.game.characters;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -48,13 +48,13 @@ public abstract class Character extends DispObj {
 	
 	@Override
 	public DispObj setX(int x) {
-		move(x, (int) (getMainBody().getWorldCenter().y * Stage.ratio));
+		move(x, (int) (getMainBody().getPosition().y * Stage.ratio));
 		return this;
 	}
 
 	@Override
 	public DispObj setY(int y) {
-		move((int) (getMainBody().getWorldCenter().x * Stage.ratio), y);
+		move((int) (getMainBody().getPosition().x * Stage.ratio), y);
 		return this;
 	}
 	
@@ -86,22 +86,26 @@ public abstract class Character extends DispObj {
 			Vec2 dampingForce = d.clone();
 			dampingForce = dampingForce.mul((float) (Vec2.dot(v, d) * damping));
 			getMainBody().applyForce(dampingForce, world1);
-			canvas.drawLine(camera.transformX((int) (getMainBody().getWorldCenter().x * Stage.ratio)), camera.transformY((int) (getMainBody().getWorldCenter().y * Stage.ratio)), camera.transformX((int) mouseX), camera.transformY((int) mouseY), paint);
+			canvas.drawLine(camera.transformX((int) (getMainBody().getPosition().x * Stage.ratio)), camera.transformY((int) (getMainBody().getPosition().y * Stage.ratio)), camera.transformX((int) mouseX), camera.transformY((int) mouseY), paint);
 		} else {
 			if (ThrowMe.stage.drawThread.isPhysicsRunning()) {
-				float speedX = (getMainBody().getWorldCenter().x - previousHeadX);
-				float speedY = (getMainBody().getWorldCenter().y - previousHeadY);
+				float speedX = (getMainBody().getPosition().x - previousHeadX);
+				float speedY = (getMainBody().getPosition().y - previousHeadY);
 				byte direction = speedX < 0 ? (byte) -1 : 1;
 				avgSpeed -= (avgSpeed - Math.sqrt(speedX * speedX + speedY * speedY) * direction) / 100;
-				previousHeadX = getMainBody().getWorldCenter().x;
-				previousHeadY = getMainBody().getWorldCenter().y;
+				previousHeadX = getMainBody().getPosition().x;
+				previousHeadY = getMainBody().getPosition().y;
 				if (avgSpeed < 1 / Stage.ratio) {
 					setGameState(GameState.END);
 				}
+				
+				if (getMainBody().getPosition().y < -500 && getMainBody().getLinearVelocity().y < 0) {
+					applyImpulse(new Vec2(0, 3));
+				}
 			}
 
-			int nx = (int) (camera.getX() - (camera.getX() + (-Stage.ratio * getMainBody().getWorldCenter().x + camera.getScreenWidth() / 2)) / 10);
-			int ny = (int) (camera.getY() - (camera.getY() - (-Stage.ratio * getMainBody().getWorldCenter().y + camera.getScreenHeight() / 2)) / 10);
+			int nx = (int) (camera.getX() - (camera.getX() + (-Stage.ratio * getMainBody().getPosition().x + camera.getScreenWidth() / 2)) / 10);
+			int ny = (int) (camera.getY() - (camera.getY() - (-Stage.ratio * getMainBody().getPosition().y + camera.getScreenHeight() / 2)) / 10);
 			ny = ny < 0 ? camera.getY() : ny;
 			nx = nx < camera.getX() ? camera.getX() : nx;
 			camera.setCameraXY(nx, ny);

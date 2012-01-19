@@ -6,7 +6,7 @@ import org.jbox2d.dynamics.contacts.ContactPoint;
 import org.jbox2d.dynamics.contacts.ContactResult;
 
 import com.thorgaming.throwme.displayobjects.Sensor;
-import com.thorgaming.throwme.displayobjects.game.Character;
+import com.thorgaming.throwme.displayobjects.game.characters.Character;
 
 public class HitListener implements ContactListener {
 

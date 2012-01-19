@@ -53,7 +53,7 @@ public class BoostCloud extends Cloud {
 
 	@Override
 	public void persistContact(Shape character) {
-		character.getBody().applyForce(new Vec2(3, -10), character.getBody().getWorldCenter());
+		character.getBody().applyForce(new Vec2(3, -10), character.getBody().getPosition());
 	}
 
 }

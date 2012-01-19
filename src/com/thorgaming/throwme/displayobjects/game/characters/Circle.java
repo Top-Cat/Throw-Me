@@ -13,7 +13,7 @@ import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.Stage;
 import com.thorgaming.throwme.ThrowMe;
-import com.thorgaming.throwme.displayobjects.game.Character;
+import com.thorgaming.throwme.displayobjects.game.characters.Character;
 
 public class Circle extends Character {
 

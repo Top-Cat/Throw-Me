@@ -55,13 +55,13 @@ public class PhysCircle extends Circle {
 
 	@Override
 	public DispObj setX(int x) {
-		move(x, (int) (physicsBody.getWorldCenter().y * Stage.ratio));
+		move(x, (int) (physicsBody.getPosition().y * Stage.ratio));
 		return this;
 	}
 
 	@Override
 	public DispObj setY(int y) {
-		move((int) (physicsBody.getWorldCenter().x * Stage.ratio), y);
+		move((int) (physicsBody.getPosition().x * Stage.ratio), y);
 		return this;
 	}
 

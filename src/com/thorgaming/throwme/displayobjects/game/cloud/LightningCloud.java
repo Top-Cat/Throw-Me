@@ -13,7 +13,7 @@ public class LightningCloud extends Cloud {
 
 	@Override
 	public void persistContact(Shape character) {
-		character.getBody().applyForce(new Vec2(8, 50), character.getBody().getWorldCenter());
+		character.getBody().applyForce(new Vec2(8, 50), character.getBody().getPosition());
 	}
 
 	@Override

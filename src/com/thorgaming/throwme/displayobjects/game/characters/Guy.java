@@ -15,12 +15,10 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.Camera;
-import com.thorgaming.throwme.GameState;
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.Stage;
 import com.thorgaming.throwme.ThrowMe;
-import com.thorgaming.throwme.displayobjects.game.Character;
-import com.thorgaming.throwme.displayobjects.DispObj;
+import com.thorgaming.throwme.displayobjects.game.characters.Character;
 
 public class Guy extends Character {
 
@@ -212,18 +210,6 @@ public class Guy extends Character {
 		arm4.initialize(bodyRightKnee, bodyRightFoot, new Vec2(40 / Stage.ratio, 90 / Stage.ratio), new Vec2(65 / Stage.ratio, 90 / Stage.ratio));
 		jointRightLeg = world.createJoint(arm4);
 	}
-	
-	@Override
-	public DispObj setX(int x) {
-		move(x, (int) (bodyHead.getWorldCenter().y * Stage.ratio));
-		return this;
-	}
-
-	@Override
-	public DispObj setY(int y) {
-		move((int) (bodyHead.getWorldCenter().x * Stage.ratio), y);
-		return this;
-	}
 
 	@Override
 	public void move(int x, int y) {
@@ -278,29 +264,6 @@ public class Guy extends Character {
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
 		super.draw(canvas, camera);
-		if (getGameState() == GameState.LOOSE) {
-			if (ThrowMe.stage.drawThread.isPhysicsRunning()) {
-				float speedX = (bodyHead.getWorldCenter().x - previousHeadX);
-				float speedY = (bodyHead.getWorldCenter().y - previousHeadY);
-				if (speedX < 0) {
-					//Compensate for pythag ignoring direction
-					speedX = 0;
-					speedY *= 0.7;
-				}
-				avgSpeed -= (avgSpeed - Math.sqrt(speedX * speedX + speedY * speedY)) / 100;
-				previousHeadX = bodyHead.getWorldCenter().x;
-				previousHeadY = bodyHead.getWorldCenter().y;
-				if (avgSpeed < 1 / Stage.ratio) {
-					setGameState(GameState.END);
-				}
-			}
-
-			int nx = (int) (camera.getX() - (camera.getX() + (-Stage.ratio * bodyHead.getWorldCenter().x + camera.getScreenWidth() / 2)) / 10);
-			int ny = (int) (camera.getY() - (camera.getY() - (-Stage.ratio * bodyHead.getWorldCenter().y + camera.getScreenHeight() / 2)) / 10);
-			ny = ny < 0 ? camera.getY() : ny;
-			nx = nx < camera.getX() ? camera.getX() : nx;
-			camera.setCameraXY(nx, ny);
-		}
 		for (Body i : bodies.keySet()) {
 			Vec2 p = i.getPosition();
 			canvas.drawCircle(camera.transformX((int) (p.x * Stage.ratio - camera.getX())), camera.transformY((int) (p.y * Stage.ratio + camera.getY())), bodies.get(i), paint);

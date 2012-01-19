@@ -45,7 +45,7 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 		drawThread = new DrawThread(holder, context);
 
 		worldAABB = new AABB();
-		worldAABB.lowerBound.set(new Vec2((float) -1000.0 / ratio, (float) -13000.0 / ratio));
+		worldAABB.lowerBound.set(new Vec2((float) -1000.0 / ratio, (float) -20000.0 / ratio));
 		worldAABB.upperBound.set(new Vec2((float) 9000000.0 / ratio, (float) 1000.0 / ratio));
 
 		Vec2 gravity = new Vec2((float) 0.0, (float) 9.80665);

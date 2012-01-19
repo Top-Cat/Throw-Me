@@ -11,6 +11,7 @@ import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
+import com.thorgaming.throwme.displayobjects.game.characters.Character;
 
 public class Launcher extends DispObj {
 

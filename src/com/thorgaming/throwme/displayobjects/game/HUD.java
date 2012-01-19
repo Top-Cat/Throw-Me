@@ -12,6 +12,7 @@ import com.thorgaming.throwme.GameState;
 import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
+import com.thorgaming.throwme.displayobjects.game.characters.Character;
 
 public class HUD extends DispObj {
 
@@ -68,7 +69,7 @@ public class HUD extends DispObj {
 			canvas.drawRect(camera.transformX(610), camera.transformY(60), camera.transformX(790), camera.transformY(75), barSurroundPaint);
 			
 			canvas.drawText("Distance: " + camera.getX() / 10 + "m", 10, 40, paint);
-			String altitudeText = "Altitude: " + (int) (-(character.getMainBody().getWorldCenter().y - 12) * 1.9) + "m";
+			String altitudeText = "Altitude: " + (int) (-(character.getMainBody().getPosition().y - 12) * 1.9) + "m";
 			android.graphics.Rect bounds = new android.graphics.Rect();
 			paint.getTextBounds(altitudeText, 0, altitudeText.length(), bounds);
 			canvas.drawText(altitudeText, camera.getScreenWidth() - bounds.width() - 10, 40, paint);
