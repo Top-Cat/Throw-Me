@@ -89,8 +89,8 @@ public abstract class Character extends DispObj {
 			canvas.drawLine(camera.transformX((int) (getMainBody().getPosition().x * Stage.ratio)), camera.transformY((int) (getMainBody().getPosition().y * Stage.ratio)), camera.transformX((int) mouseX), camera.transformY((int) mouseY), paint);
 		} else {
 			if (ThrowMe.getInstance().stage.drawThread.isPhysicsRunning()) {
-				float speedX = (getMainBody().getPosition().x - previousHeadX);
-				float speedY = (getMainBody().getPosition().y - previousHeadY);
+				float speedX = getMainBody().getPosition().x - previousHeadX;
+				float speedY = getMainBody().getPosition().y - previousHeadY;
 				byte direction = speedX < 0 ? (byte) -1 : 1;
 				avgSpeed -= (avgSpeed - Math.sqrt(speedX * speedX + speedY * speedY) * direction) / 100;
 				previousHeadX = getMainBody().getPosition().x;
@@ -117,7 +117,7 @@ public abstract class Character extends DispObj {
 	}
 
 	public boolean getBoost() {
-		return this.boost;
+		return boost;
 	}
 
 	public void setBalloonbar(short balloonBar) {

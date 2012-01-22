@@ -2,8 +2,8 @@ package com.thorgaming.throwme.animation;
 
 import java.util.List;
 
-import com.thorgaming.throwme.callback.Callback;
 import com.thorgaming.throwme.ThrowMe;
+import com.thorgaming.throwme.callback.Callback;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
 public class AlphaAnim extends Anim {

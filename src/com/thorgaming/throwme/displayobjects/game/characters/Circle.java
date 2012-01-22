@@ -62,8 +62,8 @@ public class Circle extends Character {
 		canvas.drawCircle(camera.transformX((int) (p.x * Stage.ratio - camera.getX())), camera.transformY((int) (p.y * Stage.ratio + camera.getY())), 40, paint);
 
 		if (getBoost()) {
-			int actualX = camera.transformRelativeX((int) (p.x * Stage.ratio + (40 * Math.sin(getMainBody().getAngle()))));
-			int actualY = camera.transformRelativeY((int) (p.y * Stage.ratio + (40 * Math.cos(3.141592f + getMainBody().getAngle()))));
+			int actualX = camera.transformRelativeX((int) (p.x * Stage.ratio + 40 * Math.sin(getMainBody().getAngle())));
+			int actualY = camera.transformRelativeY((int) (p.y * Stage.ratio + 40 * Math.cos(3.141592f + getMainBody().getAngle())));
 
 			drawableBalloons.setBounds(actualX - 19, actualY - 108, actualX + 15, actualY + 2);
 

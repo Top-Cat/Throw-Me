@@ -9,12 +9,12 @@ import org.jbox2d.dynamics.World;
 
 import android.graphics.Canvas;
 
-import com.thorgaming.throwme.drawing.Camera;
-import com.thorgaming.throwme.drawing.Stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
 import com.thorgaming.throwme.displayobjects.Sensor;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.Stage;
 
 public class Cloud extends DispRes_Rel implements Sensor {
 

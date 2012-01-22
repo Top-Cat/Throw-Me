@@ -7,9 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
+import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.screens.Highs;
 
 public class ScoreRow extends DispObj {

@@ -103,7 +103,7 @@ public class BillingService extends Service implements ServiceConnection {
 		try {
 			Bundle response = mService.sendBillingRequest(request);
 			int responseCode = response.getInt("RESPONSE_CODE");
-			boolean billingSupported = (responseCode == 0);
+			boolean billingSupported = responseCode == 0;
 			return billingSupported;
 		} catch (RemoteException e) {
 			e.printStackTrace();

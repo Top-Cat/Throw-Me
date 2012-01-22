@@ -148,8 +148,8 @@ public class Snake extends Character {
 		//canvas.drawCircle(camera.transformX((int) (p.x * Stage.ratio - camera.getX())), camera.transformY((int) (p.y * Stage.ratio + camera.getY())), 40, paint);
 
 		if (getBoost()) {
-			actualX = camera.transformRelativeX((int) (p.x * Stage.ratio + (20 * Math.sin(getMainBody().getAngle()))));
-			actualY = camera.transformRelativeY((int) (p.y * Stage.ratio + (20 * Math.cos(3.141592f + getMainBody().getAngle()))));
+			actualX = camera.transformRelativeX((int) (p.x * Stage.ratio + 20 * Math.sin(getMainBody().getAngle())));
+			actualY = camera.transformRelativeY((int) (p.y * Stage.ratio + 20 * Math.cos(3.141592f + getMainBody().getAngle())));
 
 			drawableBalloons.setBounds(actualX - 19, actualY - 108, actualX + 15, actualY + 2);
 

@@ -34,7 +34,7 @@ package com.thorgaming.throwme.billing.util;
 /**
  * Base64 converter class. This code is not a complete MIME encoder; it simply
  * converts binary data to base64 data and back.
- * 
+ *
  * <p>
  * Note {@link CharBase64} is a GWT-compatible implementation of this class.
  */
@@ -154,7 +154,7 @@ public class Base64 {
 	 * <var>destOffset</var> + 4 for the <var>destination</var> array. The
 	 * actual number of significant bytes in your array is given by
 	 * <var>numSigBytes</var>.
-	 * 
+	 *
 	 * @param source the array to convert
 	 * @param srcOffset the index where conversion begins
 	 * @param numSigBytes the number of significant bytes in your array
@@ -176,24 +176,24 @@ public class Base64 {
 		// significant bytes passed in the array.
 		// We have to shift left 24 in order to flush out the 1's that appear
 		// when Java treats a value as negative that is cast from a byte to an int.
-		int inBuff = (numSigBytes > 0 ? ((source[srcOffset] << 24) >>> 8) : 0) | (numSigBytes > 1 ? ((source[srcOffset + 1] << 24) >>> 16) : 0) | (numSigBytes > 2 ? ((source[srcOffset + 2] << 24) >>> 24) : 0);
+		int inBuff = (numSigBytes > 0 ? source[srcOffset] << 24 >>> 8 : 0) | (numSigBytes > 1 ? source[srcOffset + 1] << 24 >>> 16 : 0) | (numSigBytes > 2 ? source[srcOffset + 2] << 24 >>> 24 : 0);
 
 		switch (numSigBytes) {
 			case 3:
 				destination[destOffset] = alphabet[(inBuff >>> 18)];
-				destination[destOffset + 1] = alphabet[(inBuff >>> 12) & 0x3f];
-				destination[destOffset + 2] = alphabet[(inBuff >>> 6) & 0x3f];
-				destination[destOffset + 3] = alphabet[(inBuff) & 0x3f];
+				destination[destOffset + 1] = alphabet[inBuff >>> 12 & 0x3f];
+				destination[destOffset + 2] = alphabet[inBuff >>> 6 & 0x3f];
+				destination[destOffset + 3] = alphabet[inBuff & 0x3f];
 				return destination;
 			case 2:
 				destination[destOffset] = alphabet[(inBuff >>> 18)];
-				destination[destOffset + 1] = alphabet[(inBuff >>> 12) & 0x3f];
-				destination[destOffset + 2] = alphabet[(inBuff >>> 6) & 0x3f];
+				destination[destOffset + 1] = alphabet[inBuff >>> 12 & 0x3f];
+				destination[destOffset + 2] = alphabet[inBuff >>> 6 & 0x3f];
 				destination[destOffset + 3] = EQUALS_SIGN;
 				return destination;
 			case 1:
 				destination[destOffset] = alphabet[(inBuff >>> 18)];
-				destination[destOffset + 1] = alphabet[(inBuff >>> 12) & 0x3f];
+				destination[destOffset + 1] = alphabet[inBuff >>> 12 & 0x3f];
 				destination[destOffset + 2] = EQUALS_SIGN;
 				destination[destOffset + 3] = EQUALS_SIGN;
 				return destination;
@@ -205,7 +205,7 @@ public class Base64 {
 	/**
 	 * Encodes a byte array into Base64 notation. Equivalent to calling
 	 * {@code encodeBytes(source, 0, source.length)}
-	 * 
+	 *
 	 * @param source The data to convert
 	 * @since 1.4
 	 */
@@ -215,7 +215,7 @@ public class Base64 {
 
 	/**
 	 * Encodes a byte array into web safe Base64 notation.
-	 * 
+	 *
 	 * @param source The data to convert
 	 * @param doPadding is {@code true} to pad result with '=' chars if it does
 	 *            not fall on 3 byte boundaries
@@ -226,7 +226,7 @@ public class Base64 {
 
 	/**
 	 * Encodes a byte array into Base64 notation.
-	 * 
+	 *
 	 * @param source the data to convert
 	 * @param off offset in array where conversion should begin
 	 * @param len length of data to convert
@@ -253,7 +253,7 @@ public class Base64 {
 
 	/**
 	 * Encodes a byte array into Base64 notation.
-	 * 
+	 *
 	 * @param source the data to convert
 	 * @param off offset in array where conversion should begin
 	 * @param len length of data to convert
@@ -265,7 +265,7 @@ public class Base64 {
 		int lenDiv3 = (len + 2) / 3; // ceil(len / 3)
 		int len43 = lenDiv3 * 4;
 		byte[] outBuff = new byte[len43 // Main 4:3
-				+ (len43 / maxLineLength)]; // New lines
+				+ len43 / maxLineLength]; // New lines
 
 		int d = 0;
 		int e = 0;
@@ -276,11 +276,11 @@ public class Base64 {
 			// The following block of code is the same as
 			// encode3to4( source, d + off, 3, outBuff, e, alphabet );
 			// but inlined for faster encoding (~20% improvement)
-			int inBuff = ((source[d + off] << 24) >>> 8) | ((source[d + 1 + off] << 24) >>> 16) | ((source[d + 2 + off] << 24) >>> 24);
+			int inBuff = source[d + off] << 24 >>> 8 | source[d + 1 + off] << 24 >>> 16 | source[d + 2 + off] << 24 >>> 24;
 			outBuff[e] = alphabet[(inBuff >>> 18)];
-			outBuff[e + 1] = alphabet[(inBuff >>> 12) & 0x3f];
-			outBuff[e + 2] = alphabet[(inBuff >>> 6) & 0x3f];
-			outBuff[e + 3] = alphabet[(inBuff) & 0x3f];
+			outBuff[e + 1] = alphabet[inBuff >>> 12 & 0x3f];
+			outBuff[e + 2] = alphabet[inBuff >>> 6 & 0x3f];
+			outBuff[e + 3] = alphabet[inBuff & 0x3f];
 
 			lineLength += 4;
 			if (lineLength == maxLineLength) {
@@ -302,7 +302,7 @@ public class Base64 {
 			e += 4;
 		}
 
-		assert (e == outBuff.length);
+		assert e == outBuff.length;
 		return outBuff;
 	}
 
@@ -318,8 +318,8 @@ public class Base64 {
 	 * <var>destOffset</var> + 3 for the <var>destination</var> array. This
 	 * method returns the actual number of bytes that were converted from the
 	 * Base64 encoding.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param source the array to convert
 	 * @param srcOffset the index where conversion begins
 	 * @param destination the array to hold the conversion
@@ -331,31 +331,31 @@ public class Base64 {
 	private static int decode4to3(byte[] source, int srcOffset, byte[] destination, int destOffset, byte[] decodabet) {
 		// Example: Dk==
 		if (source[srcOffset + 2] == EQUALS_SIGN) {
-			int outBuff = ((decodabet[source[srcOffset]] << 24) >>> 6) | ((decodabet[source[srcOffset + 1]] << 24) >>> 12);
+			int outBuff = decodabet[source[srcOffset]] << 24 >>> 6 | decodabet[source[srcOffset + 1]] << 24 >>> 12;
 
 			destination[destOffset] = (byte) (outBuff >>> 16);
 			return 1;
 		} else if (source[srcOffset + 3] == EQUALS_SIGN) {
 			// Example: DkL=
-			int outBuff = ((decodabet[source[srcOffset]] << 24) >>> 6) | ((decodabet[source[srcOffset + 1]] << 24) >>> 12) | ((decodabet[source[srcOffset + 2]] << 24) >>> 18);
+			int outBuff = decodabet[source[srcOffset]] << 24 >>> 6 | decodabet[source[srcOffset + 1]] << 24 >>> 12 | decodabet[source[srcOffset + 2]] << 24 >>> 18;
 
 			destination[destOffset] = (byte) (outBuff >>> 16);
 			destination[destOffset + 1] = (byte) (outBuff >>> 8);
 			return 2;
 		} else {
 			// Example: DkLE
-			int outBuff = ((decodabet[source[srcOffset]] << 24) >>> 6) | ((decodabet[source[srcOffset + 1]] << 24) >>> 12) | ((decodabet[source[srcOffset + 2]] << 24) >>> 18) | ((decodabet[source[srcOffset + 3]] << 24) >>> 24);
+			int outBuff = decodabet[source[srcOffset]] << 24 >>> 6 | decodabet[source[srcOffset + 1]] << 24 >>> 12 | decodabet[source[srcOffset + 2]] << 24 >>> 18 | decodabet[source[srcOffset + 3]] << 24 >>> 24;
 
 			destination[destOffset] = (byte) (outBuff >> 16);
 			destination[destOffset + 1] = (byte) (outBuff >> 8);
-			destination[destOffset + 2] = (byte) (outBuff);
+			destination[destOffset + 2] = (byte) outBuff;
 			return 3;
 		}
 	} // end decodeToBytes
 
 	/**
 	 * Decodes data from Base64 notation.
-	 * 
+	 *
 	 * @param s the string to decode (decoded in default encoding)
 	 * @return the decoded data
 	 * @since 1.4
@@ -368,7 +368,7 @@ public class Base64 {
 	/**
 	 * Decodes data from web safe Base64 notation. Web safe encoding uses '-'
 	 * instead of '+', '_' instead of '/'
-	 * 
+	 *
 	 * @param s the string to decode (decoded in default encoding)
 	 * @return the decoded data
 	 */
@@ -380,7 +380,7 @@ public class Base64 {
 	/**
 	 * Decodes Base64 content in byte array format and returns the decoded byte
 	 * array.
-	 * 
+	 *
 	 * @param source The Base64 encoded data
 	 * @return decoded data
 	 * @since 1.3
@@ -394,7 +394,7 @@ public class Base64 {
 	 * Decodes web safe Base64 content in byte array format and returns the
 	 * decoded data. Web safe encoding uses '-' instead of '+', '_' instead of
 	 * '/'
-	 * 
+	 *
 	 * @param source the string to decode (decoded in default encoding)
 	 * @return the decoded data
 	 */
@@ -405,7 +405,7 @@ public class Base64 {
 	/**
 	 * Decodes Base64 content in byte array format and returns the decoded byte
 	 * array.
-	 * 
+	 *
 	 * @param source the Base64 encoded data
 	 * @param off the offset of where to begin decoding
 	 * @param len the length of characters to decode
@@ -421,7 +421,7 @@ public class Base64 {
 	 * Decodes web safe Base64 content in byte array format and returns the
 	 * decoded byte array. Web safe encoding uses '-' instead of '+', '_'
 	 * instead of '/'
-	 * 
+	 *
 	 * @param source the Base64 encoded data
 	 * @param off the offset of where to begin decoding
 	 * @param len the length of characters to decode
@@ -434,7 +434,7 @@ public class Base64 {
 	/**
 	 * Decodes Base64 content using the supplied decodabet and returns the
 	 * decoded byte array.
-	 * 
+	 *
 	 * @param source the Base64 encoded data
 	 * @param off the offset of where to begin decoding
 	 * @param len the length of characters to decode
@@ -464,7 +464,7 @@ public class Base64 {
 						byte lastByte = (byte) (source[len - 1 + off] & 0x7f);
 						if (b4Posn == 0 || b4Posn == 1) {
 							throw new Base64DecoderException("invalid padding byte '=' at byte offset " + i);
-						} else if ((b4Posn == 3 && bytesLeft > 2) || (b4Posn == 4 && bytesLeft > 1)) {
+						} else if (b4Posn == 3 && bytesLeft > 2 || b4Posn == 4 && bytesLeft > 1) {
 							throw new Base64DecoderException("padding byte '=' falsely signals end of encoded value " + "at offset " + i);
 						} else if (lastByte != EQUALS_SIGN && lastByte != NEW_LINE) {
 							throw new Base64DecoderException("encoded value has invalid trailing byte");

@@ -2,13 +2,13 @@ package com.thorgaming.throwme.displayobjects.game;
 
 import android.app.Activity;
 
-import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.drawing.RenderPriority;
 import com.thorgaming.throwme.ThrowMe;
+import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.shape.Rect;
+import com.thorgaming.throwme.drawing.RenderPriority;
 import com.thorgaming.throwme.screens.Main;
 
 public class PauseMenu {

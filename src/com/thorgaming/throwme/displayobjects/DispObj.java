@@ -5,11 +5,11 @@ import java.util.List;
 
 import android.graphics.Canvas;
 
-import com.thorgaming.throwme.drawing.Camera;
-import com.thorgaming.throwme.callback.MouseCallback;
-import com.thorgaming.throwme.drawing.RenderPriority;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.Anim;
+import com.thorgaming.throwme.callback.MouseCallback;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.RenderPriority;
 
 public abstract class DispObj {
 
@@ -39,7 +39,7 @@ public abstract class DispObj {
 	}
 
 	public MouseCallback getMouseUpEvent() {
-		return (!ThrowMe.getInstance().stage.drawThread.getPaused() || ignorePause) ? onMouseUpEvent : null;
+		return !ThrowMe.getInstance().stage.drawThread.getPaused() || ignorePause ? onMouseUpEvent : null;
 	}
 
 	public DispObj setMouseMoveEvent(MouseCallback event) {
@@ -48,7 +48,7 @@ public abstract class DispObj {
 	}
 
 	public MouseCallback getMouseMoveEvent() {
-		return (!ThrowMe.getInstance().stage.drawThread.getPaused() || ignorePause) ? onMouseMoveEvent : null;
+		return !ThrowMe.getInstance().stage.drawThread.getPaused() || ignorePause ? onMouseMoveEvent : null;
 	}
 
 	public DispObj setMouseDownEvent(MouseCallback event) {
@@ -57,7 +57,7 @@ public abstract class DispObj {
 	}
 
 	public MouseCallback getMouseDownEvent() {
-		return (!ThrowMe.getInstance().stage.drawThread.getPaused() || ignorePause) ? onMouseDownEvent : null;
+		return !ThrowMe.getInstance().stage.drawThread.getPaused() || ignorePause ? onMouseDownEvent : null;
 	}
 
 	public DispObj setAlpha(int alpha) {

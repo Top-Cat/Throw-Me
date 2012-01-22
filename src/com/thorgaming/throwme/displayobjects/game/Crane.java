@@ -12,14 +12,14 @@ import org.jbox2d.dynamics.World;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
-import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.drawing.RenderPriority;
-import com.thorgaming.throwme.drawing.Stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
 import com.thorgaming.throwme.displayobjects.Sensor;
 import com.thorgaming.throwme.displayobjects.game.characters.Character;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.RenderPriority;
+import com.thorgaming.throwme.drawing.Stage;
 
 public class Crane extends DispRes_Rel implements Sensor {
 
