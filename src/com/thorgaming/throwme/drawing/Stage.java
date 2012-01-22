@@ -1,4 +1,4 @@
-package com.thorgaming.throwme;
+package com.thorgaming.throwme.drawing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,11 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.thorgaming.throwme.MotionEventStore;
+import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.Anim;
+import com.thorgaming.throwme.callback.Callback;
+import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
 public class Stage extends SurfaceView implements SurfaceHolder.Callback {
@@ -25,7 +29,6 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 
 	public List<Anim> animations = new ArrayList<Anim>();
 	public HashMap<RenderPriority, Set<DispObj>> objects = new HashMap<RenderPriority, Set<DispObj>>();
-	//private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GbR3FqjQIqFkxFBWoKqCmIXAEMwdK8E13+AQuMU4i0fVw8kLMFZbk7T1YPezQnBm6ozwJSBrQA+M4HOdKguqnGE+hDtFzWCq5/mZh7VM8/9Sow7EFvlbQll2DR/8OQE1aXGcRKEf51H9a7i5VswOsqwiTAP7BqtbGo/aujo1NxtwX/OYDGIIEx/V7r1lBQCfgNEM9+dn6Ahr4ETPVU9QLhyP2F99vKBhgJ4euQj0/zpaA0jjItMhrfTRAwPXVvWnh65+ECOlpQ6WNZZF2kHBjr5ocHH+zEJDGKrs0DOQ3WDiraoaqmBXRB85vHtQQRV/8KxJHpjtWC2k0eLrfoH4wIDAQAB";
 
 	public DrawThread drawThread;
 
@@ -95,7 +98,7 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 		int x = (int) event.getX();
 		int y = (int) event.getY();
 		MouseCallback callback = null;
-		
+
 		if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE || event.getAction() == MotionEvent.ACTION_UP) {
 			findObject: for (int i = 4; i >= 0; i--) {
 				if (objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {

@@ -2,9 +2,9 @@ package com.thorgaming.throwme.displayobjects.game;
 
 import android.app.Activity;
 
-import com.thorgaming.throwme.MouseCallback;
+import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.RenderPriority;
+import com.thorgaming.throwme.drawing.RenderPriority;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.DispRes;

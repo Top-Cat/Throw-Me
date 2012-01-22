@@ -7,21 +7,23 @@ import java.util.HashMap;
 import com.thorgaming.throwme.R;
 
 public enum Characters {
-	GUY(0, "Throw Me Guy", R.drawable.ss0, Guy.class),
-	SNAKE(1, "Snake", R.drawable.ss1, Snake.class),
-	CAR(2, "Car", R.drawable.ss2, Car.class),
-	CIRCLE(3, "Ball", R.drawable.ss3, Circle.class);
+	GUY(0, "Throw Me Guy", R.drawable.ss0, Guy.class, ""),
+	SNAKE(1, "Snake", R.drawable.ss1, Snake.class, "char_snake"),
+	CAR(2, "Car", R.drawable.ss2, Car.class, "char_car"),
+	CIRCLE(3, "Ball", R.drawable.ss3, Circle.class, "char_ball");
 
 	private Class<? extends Character> clazz;
 	private int id;
 	private String name;
 	private int drawableId;
+	private String marketId;
 
-	private Characters(int id, String name, int drawableId, Class<? extends Character> clazz) {
+	private Characters(int id, String name, int drawableId, Class<? extends Character> clazz, String marketId) {
 		this.clazz = clazz;
 		this.id = id;
 		this.name = name;
 		this.drawableId = drawableId;
+		this.marketId = marketId;
 	}
 
 	public String getName() {
@@ -34,6 +36,10 @@ public enum Characters {
 
 	public int getDrawableId() {
 		return drawableId;
+	}
+
+	public String getMarketId() {
+		return marketId;
 	}
 
 	public Character createNew() {

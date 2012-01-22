@@ -3,7 +3,7 @@ package com.thorgaming.throwme.displayobjects;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrixColorFilter;
 
-import com.thorgaming.throwme.Camera;
+import com.thorgaming.throwme.drawing.Camera;
 
 public class DispRes_Rel extends DispRes {
 
@@ -13,11 +13,10 @@ public class DispRes_Rel extends DispRes {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		actualX = camera.transformX(getX() - camera.getX());
-		actualY = camera.transformY(getY() + camera.getY());
+		hitBox.set(camera.transformX(getX() - camera.getX()), camera.transformY(getY() + camera.getY()), camera.transformX(getX() - camera.getX() + getWidth()), camera.transformY(getY() + camera.getY() + getHeight()));
 
 		drawable.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-		drawable.setBounds(actualX, actualY, camera.transformX(getX() - camera.getX() + getWidth()), camera.transformY(getY() + camera.getY() + getHeight()));
+		drawable.setBounds(hitBox.left, hitBox.top, camera.transformX(getX() - camera.getX() + getWidth()), camera.transformY(getY() + camera.getY() + getHeight()));
 		drawable.setAlpha(getAlpha());
 		drawable.draw(canvas);
 	}

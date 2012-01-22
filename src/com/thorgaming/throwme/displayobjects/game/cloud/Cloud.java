@@ -9,8 +9,8 @@ import org.jbox2d.dynamics.World;
 
 import android.graphics.Canvas;
 
-import com.thorgaming.throwme.Camera;
-import com.thorgaming.throwme.stage;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.Stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;

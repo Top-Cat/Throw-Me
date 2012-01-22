@@ -1,4 +1,4 @@
-package com.thorgaming.throwme;
+package com.thorgaming.throwme.drawing;
 
 import org.jbox2d.collision.Shape;
 import org.jbox2d.dynamics.ContactListener;

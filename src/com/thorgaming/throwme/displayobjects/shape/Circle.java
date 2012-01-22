@@ -6,8 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.displayobjects.DispObj;
+import com.thorgaming.throwme.drawing.Camera;
 
 public class Circle extends DispObj {
 

@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 
-import com.thorgaming.throwme.Camera;
+import com.thorgaming.throwme.drawing.Camera;
 
 public class RoundRect extends Rect {
 

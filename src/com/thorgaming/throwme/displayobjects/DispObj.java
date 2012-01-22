@@ -5,9 +5,9 @@ import java.util.List;
 
 import android.graphics.Canvas;
 
-import com.thorgaming.throwme.Camera;
-import com.thorgaming.throwme.MouseCallback;
-import com.thorgaming.throwme.RenderPriority;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.callback.MouseCallback;
+import com.thorgaming.throwme.drawing.RenderPriority;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.Anim;
 

@@ -1,4 +1,4 @@
-package com.thorgaming.throwme;
+package com.thorgaming.throwme.drawing;
 
 public enum RenderPriority {
 

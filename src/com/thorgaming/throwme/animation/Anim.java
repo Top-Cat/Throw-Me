@@ -2,7 +2,7 @@ package com.thorgaming.throwme.animation;
 
 import java.util.List;
 
-import com.thorgaming.throwme.Callback;
+import com.thorgaming.throwme.callback.Callback;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
 public abstract class Anim {

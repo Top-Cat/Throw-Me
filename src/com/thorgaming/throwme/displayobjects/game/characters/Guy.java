@@ -14,11 +14,10 @@ import org.jbox2d.dynamics.joints.Joint;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
-import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
-import com.thorgaming.throwme.displayobjects.game.characters.Character;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.Stage;
 
 public class Guy extends Character {
 
@@ -53,12 +52,12 @@ public class Guy extends Character {
 	private HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
 	private Drawable drawableEye;
 	private Drawable drawableBalloons;
-	
+
 	public Guy() {
 		super();
 		drawableEye = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.eye);
 		drawableBalloons = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.balloon);
-		
+
 		world = ThrowMe.getInstance().stage.world;
 
 		CircleDef head = new CircleDef();
@@ -255,7 +254,7 @@ public class Guy extends Character {
 		world.destroyBody(bodyRightKnee);
 		world.destroyBody(bodyRightFoot);
 	}
-	
+
 	int backwards = 0;
 	float previousHeadX = 0;
 	float previousHeadY = 0;
@@ -279,13 +278,13 @@ public class Guy extends Character {
 		drawableEye.setBounds(actualX - 20, actualY - 20, actualX + 20, actualY + 20);
 		drawableEye.draw(canvas);
 		canvas.restore();
-		
+
 		if (getBoost()) {
 			actualX += camera.transformX((int) (20 * Math.sin(getMainBody().getAngle())));
-			actualY += camera.transformY((int) (20 * Math.cos(3.141592f  + getMainBody().getAngle())));
-			
+			actualY += camera.transformY((int) (20 * Math.cos(3.141592f + getMainBody().getAngle())));
+
 			drawableBalloons.setBounds(actualX - 19, actualY - 108, actualX + 15, actualY + 2);
-			
+
 			canvas.save();
 			canvas.rotate((float) (Math.sin((float) balloonBar / 20 - 4.1887902) * 20), actualX, actualY);
 			drawableBalloons.draw(canvas);
@@ -298,21 +297,16 @@ public class Guy extends Character {
 			canvas.rotate((float) (Math.sin((float) balloonBar / 20 - 2.0943951) * 20), actualX, actualY);
 			drawableBalloons.draw(canvas);
 			canvas.restore();
-			
+
 			applyImpulse(new Vec2(0.02F, -0.13F));
 		}
-	}
-
-	@Override
-	public boolean checkPress(int x, int y) {
-		return true;
 	}
 
 	@Override
 	public Body getMainBody() {
 		return bodyHead;
 	}
-	
+
 	@Override
 	public void applyImpulse(Vec2 impulse) {
 		getMainBody().applyImpulse(impulse, getMainBody().getPosition().add(new Vec2((float) (20 * Math.sin(getMainBody().getAngle())) / Stage.ratio, (float) (20 * Math.cos(getMainBody().getAngle())) / Stage.ratio)));

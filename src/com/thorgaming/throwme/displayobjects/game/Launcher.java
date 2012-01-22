@@ -7,8 +7,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 
-import com.thorgaming.throwme.Camera;
-import com.thorgaming.throwme.MouseCallback;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.game.characters.Character;

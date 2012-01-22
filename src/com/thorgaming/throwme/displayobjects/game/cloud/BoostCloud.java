@@ -8,10 +8,10 @@ import org.jbox2d.common.Vec2;
 import android.graphics.Canvas;
 import android.graphics.Movie;
 
-import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.Stage;
 
 public class BoostCloud extends Cloud {
 
@@ -27,10 +27,9 @@ public class BoostCloud extends Cloud {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		actualX = camera.transformRelativeX(getX() - 133);
-		actualY = camera.transformRelativeY(getY() - 163);
+		hitBox.set(camera.transformRelativeX(getX() - 133), camera.transformRelativeY(getY() - 163), camera.transformRelativeX(getX() + 133), camera.transformRelativeY(getY() + 163));
 
-		if (actualX < -266) {
+		if (hitBox.left < -266) {
 			setX(getX() + 1000);
 			physicsBody.setXForm(new Vec2(getX() / Stage.ratio, getY() / Stage.ratio), 0);
 			moviestart = 0;
@@ -41,7 +40,7 @@ public class BoostCloud extends Cloud {
 			relTime = 1;
 		}
 		movie.setTime(relTime);
-		movie.draw(canvas, actualX, actualY);
+		movie.draw(canvas, hitBox.left, hitBox.top);
 	}
 
 	@Override

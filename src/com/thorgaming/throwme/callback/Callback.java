@@ -1,4 +1,4 @@
-package com.thorgaming.throwme;
+package com.thorgaming.throwme.callback;
 
 public interface Callback {
 

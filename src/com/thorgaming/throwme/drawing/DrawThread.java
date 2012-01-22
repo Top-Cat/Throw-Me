@@ -1,4 +1,4 @@
-package com.thorgaming.throwme;
+package com.thorgaming.throwme.drawing;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +13,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.view.SurfaceHolder;
 
+import com.thorgaming.throwme.MotionEventStore;
+import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.Anim;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.screens.Highs;

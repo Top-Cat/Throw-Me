@@ -7,31 +7,31 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.GameState;
-import com.thorgaming.throwme.MouseCallback;
-import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
+import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.displayobjects.DispObj;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.Stage;
 
 public abstract class Character extends DispObj {
 
 	private GameState state = GameState.ON_SPRING;
 	protected float mouseX, mouseY;
-	
+
 	protected Paint paint = new Paint();
-	
+
 	private int k = 16; // Spring constant
 	private double damping = 2;
 	private int length = 1;
-	
+
 	private float previousHeadX = 0;
 	private float previousHeadY = 0;
 	private double avgSpeed = 1;
-	
+
 	private boolean boost = false;
 	protected short balloonBar = 0;
-	
+
 	public Character() {
 		setMouseMoveEvent(new MouseCallback() {
 			@Override
@@ -41,11 +41,11 @@ public abstract class Character extends DispObj {
 				return false;
 			}
 		});
-		
+
 		paint.setColor(Color.rgb(255, 153, 0));
 		paint.setStrokeWidth(1.2f);
 	}
-	
+
 	@Override
 	public DispObj setX(int x) {
 		move(x, (int) (getMainBody().getPosition().y * Stage.ratio));
@@ -57,19 +57,19 @@ public abstract class Character extends DispObj {
 		move((int) (getMainBody().getPosition().x * Stage.ratio), y);
 		return this;
 	}
-	
+
 	public void setGameState(GameState state) {
 		this.state = state;
 	}
-	
+
 	public GameState getGameState() {
 		return state;
 	}
-	
+
 	public abstract Body getMainBody();
-	
+
 	public abstract void applyImpulse(Vec2 impulse);
-	
+
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
 		if (getGameState() == GameState.ON_SPRING) {
@@ -98,7 +98,7 @@ public abstract class Character extends DispObj {
 				if (avgSpeed < 1 / Stage.ratio) {
 					setGameState(GameState.END);
 				}
-				
+
 				if (getMainBody().getPosition().y < -500 && getMainBody().getLinearVelocity().y < 0) {
 					applyImpulse(new Vec2(0, 3));
 				}
@@ -111,22 +111,22 @@ public abstract class Character extends DispObj {
 			camera.setCameraXY(nx, ny);
 		}
 	}
-	
+
 	public void setBoost(boolean boost) {
 		this.boost = boost;
 	}
-	
+
 	public boolean getBoost() {
 		return this.boost;
 	}
-	
+
 	public void setBalloonbar(short balloonBar) {
 		this.balloonBar = balloonBar;
 	}
 
 	@Override
 	public boolean checkPress(int x, int y) {
-		return false;
+		return true;
 	}
-	
+
 }

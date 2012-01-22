@@ -30,17 +30,17 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.EditText;
 
-import com.thorgaming.throwme.Callback;
-import com.thorgaming.throwme.DrawThread;
-import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.RenderPriority;
 import com.thorgaming.throwme.ThrowMe;
+import com.thorgaming.throwme.callback.Callback;
+import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.displayobjects.DispGif;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.scores.ScoreRow;
 import com.thorgaming.throwme.displayobjects.shape.RoundRect;
+import com.thorgaming.throwme.drawing.DrawThread;
+import com.thorgaming.throwme.drawing.RenderPriority;
 
 public class Highs extends Screen {
 

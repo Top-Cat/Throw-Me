@@ -13,11 +13,10 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
-import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
-import com.thorgaming.throwme.displayobjects.game.characters.Character;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.Stage;
 
 public class Snake extends Character {
 
@@ -29,19 +28,19 @@ public class Snake extends Character {
 	private Body bodySeg4;
 	private Drawable drawableEye;
 	private Drawable drawableBalloons;
-	
+
 	private Joint joint1;
 	private Joint joint2;
 	private Joint joint3;
 	private Joint joint4;
-	
+
 	private HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
-	
+
 	public Snake() {
 		super();
 		drawableEye = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.eye);
 		drawableBalloons = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.balloon);
-		
+
 		world = ThrowMe.getInstance().stage.world;
 
 		CircleDef head = new CircleDef();
@@ -60,45 +59,45 @@ public class Snake extends Character {
 		bodyHead.setMassFromShapes();
 		bodyHead.m_angularDamping = 0.7F;
 		//bodies.put(bodyHead, 20);
-		
+
 		head.radius = 15 / Stage.ratio;
-		
+
 		headBodyDef.position.set(new Vec2(0, 33 / Stage.ratio));
 		bodySeg1 = world.createBody(headBodyDef);
 		bodySeg1.createShape(head);
 		bodySeg1.setMassFromShapes();
 		bodies.put(bodySeg1, 15);
-		
+
 		headBodyDef.position.set(new Vec2(0, 66 / Stage.ratio));
 		bodySeg2 = world.createBody(headBodyDef);
 		bodySeg2.createShape(head);
 		bodySeg2.setMassFromShapes();
 		bodies.put(bodySeg2, 15);
-		
+
 		headBodyDef.position.set(new Vec2(0, 99 / Stage.ratio));
 		bodySeg3 = world.createBody(headBodyDef);
 		bodySeg3.createShape(head);
 		bodySeg3.setMassFromShapes();
 		bodies.put(bodySeg3, 15);
-		
+
 		headBodyDef.position.set(new Vec2(0, 132 / Stage.ratio));
 		bodySeg4 = world.createBody(headBodyDef);
 		bodySeg4.createShape(head);
 		bodySeg4.setMassFromShapes();
 		bodies.put(bodySeg4, 15);
-		
+
 		RevoluteJointDef jointDef1 = new RevoluteJointDef();
 		jointDef1.initialize(bodyHead, bodySeg1, new Vec2(0, 19 / Stage.ratio));
 		joint1 = world.createJoint(jointDef1);
-		
+
 		RevoluteJointDef jointDef2 = new RevoluteJointDef();
 		jointDef2.initialize(bodySeg2, bodySeg1, new Vec2(0, 52 / Stage.ratio));
 		joint2 = world.createJoint(jointDef2);
-		
+
 		RevoluteJointDef jointDef3 = new RevoluteJointDef();
 		jointDef3.initialize(bodySeg2, bodySeg3, new Vec2(0, 85 / Stage.ratio));
 		joint3 = world.createJoint(jointDef3);
-		
+
 		RevoluteJointDef jointDef4 = new RevoluteJointDef();
 		jointDef4.initialize(bodySeg4, bodySeg3, new Vec2(0, 118 / Stage.ratio));
 		joint4 = world.createJoint(jointDef4);
@@ -120,7 +119,7 @@ public class Snake extends Character {
 		world.destroyJoint(joint2);
 		world.destroyJoint(joint3);
 		world.destroyJoint(joint4);
-		
+
 		world.destroyBody(bodyHead);
 		world.destroyBody(bodySeg1);
 		world.destroyBody(bodySeg2);
@@ -135,25 +134,25 @@ public class Snake extends Character {
 			Vec2 p = i.getPosition();
 			canvas.drawCircle(camera.transformRelativeX((int) (p.x * Stage.ratio)), camera.transformRelativeY((int) (p.y * Stage.ratio)), bodies.get(i), paint);
 		}
-		
+
 		Vec2 p = getMainBody().getPosition();
-		
+
 		int actualX = camera.transformRelativeX((int) (p.x * Stage.ratio));
 		int actualY = camera.transformRelativeY((int) (p.y * Stage.ratio));
-		
+
 		canvas.save();
 		canvas.rotate((float) Math.toDegrees(bodyHead.getAngle()), actualX, actualY);
 		drawableEye.setBounds(actualX - 20, actualY - 20, actualX + 20, actualY + 20);
 		drawableEye.draw(canvas);
 		canvas.restore();
 		//canvas.drawCircle(camera.transformX((int) (p.x * Stage.ratio - camera.getX())), camera.transformY((int) (p.y * Stage.ratio + camera.getY())), 40, paint);
-		
+
 		if (getBoost()) {
 			actualX = camera.transformRelativeX((int) (p.x * Stage.ratio + (20 * Math.sin(getMainBody().getAngle()))));
-			actualY = camera.transformRelativeY((int) (p.y * Stage.ratio + (20 * Math.cos(3.141592f  + getMainBody().getAngle()))));
-			
+			actualY = camera.transformRelativeY((int) (p.y * Stage.ratio + (20 * Math.cos(3.141592f + getMainBody().getAngle()))));
+
 			drawableBalloons.setBounds(actualX - 19, actualY - 108, actualX + 15, actualY + 2);
-			
+
 			canvas.save();
 			canvas.rotate((float) (Math.sin((float) balloonBar / 20 - 4.1887902) * 25), actualX, actualY);
 			drawableBalloons.draw(canvas);
@@ -166,14 +165,9 @@ public class Snake extends Character {
 			canvas.rotate((float) (Math.sin((float) balloonBar / 20 - 2.0943951) * 25), actualX, actualY);
 			drawableBalloons.draw(canvas);
 			canvas.restore();
-			
+
 			applyImpulse(new Vec2(0.02F, -0.13F));
 		}
-	}
-
-	@Override
-	public boolean checkPress(int x, int y) {
-		return true;
 	}
 
 	@Override

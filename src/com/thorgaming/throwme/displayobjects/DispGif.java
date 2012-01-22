@@ -6,9 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Movie;
 import android.graphics.Paint;
 
-import com.thorgaming.throwme.Camera;
-import com.thorgaming.throwme.DrawThread;
 import com.thorgaming.throwme.ThrowMe;
+import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.DrawThread;
 
 public class DispGif extends DispRes {
 

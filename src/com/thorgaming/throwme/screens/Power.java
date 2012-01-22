@@ -1,15 +1,15 @@
 package com.thorgaming.throwme.screens;
 
-import com.thorgaming.throwme.MouseCallback;
+import android.app.Activity;
+import android.view.KeyEvent;
+
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.RenderPriority;
+import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.game.characters.Characters;
 import com.thorgaming.throwme.displayobjects.power.PowerInfo;
 import com.thorgaming.throwme.displayobjects.shape.RoundRect;
-
-import android.app.Activity;
-import android.view.KeyEvent;
+import com.thorgaming.throwme.drawing.RenderPriority;
 
 public class Power extends Screen {
 
@@ -19,6 +19,7 @@ public class Power extends Screen {
 
 	public Power(Activity activity, Object[] data) {
 		super(activity, data);
+
 		new DispRes(R.drawable.back).setHitPadding(16).setWidth(48).setHeight(48).setX(736).setY(416).setMouseDownEvent(new MouseCallback() {
 			@Override
 			public boolean sendCallback(int x, int y) {
@@ -26,11 +27,11 @@ public class Power extends Screen {
 				return true;
 			}
 		}).addToScreen();
-		
+
 		RoundRect rr = (RoundRect) new RoundRect(20).setHeight(480).setWidth(600).setAlpha(50).setX(185).addToScreen(RenderPriority.High);
 		rr.paint.setARGB(50, 0, 0, 0);
 		rr.stroke.setARGB(150, 0, 0, 0);
-		
+
 		charButton = (DispRes) new DispRes(R.drawable.power_char_b).setWidth(213).setHeight(53).setX(5).setY(30).setMouseDownEvent(new MouseCallback() {
 			@Override
 			public boolean sendCallback(int x, int y) {
@@ -61,7 +62,7 @@ public class Power extends Screen {
 				return false;
 			}
 		}).addToScreen();
-		
+
 		powInfo = (PowerInfo) new PowerInfo(Characters.getFromId(enum_index)).setX(185).setY(20).addToScreen();
 	}
 

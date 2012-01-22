@@ -7,14 +7,12 @@ import android.graphics.Color;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
-import com.thorgaming.throwme.Callback;
-import com.thorgaming.throwme.DrawThread;
 import com.thorgaming.throwme.GameState;
-import com.thorgaming.throwme.HitListener;
-import com.thorgaming.throwme.MouseCallback;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.RenderPriority;
 import com.thorgaming.throwme.ThrowMe;
+import com.thorgaming.throwme.billing.BillingService;
+import com.thorgaming.throwme.callback.Callback;
+import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.displayobjects.DispGif;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
@@ -28,6 +26,9 @@ import com.thorgaming.throwme.displayobjects.game.cloud.ColouredCloud;
 import com.thorgaming.throwme.displayobjects.game.cloud.LightningCloud;
 import com.thorgaming.throwme.displayobjects.shape.PhysCircle;
 import com.thorgaming.throwme.displayobjects.shape.Rect;
+import com.thorgaming.throwme.drawing.DrawThread;
+import com.thorgaming.throwme.drawing.HitListener;
+import com.thorgaming.throwme.drawing.RenderPriority;
 
 public class Game extends Screen {
 
@@ -53,10 +54,16 @@ public class Game extends Screen {
 	private int mouseX;
 	private int mouseY;
 
-	private Characters currentChar = Characters.SNAKE;
+	private Characters currentChar;
 
 	public Game(Activity activity, Object[] data) {
 		super(activity, data);
+
+		currentChar = Characters.getFromId(ThrowMe.getInstance().customisationSettings.getInt("char", 0));
+		if (!BillingService.purchases.isPurchased(currentChar.getMarketId())) { // Make sure we bought that :P
+			currentChar = Characters.GUY;
+			ThrowMe.getInstance().customisationSettings.edit().putInt("char", 0).commit();
+		}
 
 		ThrowMe.getInstance().stage.camera.setCameraXY(0, 0);
 		ThrowMe.getInstance().stage.drawThread.setPhysics(true);

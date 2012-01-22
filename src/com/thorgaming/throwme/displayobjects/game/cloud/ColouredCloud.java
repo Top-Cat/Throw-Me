@@ -8,7 +8,7 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.RenderPriority;
+import com.thorgaming.throwme.drawing.RenderPriority;
 import com.thorgaming.throwme.displayobjects.game.characters.Character;
 import com.thorgaming.throwme.displayobjects.game.Launcher;
 

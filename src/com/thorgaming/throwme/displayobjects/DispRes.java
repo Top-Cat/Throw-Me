@@ -3,16 +3,16 @@ package com.thorgaming.throwme.displayobjects;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
-import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.ThrowMe;
+import com.thorgaming.throwme.drawing.Camera;
 
 public class DispRes extends DispObj {
 
 	protected Drawable drawable;
-	protected int actualX = 0;
-	protected int actualY = 0;
+	protected Rect hitBox = new Rect();
 	protected ColorMatrix colorMatrix = new ColorMatrix();
 
 	private int hitPadding = 0;
@@ -21,17 +21,17 @@ public class DispRes extends DispObj {
 	public DispRes(int drawableId) {
 		setDrawable(drawableId);
 	}
-	
+
 	public void setDrawable(int drawableId) {
 		drawable = ThrowMe.getInstance().stage.getResources().getDrawable(drawableId);
 	}
 
 	public int getScreenX() {
-		return actualX;
+		return hitBox.left;
 	}
 
 	public int getScreenY() {
-		return actualY;
+		return hitBox.top;
 	}
 
 	public int getHitPadding() {
@@ -51,27 +51,22 @@ public class DispRes extends DispObj {
 		this.angle = angle;
 		return this;
 	}
-	
+
 	@Override
 	public boolean checkPress(int x, int y) {
-		if (actualX <= x + hitPadding && actualX + getWidth() >= x - hitPadding && actualY <= y + hitPadding && actualY + getHeight() >= y - hitPadding) {
-			return true;
-		}
-		return false;
+		return hitBox.intersects(x - hitPadding, y - hitPadding, x + hitPadding, y + hitPadding);
 	}
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		actualX = camera.transformX(getX());
-		actualY = camera.transformY(getY());
+		hitBox.set(camera.transformX(getX()), camera.transformY(getY()), camera.transformX(getX() + getWidth()), camera.transformY(getY() + getHeight()));
 
 		canvas.save();
-		canvas.rotate(angle, actualX + getWidth() / 2, actualY + getHeight() / 2);
+		canvas.rotate(angle, hitBox.exactCenterX(), hitBox.exactCenterY());
 		drawable.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-		drawable.setBounds(actualX, actualY, (getX() + getWidth()) * camera.getScreenWidth() / 800, (getY() + getHeight()) * camera.getScreenHeight() / 480);
+		drawable.setBounds(hitBox);
 		drawable.setAlpha(getAlpha());
 		drawable.draw(canvas);
 		canvas.restore();
 	}
-
 }
