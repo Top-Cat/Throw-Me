@@ -84,7 +84,7 @@ public class Highs extends Screen {
 		rr.paint.setARGB(50, 0, 0, 0);
 		rr.stroke.setARGB(150, 0, 0, 0);
 
-		ThrowMe.stage.draw = new Callback() {
+		ThrowMe.getInstance().stage.draw = new Callback() {
 			@Override
 			public void sendCallback() {
 				scrollDraw = scroll;
@@ -291,7 +291,7 @@ public class Highs extends Screen {
 						roundedBorderBackground = (RoundRect) new RoundRect(24).setWidth(561).setHeight(490).setAlpha(0).setX(35).setY(-5).addToScreen(RenderPriority.Low);
 						roundedBorderBackground.paint.setARGB(0, 0, 0, 0);
 						roundedBorderBackground.stroke.setStrokeWidth(10);
-						roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, ThrowMe.stage.camera.getScreenHeight(), Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
+						roundedBorderBackground.stroke.setShader(new LinearGradient(0, 0, 0, ThrowMe.getInstance().stage.camera.getScreenHeight(), Color.rgb(0, 102, 204), Color.rgb(255, 255, 255), Shader.TileMode.MIRROR));
 
 						roundedBorder = (RoundRect) new RoundRect(20).setWidth(550).setHeight(480).setAlpha(0).setX(40).addToScreen();
 						roundedBorder.paint.setARGB(0, 0, 0, 0);
@@ -322,7 +322,7 @@ public class Highs extends Screen {
 
 	@Override
 	public boolean onTouch(MotionEvent event) {
-		mouseY = ThrowMe.stage.camera.rTransformY((int) event.getY());
+		mouseY = ThrowMe.getInstance().stage.camera.rTransformY((int) event.getY());
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			downY = mouseY;

@@ -20,7 +20,7 @@ public class XAnim extends Anim {
 		this.start = start;
 		this.end = end;
 
-		ThrowMe.stage.animations.add(this);
+		ThrowMe.getInstance().stage.animations.add(this);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
 
-import com.thorgaming.throwme.Stage;
+import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
@@ -21,7 +21,7 @@ public class PhysCircle extends Circle {
 	public PhysCircle(int density) {
 		super();
 
-		world = ThrowMe.stage.world;
+		world = ThrowMe.getInstance().stage.world;
 
 		circle = new CircleDef();
 		circle.radius = 1F;
@@ -86,7 +86,7 @@ public class PhysCircle extends Circle {
 			return 0;
 		}
 		Vec2 position = physicsBody.getPosition();
-		return (int) (position.x * Stage.ratio) - ThrowMe.stage.camera.getX();
+		return (int) (position.x * Stage.ratio) - ThrowMe.getInstance().stage.camera.getX();
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class PhysCircle extends Circle {
 			return 0;
 		}
 		Vec2 position = physicsBody.getPosition();
-		return (int) (position.y * Stage.ratio) + ThrowMe.stage.camera.getY();
+		return (int) (position.y * Stage.ratio) + ThrowMe.getInstance().stage.camera.getY();
 	}
 
 }

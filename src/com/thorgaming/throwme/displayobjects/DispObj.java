@@ -21,7 +21,7 @@ public abstract class DispObj {
 	private boolean ignorePause = false;
 
 	public DispObj addToScreen(RenderPriority priority) {
-		ThrowMe.stage.registerForRender(priority, this);
+		ThrowMe.getInstance().stage.registerForRender(priority, this);
 		return this;
 	}
 
@@ -39,7 +39,7 @@ public abstract class DispObj {
 	}
 
 	public MouseCallback getMouseUpEvent() {
-		return (!ThrowMe.stage.drawThread.getPaused() || ignorePause) ? onMouseUpEvent : null;
+		return (!ThrowMe.getInstance().stage.drawThread.getPaused() || ignorePause) ? onMouseUpEvent : null;
 	}
 
 	public DispObj setMouseMoveEvent(MouseCallback event) {
@@ -48,7 +48,7 @@ public abstract class DispObj {
 	}
 
 	public MouseCallback getMouseMoveEvent() {
-		return (!ThrowMe.stage.drawThread.getPaused() || ignorePause) ? onMouseMoveEvent : null;
+		return (!ThrowMe.getInstance().stage.drawThread.getPaused() || ignorePause) ? onMouseMoveEvent : null;
 	}
 
 	public DispObj setMouseDownEvent(MouseCallback event) {
@@ -57,7 +57,7 @@ public abstract class DispObj {
 	}
 
 	public MouseCallback getMouseDownEvent() {
-		return (!ThrowMe.stage.drawThread.getPaused() || ignorePause) ? onMouseDownEvent : null;
+		return (!ThrowMe.getInstance().stage.drawThread.getPaused() || ignorePause) ? onMouseDownEvent : null;
 	}
 
 	public DispObj setAlpha(int alpha) {
@@ -117,14 +117,14 @@ public abstract class DispObj {
 
 	public void destroy() {
 		List<Anim> over = new ArrayList<Anim>();
-		for (Anim i : ThrowMe.stage.animations) {
+		for (Anim i : ThrowMe.getInstance().stage.animations) {
 			if (i.getObject() == this) {
 				over.add(i);
 			}
 		}
-		ThrowMe.stage.animations.removeAll(over);
+		ThrowMe.getInstance().stage.animations.removeAll(over);
 
-		ThrowMe.stage.unregisterForRender(this);
+		ThrowMe.getInstance().stage.unregisterForRender(this);
 	}
 
 	public abstract boolean checkPress(int x, int y);

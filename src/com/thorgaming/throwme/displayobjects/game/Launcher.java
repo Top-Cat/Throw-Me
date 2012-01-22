@@ -25,7 +25,7 @@ public class Launcher extends DispObj {
 	}
 
 	public Launcher(final Character character, final float multiplier) {
-		ThrowMe.stage.drawThread.setPhysics(false);
+		ThrowMe.getInstance().stage.drawThread.setPhysics(false);
 		paint.setColor(Color.rgb(255, 32, 20));
 		paintStroke.setColor(Color.rgb(220, 220, 220));
 		paintStroke.setStyle(Style.STROKE);
@@ -34,7 +34,7 @@ public class Launcher extends DispObj {
 		setMouseDownEvent(new MouseCallback() {
 			@Override
 			public boolean sendCallback(int x, int y) {
-				ThrowMe.stage.drawThread.setPhysics(true);
+				ThrowMe.getInstance().stage.drawThread.setPhysics(true);
 				character.applyImpulse(new Vec2(55F, -80F).mul((float) bar * multiplier));
 				destroy();
 				return false;

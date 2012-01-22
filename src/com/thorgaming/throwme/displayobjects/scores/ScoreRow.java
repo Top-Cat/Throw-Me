@@ -31,7 +31,7 @@ public class ScoreRow extends DispObj {
 		setY(y);
 
 		paint.setColor(Color.rgb(255, 255, 255));
-		paint.setTextSize(ThrowMe.stage.camera.transformY(30));
+		paint.setTextSize(ThrowMe.getInstance().stage.camera.transformY(30));
 		paint.setSubpixelText(true);
 		paint.setStrokeWidth(3);
 

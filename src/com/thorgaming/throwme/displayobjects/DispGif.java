@@ -27,7 +27,7 @@ public class DispGif extends DispRes {
 
 		this.repetitions = repetitions;
 		this.speed = speed;
-		is = ThrowMe.stage.getResources().openRawResource(drawableId);
+		is = ThrowMe.getInstance().stage.getResources().openRawResource(drawableId);
 		movie = Movie.decodeStream(is);
 	}
 

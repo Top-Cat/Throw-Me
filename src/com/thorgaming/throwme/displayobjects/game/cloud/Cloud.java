@@ -10,7 +10,7 @@ import org.jbox2d.dynamics.World;
 import android.graphics.Canvas;
 
 import com.thorgaming.throwme.Camera;
-import com.thorgaming.throwme.Stage;
+import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
@@ -24,7 +24,7 @@ public class Cloud extends DispRes_Rel implements Sensor {
 	public Cloud(int drawableid) {
 		super(drawableid);
 
-		world = ThrowMe.stage.world;
+		world = ThrowMe.getInstance().stage.world;
 
 		CircleDef cloud = new CircleDef();
 		cloud.isSensor = true;

@@ -10,7 +10,7 @@ import android.graphics.Movie;
 
 import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.Stage;
+import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
 
 public class BoostCloud extends Cloud {
@@ -21,7 +21,7 @@ public class BoostCloud extends Cloud {
 
 	public BoostCloud() {
 		super(R.drawable.cloud);
-		inputStream = ThrowMe.stage.getResources().openRawResource(R.drawable.cloud);
+		inputStream = ThrowMe.getInstance().stage.getResources().openRawResource(R.drawable.cloud);
 		movie = Movie.decodeStream(inputStream);
 	}
 

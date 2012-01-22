@@ -22,7 +22,7 @@ public class PowerInfo extends DispObj {
 	public PowerInfo(Characters thisInfo) {
 		setInfo(thisInfo);
 
-		purchase = ThrowMe.stage.getResources().getDrawable(R.drawable.purchase);
+		purchase = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.purchase);
 
 		paint.setColor(Color.rgb(255, 255, 255));
 		paint.setTextSize(30);
@@ -32,7 +32,7 @@ public class PowerInfo extends DispObj {
 
 	public void setInfo(Characters thisInfo) {
 		this.thisInfo = thisInfo;
-		preview = ThrowMe.stage.getResources().getDrawable(thisInfo.getDrawableId());
+		preview = ThrowMe.getInstance().stage.getResources().getDrawable(thisInfo.getDrawableId());
 	}
 
 	@Override

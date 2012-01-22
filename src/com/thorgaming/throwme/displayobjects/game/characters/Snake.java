@@ -15,7 +15,7 @@ import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.Stage;
+import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.game.characters.Character;
 
@@ -39,10 +39,10 @@ public class Snake extends Character {
 	
 	public Snake() {
 		super();
-		drawableEye = ThrowMe.stage.getResources().getDrawable(R.drawable.eye);
-		drawableBalloons = ThrowMe.stage.getResources().getDrawable(R.drawable.balloon);
+		drawableEye = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.eye);
+		drawableBalloons = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.balloon);
 		
-		world = ThrowMe.stage.world;
+		world = ThrowMe.getInstance().stage.world;
 
 		CircleDef head = new CircleDef();
 		head.radius = 20 / Stage.ratio;

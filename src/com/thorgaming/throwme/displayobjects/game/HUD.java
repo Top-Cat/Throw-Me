@@ -40,7 +40,7 @@ public class HUD extends DispObj {
 			public boolean sendCallback(int x, int y) {
 				if (balloonBar > 0 && coolDown == -50) {
 					coolDown = 127;
-					synchronized (ThrowMe.stage.drawThread.physicsSync) {
+					synchronized (ThrowMe.getInstance().stage.drawThread.physicsSync) {
 						Vec2 linearVelocity = HUD.this.character.getMainBody().getLinearVelocity();
 						HUD.this.character.getMainBody().setLinearVelocity(new Vec2(Math.max(linearVelocity.x, 3), Math.min(linearVelocity.y, -3)));
 					}

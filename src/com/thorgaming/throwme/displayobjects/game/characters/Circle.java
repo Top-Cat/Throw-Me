@@ -11,7 +11,7 @@ import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.Stage;
+import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.game.characters.Character;
 
@@ -23,9 +23,9 @@ public class Circle extends Character {
 	
 	public Circle() {
 		super();
-		drawableBalloons = ThrowMe.stage.getResources().getDrawable(R.drawable.balloon);
+		drawableBalloons = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.balloon);
 		
-		world = ThrowMe.stage.world;
+		world = ThrowMe.getInstance().stage.world;
 
 		CircleDef head = new CircleDef();
 		head.radius = 40 / Stage.ratio;

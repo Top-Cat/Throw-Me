@@ -32,7 +32,7 @@ public class Main extends Screen {
 	public class WaitForScreen extends TimerTask {
 		@Override
 		public void run() {
-			if (ThrowMe.stage.start == false) {
+			if (ThrowMe.getInstance().stage.start == false) {
 				timer.schedule(new WaitForScreen(), 500);
 			} else {
 				if (skipIntro) {

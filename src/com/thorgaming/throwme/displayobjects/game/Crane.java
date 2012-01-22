@@ -15,7 +15,7 @@ import android.graphics.drawable.Drawable;
 import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.RenderPriority;
-import com.thorgaming.throwme.Stage;
+import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
 import com.thorgaming.throwme.displayobjects.Sensor;
@@ -36,7 +36,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 		setWidth(200);
 		setHeight(292);
 
-		world = ThrowMe.stage.world;
+		world = ThrowMe.getInstance().stage.world;
 
 		CircleDef wreckingBall = new CircleDef();
 		wreckingBall.isSensor = true;
@@ -51,7 +51,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 		physicsBody.createShape(wreckingBall);
 		physicsBody.setMassFromShapes();
 
-		notes = ThrowMe.stage.getResources().getDrawable(R.drawable.swingingnotes);
+		notes = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.swingingnotes);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 		float angle = (float) (40 * Math.sin(Math.toRadians(time)));
 		physicsBody.setXForm(new Vec2((float) (getX() + 207 - 97 * Math.sin(Math.toRadians(angle)) - 9 * Math.cos(Math.toRadians(angle))) / Stage.ratio, (float) (getY() + 41 + 97 * Math.cos(Math.toRadians(angle)) + 9 * Math.sin(Math.toRadians(angle))) / Stage.ratio), 0);
 
-		if (ThrowMe.stage.drawThread.isPhysicsRunning()) {
+		if (ThrowMe.getInstance().stage.drawThread.isPhysicsRunning()) {
 			time += speed;
 			if (time > 360) {
 				time = time % 360;

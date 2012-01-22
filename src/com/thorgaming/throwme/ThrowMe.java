@@ -12,13 +12,21 @@ import com.thorgaming.throwme.screens.Screen;
 
 public class ThrowMe extends Activity {
 
-	public static Stage stage = null;
+	public Stage stage = null;
+	private static ThrowMe activity = null;
 	public Screen screen;
+	public boolean billingDirty = false;
+
+	public static ThrowMe getInstance() {
+		/* Android has to make this :/ */
+		return activity;
+	}
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		activity = this;
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

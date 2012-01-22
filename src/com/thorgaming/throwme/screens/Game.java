@@ -58,8 +58,8 @@ public class Game extends Screen {
 	public Game(Activity activity, Object[] data) {
 		super(activity, data);
 
-		ThrowMe.stage.camera.setCameraXY(0, 0);
-		ThrowMe.stage.drawThread.setPhysics(true);
+		ThrowMe.getInstance().stage.camera.setCameraXY(0, 0);
+		ThrowMe.getInstance().stage.drawThread.setPhysics(true);
 
 		gradient[0][0] = 255;
 		gradient[0][1] = 255;
@@ -140,21 +140,21 @@ public class Game extends Screen {
 		new BoostCloud().setX(600).setY(-620).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(850).setY(-120).addToScreen(RenderPriority.High);
 
-		ThrowMe.stage.world.setContactListener(new HitListener());
+		ThrowMe.getInstance().stage.world.setContactListener(new HitListener());
 
-		ThrowMe.stage.draw = new Callback() {
+		ThrowMe.getInstance().stage.draw = new Callback() {
 			@Override
 			public void sendCallback() {
 				if (character != null && character.getGameState() == GameState.END && !ended) {
-					ThrowMe.stage.drawThread.returnHighs(Game.this.activity);
+					ThrowMe.getInstance().stage.drawThread.returnHighs(Game.this.activity);
 					ended = true;
 				}
 				if (!ended) {
-					if (hills1.getScreenX() < -ThrowMe.stage.camera.getScreenWidth()) {
-						hills1.setX(ThrowMe.stage.camera.getX() + ThrowMe.stage.camera.getScreenWidth());
+					if (hills1.getScreenX() < -ThrowMe.getInstance().stage.camera.getScreenWidth()) {
+						hills1.setX(ThrowMe.getInstance().stage.camera.getX() + ThrowMe.getInstance().stage.camera.getScreenWidth());
 					}
-					if (hills2.getScreenX() < -ThrowMe.stage.camera.getScreenWidth()) {
-						hills2.setX(ThrowMe.stage.camera.getX() + ThrowMe.stage.camera.getScreenWidth());
+					if (hills2.getScreenX() < -ThrowMe.getInstance().stage.camera.getScreenWidth()) {
+						hills2.setX(ThrowMe.getInstance().stage.camera.getX() + ThrowMe.getInstance().stage.camera.getScreenWidth());
 					}
 					for (int i = 0; i < 7; i++) {
 						if (randomHills[i].getScreenX() < -160) {
@@ -173,19 +173,19 @@ public class Game extends Screen {
 					}
 
 					int ng[] = new int[2];
-					if (ThrowMe.stage.camera.getY() > 7999) {
+					if (ThrowMe.getInstance().stage.camera.getY() > 7999) {
 
 						ng[0] = Color.rgb(0, 0, 0);
 						ng[1] = Color.rgb(0, 0, 0);
 
-					} else if (ThrowMe.stage.camera.getY() > 0) {
+					} else if (ThrowMe.getInstance().stage.camera.getY() > 0) {
 
-						int ny = ThrowMe.stage.camera.getY() + 10;
-						if (ny % 1000 < ThrowMe.stage.camera.getY() % 1000) {
+						int ny = ThrowMe.getInstance().stage.camera.getY() + 10;
+						if (ny % 1000 < ThrowMe.getInstance().stage.camera.getY() % 1000) {
 							ny -= ny % 1000 + 1;
 						}
-						ng[0] = blend(gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000)], ny % 1000);
-						ng[1] = blend(gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(ThrowMe.stage.camera.getY() / 1000)], ThrowMe.stage.camera.getY() % 1000);
+						ng[0] = blend(gradient[(int) Math.floor(ThrowMe.getInstance().stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(ThrowMe.getInstance().stage.camera.getY() / 1000)], ny % 1000);
+						ng[1] = blend(gradient[(int) Math.floor(ThrowMe.getInstance().stage.camera.getY() / 1000) + 1], gradient[(int) Math.floor(ThrowMe.getInstance().stage.camera.getY() / 1000)], ThrowMe.getInstance().stage.camera.getY() % 1000);
 
 					} else {
 						ng[0] = Color.rgb(255, 255, 255);
@@ -207,22 +207,22 @@ public class Game extends Screen {
 
 	@Override
 	public boolean onTouch(MotionEvent event) {
-		mouseX = ThrowMe.stage.camera.rTransformX((int) event.getX());
-		mouseY = ThrowMe.stage.camera.rTransformY((int) event.getY());
+		mouseX = ThrowMe.getInstance().stage.camera.rTransformX((int) event.getX());
+		mouseY = ThrowMe.getInstance().stage.camera.rTransformY((int) event.getY());
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			downX = mouseX;
 			downY = mouseY;
-			cameraX = ThrowMe.stage.camera.getX();
-			cameraY = ThrowMe.stage.camera.getY();
+			cameraX = ThrowMe.getInstance().stage.camera.getX();
+			cameraY = ThrowMe.getInstance().stage.camera.getY();
 		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			int newX = cameraX + downX - mouseX;
 			int newY = cameraY + mouseY - downY;
 			if (newY < 0) {
 				newY = 0;
 			}
-			if (newX < ThrowMe.stage.camera.getX()) {
-				newX = ThrowMe.stage.camera.getX();
+			if (newX < ThrowMe.getInstance().stage.camera.getX()) {
+				newX = ThrowMe.getInstance().stage.camera.getX();
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
 			if (character != null && character.getGameState() == GameState.ON_SPRING) {
@@ -236,7 +236,7 @@ public class Game extends Screen {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			ThrowMe.stage.drawThread.returnMain(activity);
+			ThrowMe.getInstance().stage.drawThread.returnMain(activity);
 		}
 		return super.onKeyDown(keyCode, event);
 	}

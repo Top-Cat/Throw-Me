@@ -23,7 +23,7 @@ public class DispRes extends DispObj {
 	}
 	
 	public void setDrawable(int drawableId) {
-		drawable = ThrowMe.stage.getResources().getDrawable(drawableId);
+		drawable = ThrowMe.getInstance().stage.getResources().getDrawable(drawableId);
 	}
 
 	public int getScreenX() {

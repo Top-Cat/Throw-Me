@@ -23,7 +23,7 @@ public class PauseMenu {
 			@Override
 			public boolean sendCallback(int x, int y) {
 				if (pauseButton.getAlpha() > 0) {
-					ThrowMe.stage.drawThread.setPaused(true);
+					ThrowMe.getInstance().stage.drawThread.setPaused(true);
 					pauseBg.setAlpha(180);
 					resumeButton.setAlpha(255);
 					mainMenuButton.setAlpha(255);
@@ -40,7 +40,7 @@ public class PauseMenu {
 			@Override
 			public boolean sendCallback(int x, int y) {
 				if (resumeButton.getAlpha() > 0) {
-					ThrowMe.stage.drawThread.setPaused(false);
+					ThrowMe.getInstance().stage.drawThread.setPaused(false);
 					pauseBg.setAlpha(0);
 					resumeButton.setAlpha(0);
 					mainMenuButton.setAlpha(0);

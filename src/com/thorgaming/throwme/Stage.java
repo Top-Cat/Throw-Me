@@ -54,7 +54,7 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void registerForRender(RenderPriority priority, DispObj object) {
-		synchronized (ThrowMe.stage.objects) {
+		synchronized (ThrowMe.getInstance().stage.objects) {
 			if (!objects.containsKey(priority)) {
 				objects.put(priority, new HashSet<DispObj>());
 			}
@@ -63,7 +63,7 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void unregisterForRender(DispObj object) {
-		synchronized (ThrowMe.stage.objects) {
+		synchronized (ThrowMe.getInstance().stage.objects) {
 			for (RenderPriority priority : objects.keySet()) {
 				objects.get(priority).remove(object);
 			}
@@ -99,7 +99,7 @@ public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 		if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE || event.getAction() == MotionEvent.ACTION_UP) {
 			findObject: for (int i = 4; i >= 0; i--) {
 				if (objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
-					synchronized (ThrowMe.stage.objects) {
+					synchronized (ThrowMe.getInstance().stage.objects) {
 						for (DispObj obj : objects.get(RenderPriority.getRenderPriorityFromId(i))) {
 							if (obj.checkPress(x, y)) {
 								if (event.getAction() == MotionEvent.ACTION_DOWN) {

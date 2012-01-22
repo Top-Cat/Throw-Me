@@ -88,40 +88,40 @@ public class DrawThread extends Thread {
 		while (doRun) {
 			Canvas c = null;
 			try {
-				for (MotionEventStore e : (ArrayList<MotionEventStore>) ThrowMe.stage.mcache.clone()) {
-					ThrowMe.stage.touch(e);
+				for (MotionEventStore e : (ArrayList<MotionEventStore>) ThrowMe.getInstance().stage.mcache.clone()) {
+					ThrowMe.getInstance().stage.touch(e);
 				}
 				if (!pausedInternal) {
-					ThrowMe.stage.mcache.clear();
+					ThrowMe.getInstance().stage.mcache.clear();
 					c = surfaceHolder.lockCanvas(null);
 					if (doPhysics) {
 						synchronized (physicsSync) {
-							ThrowMe.stage.world.step((float) 0.01, 5);
+							ThrowMe.getInstance().stage.world.step((float) 0.01, 5);
 						}
 					}
 
-					if (ThrowMe.stage.draw != null) {
-						ThrowMe.stage.draw.sendCallback();
+					if (ThrowMe.getInstance().stage.draw != null) {
+						ThrowMe.getInstance().stage.draw.sendCallback();
 					}
 
 					if (c != null) {
-						ThrowMe.stage.start = true;
+						ThrowMe.getInstance().stage.start = true;
 
 						GradientDrawable g = new GradientDrawable(Orientation.TOP_BOTTOM, gradient);
-						g.setBounds(0, 0, ThrowMe.stage.camera.getScreenWidth(), ThrowMe.stage.camera.getScreenHeight());
+						g.setBounds(0, 0, ThrowMe.getInstance().stage.camera.getScreenWidth(), ThrowMe.getInstance().stage.camera.getScreenHeight());
 						g.draw(c);
 
 						List<Anim> over = new ArrayList<Anim>();
-						for (Anim i : ThrowMe.stage.animations) {
+						for (Anim i : ThrowMe.getInstance().stage.animations) {
 							i.process(over);
 						}
-						ThrowMe.stage.animations.removeAll(over);
+						ThrowMe.getInstance().stage.animations.removeAll(over);
 
-						synchronized (ThrowMe.stage.objects) {
+						synchronized (ThrowMe.getInstance().stage.objects) {
 							for (int i = 0; i <= 4; i++) {
-								if (ThrowMe.stage.objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
-									for (DispObj obj : ThrowMe.stage.objects.get(RenderPriority.getRenderPriorityFromId(i))) {
-										obj.draw(c, ThrowMe.stage.camera);
+								if (ThrowMe.getInstance().stage.objects.containsKey(RenderPriority.getRenderPriorityFromId(i))) {
+									for (DispObj obj : ThrowMe.getInstance().stage.objects.get(RenderPriority.getRenderPriorityFromId(i))) {
+										obj.draw(c, ThrowMe.getInstance().stage.camera);
 									}
 								}
 							}
@@ -137,7 +137,7 @@ public class DrawThread extends Thread {
 							goMain.runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
-									new Highs(goMain, new Object[] {true, ThrowMe.stage.camera.getX() / 10});
+									new Highs(goMain, new Object[] {true, ThrowMe.getInstance().stage.camera.getX() / 10});
 								}
 							});
 						} else {

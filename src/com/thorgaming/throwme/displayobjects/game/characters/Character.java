@@ -10,7 +10,7 @@ import android.graphics.Paint;
 import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.GameState;
 import com.thorgaming.throwme.MouseCallback;
-import com.thorgaming.throwme.Stage;
+import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
@@ -88,7 +88,7 @@ public abstract class Character extends DispObj {
 			getMainBody().applyForce(dampingForce, world1);
 			canvas.drawLine(camera.transformX((int) (getMainBody().getPosition().x * Stage.ratio)), camera.transformY((int) (getMainBody().getPosition().y * Stage.ratio)), camera.transformX((int) mouseX), camera.transformY((int) mouseY), paint);
 		} else {
-			if (ThrowMe.stage.drawThread.isPhysicsRunning()) {
+			if (ThrowMe.getInstance().stage.drawThread.isPhysicsRunning()) {
 				float speedX = (getMainBody().getPosition().x - previousHeadX);
 				float speedY = (getMainBody().getPosition().y - previousHeadY);
 				byte direction = speedX < 0 ? (byte) -1 : 1;

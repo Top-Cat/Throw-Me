@@ -14,7 +14,7 @@ import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.Camera;
 import com.thorgaming.throwme.R;
-import com.thorgaming.throwme.Stage;
+import com.thorgaming.throwme.stage;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.game.characters.Character;
 
@@ -34,10 +34,10 @@ public class Car extends Character {
 	
 	public Car() {
 		super();
-		drawableBalloons = ThrowMe.stage.getResources().getDrawable(R.drawable.balloon);
-		drawableCar = ThrowMe.stage.getResources().getDrawable(R.drawable.car);
+		drawableBalloons = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.balloon);
+		drawableCar = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.car);
 		
-		world = ThrowMe.stage.world;
+		world = ThrowMe.getInstance().stage.world;
 
 		PolygonDef base = new PolygonDef();
 		base.setAsBox(50 / Stage.ratio, 20 / Stage.ratio);
