@@ -24,7 +24,7 @@ public class ColouredCloud extends Cloud {
 
 	@Override
 	protected void scrollMove() {
-		setX(getX() + 2000);
+		setX(getX() + 1700);
 		hit = false;
 		randomiseColor();
 	}

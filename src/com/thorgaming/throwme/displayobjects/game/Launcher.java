@@ -12,6 +12,7 @@ import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.game.characters.Character;
 import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.DrawThread;
 
 public class Launcher extends DispObj {
 
@@ -36,7 +37,7 @@ public class Launcher extends DispObj {
 			public boolean sendCallback(int x, int y) {
 				ThrowMe.getInstance().stage.drawThread.setPhysics(true);
 				character.applyImpulse(new Vec2(55F, -80F).mul((float) bar * multiplier));
-				destroy();
+				DrawThread.toRemove.add(Launcher.this);
 				return false;
 			}
 		});

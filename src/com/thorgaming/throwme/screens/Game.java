@@ -26,6 +26,7 @@ import com.thorgaming.throwme.displayobjects.game.cloud.ColouredCloud;
 import com.thorgaming.throwme.displayobjects.game.cloud.LightningCloud;
 import com.thorgaming.throwme.displayobjects.shape.PhysCircle;
 import com.thorgaming.throwme.displayobjects.shape.Rect;
+import com.thorgaming.throwme.displayobjects.shape.Text;
 import com.thorgaming.throwme.drawing.DrawThread;
 import com.thorgaming.throwme.drawing.HitListener;
 import com.thorgaming.throwme.drawing.RenderPriority;
@@ -146,7 +147,10 @@ public class Game extends Screen {
 		new BoostCloud().setX(150).setY(-720).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(600).setY(-620).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(850).setY(-120).addToScreen(RenderPriority.High);
-
+		
+		new Text().setText("Press down on the box").setSize(30).setX(50).setY(45).addToScreen();
+		new Text().setText("and drag to throw!").setSize(30).setX(73).setY(75).addToScreen();
+		
 		ThrowMe.getInstance().stage.world.setContactListener(new HitListener());
 
 		ThrowMe.getInstance().stage.draw = new Callback() {
@@ -232,7 +236,7 @@ public class Game extends Screen {
 				newX = ThrowMe.getInstance().stage.camera.getX();
 			}
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-			if (character != null && character.getGameState() == GameState.ON_SPRING) {
+			if (character != null && character.getGameState() == GameState.ON_SPRING && character.throwTimeout <= 0) {
 				character.setGameState(GameState.LOOSE);
 			}
 		}

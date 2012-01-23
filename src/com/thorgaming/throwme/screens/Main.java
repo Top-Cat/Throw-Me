@@ -39,7 +39,6 @@ public class Main extends Screen {
 					new ShowMenu2().run();
 				} else {
 					new AlphaAnim(thorcard, 0, 255, null, 200);
-
 					timer.schedule(new ShowMenu(), 4000);
 				}
 			}

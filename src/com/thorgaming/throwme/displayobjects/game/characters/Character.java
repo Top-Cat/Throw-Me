@@ -17,7 +17,9 @@ import com.thorgaming.throwme.drawing.Stage;
 public abstract class Character extends DispObj {
 
 	private GameState state = GameState.ON_SPRING;
-	protected float mouseX, mouseY;
+	protected float mouseX = 400;
+	protected float mouseY = 240;
+	public float throwTimeout = 20;
 
 	protected Paint paint = new Paint();
 
@@ -38,6 +40,7 @@ public abstract class Character extends DispObj {
 			public boolean sendCallback(int x, int y) {
 				mouseX = x;
 				mouseY = y;
+				throwTimeout--;
 				return false;
 			}
 		});
