@@ -259,7 +259,7 @@ public class Highs extends Screen {
 					highScores.clear();
 					loader.setAlpha(255);
 
-					URL url = new URL("http://thomasc.co.uk/throwme/api.php?type=" + type);
+					URL url = new URL("http://thomasc.co.uk/throwme/api.php?deviceid=" + deviceid + "&type=" + type);
 					BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 					Yaml yaml = new Yaml();
 					Object yamlObj = yaml.load(reader);
@@ -267,13 +267,13 @@ public class Highs extends Screen {
 
 					if (activity.screen == Highs.this) {
 						if (yamlObj instanceof ArrayList<?>) {
-							ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yamlObj;
+							ArrayList<Map<String, Object>> list = (ArrayList<Map<String, Object>>) yamlObj;
 
 							int a = 0;
 							SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-							for (Map<String, String> i : list) {
+							for (Map<String, Object> i : list) {
 								try {
-									highScores.add((ScoreRow) new ScoreRow(Highs.this, a + 1, i.get("name"), Integer.valueOf(i.get("score")), sdf.parse(i.get("date")), a++ * 60).addToScreen());
+									highScores.add((ScoreRow) new ScoreRow(Highs.this, a + 1, (String) i.get("name"), Integer.valueOf((String) i.get("score")), sdf.parse((String) i.get("date")), (Boolean) i.get("isdevice")).setY(a++ * 60).addToScreen());
 								} catch (NumberFormatException e) {
 									e.printStackTrace();
 								} catch (ParseException e) {

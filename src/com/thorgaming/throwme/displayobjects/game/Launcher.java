@@ -31,6 +31,8 @@ public class Launcher extends DispObj {
 		paintStroke.setColor(Color.rgb(220, 220, 220));
 		paintStroke.setStyle(Style.STROKE);
 		paintStroke.setStrokeWidth(10);
+		
+		character.setBalloonPre(20);
 
 		setMouseDownEvent(new MouseCallback() {
 			@Override

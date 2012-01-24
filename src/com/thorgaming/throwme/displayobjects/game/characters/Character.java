@@ -18,7 +18,7 @@ public abstract class Character extends DispObj {
 
 	private GameState state = GameState.ON_SPRING;
 	protected float mouseX = 400;
-	protected float mouseY = 240;
+	protected float mouseY = 100;
 	public float throwTimeout = 20;
 
 	protected Paint paint = new Paint();
@@ -33,6 +33,7 @@ public abstract class Character extends DispObj {
 
 	private boolean boost = false;
 	protected short balloonBar = 0;
+	private int balloonPre = 20;
 
 	public Character() {
 		setMouseMoveEvent(new MouseCallback() {
@@ -105,6 +106,10 @@ public abstract class Character extends DispObj {
 				if (getMainBody().getPosition().y < -500 && getMainBody().getLinearVelocity().y < 0) {
 					applyImpulse(new Vec2(0, 3));
 				}
+				
+				if (balloonPre > 0) {
+					balloonPre--;
+				}
 			}
 
 			int nx = (int) (camera.getX() - (camera.getX() + (-Stage.ratio * getMainBody().getPosition().x + camera.getScreenWidth() / 2)) / 10);
@@ -114,9 +119,13 @@ public abstract class Character extends DispObj {
 			camera.setCameraXY(nx, ny);
 		}
 	}
+	
+	public void setBalloonPre(int balloonPre) {
+		this.balloonPre = balloonPre;
+	}
 
 	public void setBoost(boolean boost) {
-		this.boost = boost;
+		this.boost = boost && balloonPre == 0;
 	}
 
 	public boolean getBoost() {
