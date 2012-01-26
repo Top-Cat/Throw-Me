@@ -38,7 +38,7 @@ public class Launcher extends DispObj {
 			@Override
 			public boolean sendCallback(int x, int y) {
 				ThrowMe.getInstance().stage.drawThread.setPhysics(true);
-				character.applyImpulse(new Vec2(55F, -80F).mul((float) bar * multiplier));
+				character.applyImpulse(new Vec2(45F, -60F).mul((float) bar * multiplier));
 				DrawThread.toRemove.add(Launcher.this);
 				return false;
 			}

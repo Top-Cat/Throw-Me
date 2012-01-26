@@ -19,7 +19,7 @@ public abstract class Character extends DispObj {
 	private GameState state = GameState.ON_SPRING;
 	protected float mouseX = 400;
 	protected float mouseY = 100;
-	public float throwTimeout = 20;
+	public float throwTimeout = 5;
 
 	protected Paint paint = new Paint();
 
