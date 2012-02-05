@@ -3,7 +3,6 @@ package com.thorgaming.throwme.displayobjects;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.ThrowMe;
@@ -12,10 +11,7 @@ import com.thorgaming.throwme.drawing.Camera;
 public class DispRes extends DispObj {
 
 	protected Drawable drawable;
-	protected Rect hitBox = new Rect();
 	protected ColorMatrix colorMatrix = new ColorMatrix();
-
-	private int hitPadding = 0;
 	private float angle = 0;
 
 	public DispRes(int drawableId) {
@@ -34,15 +30,6 @@ public class DispRes extends DispObj {
 		return hitBox.top;
 	}
 
-	public int getHitPadding() {
-		return hitPadding;
-	}
-
-	public DispRes setHitPadding(int hitPadding) {
-		this.hitPadding = hitPadding;
-		return this;
-	}
-
 	public void setColorMatrix(ColorMatrix colorMatrix) {
 		this.colorMatrix = colorMatrix;
 	}
@@ -51,10 +38,10 @@ public class DispRes extends DispObj {
 		this.angle = angle;
 		return this;
 	}
-
+	
 	@Override
 	public boolean checkPress(int x, int y) {
-		return hitBox.intersects(x - hitPadding, y - hitPadding, x + hitPadding, y + hitPadding);
+		return super.checkPress(x, y);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 
 import com.thorgaming.throwme.GameState;
 import com.thorgaming.throwme.ThrowMe;
@@ -70,7 +71,7 @@ public class HUD extends DispObj {
 
 			canvas.drawText("Distance: " + camera.getX() / 10 + "m", 10, 40, paint);
 			String altitudeText = "Altitude: " + (int) (-(character.getMainBody().getPosition().y - 12) * 1.9) + "m";
-			android.graphics.Rect bounds = new android.graphics.Rect();
+			Rect bounds = new Rect();
 			paint.getTextBounds(altitudeText, 0, altitudeText.length(), bounds);
 			canvas.drawText(altitudeText, camera.getScreenWidth() - bounds.width() - 10, 40, paint);
 		}

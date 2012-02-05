@@ -26,7 +26,7 @@ import com.thorgaming.throwme.displayobjects.game.cloud.ColouredCloud;
 import com.thorgaming.throwme.displayobjects.game.cloud.LightningCloud;
 import com.thorgaming.throwme.displayobjects.shape.PhysCircle;
 import com.thorgaming.throwme.displayobjects.shape.Rect;
-import com.thorgaming.throwme.displayobjects.shape.Text;
+import com.thorgaming.throwme.displayobjects.shape.Text_Rel;
 import com.thorgaming.throwme.drawing.DrawThread;
 import com.thorgaming.throwme.drawing.HitListener;
 import com.thorgaming.throwme.drawing.RenderPriority;
@@ -148,8 +148,8 @@ public class Game extends Screen {
 		new BoostCloud().setX(600).setY(-620).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(850).setY(-120).addToScreen(RenderPriority.High);
 		
-		new Text().setText("Press down on the box").setSize(30).setX(50).setY(45).addToScreen();
-		new Text().setText("and drag to throw!").setSize(30).setX(73).setY(75).addToScreen();
+		new Text_Rel().setText("Press down on the box").setSize(30).setX(50).setY(45).addToScreen();
+		new Text_Rel().setText("and drag to throw!").setSize(30).setX(73).setY(75).addToScreen();
 		
 		ThrowMe.getInstance().stage.world.setContactListener(new HitListener());
 

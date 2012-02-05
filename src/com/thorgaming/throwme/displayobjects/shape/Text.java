@@ -2,15 +2,17 @@ package com.thorgaming.throwme.displayobjects.shape;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.Rect;
 
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.drawing.Camera;
-import com.thorgaming.throwme.drawing.DrawThread;
 
 public class Text extends DispObj {
 
-	private String text;
-	private Paint paint = new Paint();
+	private String text = "";
+	protected Paint paint = new Paint();
+	private Align align = Align.LEFT;
 	
 	public Text() {
 		paint.setSubpixelText(true);
@@ -21,22 +23,32 @@ public class Text extends DispObj {
 		return this;
 	}
 	
+	public String getText() {
+		return text;
+	}
+	
 	public Text setSize(float size) {
 		paint.setTextSize(size);
 		return this;
 	}
 	
+	public Text setAlign(Align align) {
+		this.align = align;
+		return this;
+	}
+	
+	public Paint getPaint() {
+		return paint;
+	}
+	
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		canvas.drawText(text, camera.transformRelativeX(getX()), camera.transformRelativeY(getY()), paint);
-		if (camera.transformRelativeX(getX()) < -300) {
-			DrawThread.toRemove.add(this);
-		}
-	}
-
-	@Override
-	public boolean checkPress(int x, int y) {
-		return false;
+		Rect bounds = new Rect();
+		paint.getTextBounds(getText(), 0, getText().length(), bounds);
+		int off = align == Align.RIGHT ? bounds.width() : align == Align.CENTER ? bounds.width() / 2 : 0;
+		hitBox.set(camera.transformX(getX()) - off, camera.transformY(getY()), camera.transformX(getX()) + bounds.width() - off, camera.transformY(getY()) + (int) paint.getTextSize());
+		
+		canvas.drawText(text, camera.transformX(getX()) - off, camera.transformY(getY()) + paint.getTextSize(), paint);
 	}
 	
 }

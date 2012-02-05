@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.Anim;
 import com.thorgaming.throwme.callback.MouseCallback;
+import com.thorgaming.throwme.displayobjects.shape.Text;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
@@ -19,7 +21,9 @@ public abstract class DispObj {
 	private int y = 0;
 	private int alpha = 255;
 	private boolean ignorePause = false;
-
+	protected Rect hitBox = new Rect();
+	private Rect hitRegion = new Rect();
+	
 	public DispObj addToScreen(RenderPriority priority) {
 		ThrowMe.getInstance().stage.registerForRender(priority, this);
 		return this;
@@ -104,6 +108,24 @@ public abstract class DispObj {
 	public int getHeight() {
 		return height;
 	}
+	
+	public Rect getHitPadding() {
+		return hitRegion;
+	}
+	
+	public Rect getHitBox() {
+		return hitBox;
+	}
+
+	public DispObj setHitPadding(int hitPadding) {
+		hitRegion.set(0, 0, hitPadding, hitPadding);
+		return this;
+	}
+	
+	public DispObj setHitPadding(Rect hitRegion) {
+		this.hitRegion.set(hitRegion);
+		return this;
+	}
 
 	public DispObj setWidth(int width) {
 		this.width = width;
@@ -127,6 +149,9 @@ public abstract class DispObj {
 		ThrowMe.getInstance().stage.unregisterForRender(this);
 	}
 
-	public abstract boolean checkPress(int x, int y);
+	public boolean checkPress(int x, int y) {
+		hitRegion.offsetTo(x - hitRegion.width() / 2, y - hitRegion.height() / 2);
+		return hitBox.intersect(hitRegion);
+	}
 
 }
