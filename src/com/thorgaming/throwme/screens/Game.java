@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 
 import com.thorgaming.throwme.GameState;
 import com.thorgaming.throwme.R;
@@ -68,6 +69,12 @@ public class Game extends Screen {
 
 		ThrowMe.getInstance().stage.camera.setCameraXY(0, 0);
 		ThrowMe.getInstance().stage.drawThread.setPhysics(true);
+		ThrowMe.getInstance().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				ThrowMe.getInstance().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			}
+		});
 
 		gradient[0][0] = 255;
 		gradient[0][1] = 255;

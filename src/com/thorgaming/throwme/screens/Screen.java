@@ -3,6 +3,7 @@ package com.thorgaming.throwme.screens;
 import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 
 import com.thorgaming.throwme.ThrowMe;
 
@@ -18,6 +19,12 @@ public class Screen {
 		ThrowMe.getInstance().stage.drawThread.setPaused(false);
 		this.activity = (ThrowMe) activity;
 		this.activity.screen = this;
+		ThrowMe.getInstance().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				ThrowMe.getInstance().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			}
+		});
 	}
 
 	public boolean onTouch(MotionEvent event) {
