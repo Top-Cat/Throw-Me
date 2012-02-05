@@ -22,7 +22,7 @@ public abstract class DispObj {
 	private boolean ignorePause = false;
 	protected Rect hitBox = new Rect();
 	private Rect hitRegion = new Rect();
-	
+
 	public DispObj addToScreen(RenderPriority priority) {
 		ThrowMe.getInstance().stage.registerForRender(priority, this);
 		return this;
@@ -107,11 +107,11 @@ public abstract class DispObj {
 	public int getHeight() {
 		return height;
 	}
-	
+
 	public Rect getHitPadding() {
 		return hitRegion;
 	}
-	
+
 	public Rect getHitBox() {
 		return hitBox;
 	}
@@ -120,7 +120,7 @@ public abstract class DispObj {
 		hitRegion.set(0, 0, hitPadding, hitPadding);
 		return this;
 	}
-	
+
 	public DispObj setHitPadding(Rect hitRegion) {
 		this.hitRegion.set(hitRegion);
 		return this;

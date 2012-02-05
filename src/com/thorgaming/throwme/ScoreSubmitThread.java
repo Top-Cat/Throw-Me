@@ -9,24 +9,24 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import android.app.Activity;
+
 import com.thorgaming.throwme.screens.Highs;
 import com.thorgaming.throwme.screens.Screen;
 import com.thorgaming.throwme.screens.Submit;
 
-import android.app.Activity;
-
 public class ScoreSubmitThread extends Thread {
-	
+
 	private String name;
 	private int score;
 	private String deviceId;
-	
+
 	public ScoreSubmitThread(String name, int score, String deviceId) {
 		this.name = name;
 		this.score = score;
 		this.deviceId = deviceId;
 	}
-	
+
 	@Override
 	public void run() {
 		try {
@@ -47,7 +47,7 @@ public class ScoreSubmitThread extends Thread {
 				BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 				String i = "";
 				String out = "";
-				while ((i=in.readLine()) != null) {
+				while ((i = in.readLine()) != null) {
 					out += i;
 				}
 				in.close();
@@ -83,5 +83,5 @@ public class ScoreSubmitThread extends Thread {
 			((Submit) ThrowMe.getInstance().screen).failSubmit();
 		}
 	}
-	
+
 }

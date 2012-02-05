@@ -27,7 +27,7 @@ public class DrawThread extends Thread {
 	public static Set<DispObj> toRemove = new HashSet<DispObj>();
 	private boolean paused = false;
 	private boolean pausedInternal = false;
-	
+
 	private List<Runnable> onUi = new ArrayList<Runnable>();
 	private boolean onUiLock = false;
 
@@ -70,7 +70,8 @@ public class DrawThread extends Thread {
 	}
 
 	public void runOnUi(Runnable run) {
-		while (onUiLock) {}
+		while (onUiLock) {
+		}
 		onUiLock = true;
 		onUi.add(run);
 		onUiLock = false;
@@ -126,7 +127,8 @@ public class DrawThread extends Thread {
 
 					}
 
-					while (onUiLock) {}
+					while (onUiLock) {
+					}
 					onUiLock = true;
 					for (Runnable run : onUi) {
 						run.run();

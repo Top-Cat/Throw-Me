@@ -38,9 +38,9 @@ public class ScoreRow extends DispObj {
 		paint.setStrokeWidth(3);
 
 		lpaint.setColor(Color.rgb(0, 0, 0));
-		
+
 		bgpaint.setColor(Color.argb(128, 255, 234, 50));
-		
+
 	}
 
 	@Override

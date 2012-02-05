@@ -147,10 +147,10 @@ public class Game extends Screen {
 		new BoostCloud().setX(150).setY(-720).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(600).setY(-620).addToScreen(RenderPriority.High);
 		new BoostCloud().setX(850).setY(-120).addToScreen(RenderPriority.High);
-		
+
 		new Text_Rel().setText("Press down on the box").setSize(30).setX(50).setY(45).addToScreen();
 		new Text_Rel().setText("and drag to throw!").setSize(30).setX(73).setY(75).addToScreen();
-		
+
 		ThrowMe.getInstance().stage.world.setContactListener(new HitListener());
 
 		ThrowMe.getInstance().stage.draw = new Callback() {

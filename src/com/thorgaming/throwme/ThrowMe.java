@@ -38,11 +38,10 @@ public class ThrowMe extends Activity {
 		setContentView(R.layout.main);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		System.out.println("new Activity");
 		stage = (Stage) findViewById(R.id.menu);
 		billingService = new BillingService(this);
 
-		new Main(this, new Object[] {true});
+		new Main(this, null);
 	}
 
 	public static void waiting(int n) {

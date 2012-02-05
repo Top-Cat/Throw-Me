@@ -2,6 +2,13 @@ package com.thorgaming.throwme.screens;
 
 import java.util.UUID;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.graphics.Paint.Align;
+import android.graphics.Rect;
+import android.view.KeyEvent;
+
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.ScoreSubmitThread;
 import com.thorgaming.throwme.ThrowMe;
@@ -14,21 +21,14 @@ import com.thorgaming.throwme.displayobjects.shape.Text;
 import com.thorgaming.throwme.drawing.DrawThread;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.graphics.Rect;
-import android.graphics.Paint.Align;
-import android.view.KeyEvent;
-
 public class Submit extends Screen {
-	
+
 	private String keyboard = "QWERTYUIOP ASDFGHJKL ZXCVBNM";
 	private String name = "";
 	private Text nameText;
 	private DispObj ajaxGif;
 	private final DispObj submitRes;
-	
+
 	public Submit(Activity activity, Object[] data) {
 		super(activity, data);
 
@@ -37,25 +37,25 @@ public class Submit extends Screen {
 		RoundRect rr = (RoundRect) new RoundRect(20).setHeight(80).setWidth(750).setAlpha(50).setX(20).setY(100).addToScreen(RenderPriority.High);
 		rr.paint.setARGB(50, 0, 0, 0);
 		rr.stroke.setARGB(150, 0, 0, 0);
-		
+
 		final int score = data != null && data[0] != null ? (Integer) data[0] : 0;
 		new Text().setText("Score: " + score).setSize(40).setX(30).setY(20).addToScreen();
-		
+
 		nameText = (Text) new Text().setSize(40).setX(30).setY(115).addToScreen();
 		nameText.getPaint().setARGB(255, 255, 255, 255);
-		
+
 		submitRes = new DispRes(R.drawable.submit).setWidth(222).setHeight(60).setX(350).setY(20).setMouseDownEvent(new MouseCallback() {
 			@Override
 			public boolean sendCallback(int x, int y) {
 				submitRes.setAlpha(0);
 				ajaxGif.setAlpha(255);
-				
+
 				SharedPreferences settings = Submit.this.activity.getSharedPreferences("throwmedevicekey", 0);
 				String deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
 				Editor editor = settings.edit();
 				editor.putString("deviceid", deviceid);
 				editor.commit();
-				
+
 				new ScoreSubmitThread(nameText.getText(), score, deviceid).start();
 				return false;
 			}
@@ -82,7 +82,7 @@ public class Submit extends Screen {
 				return false;
 			}
 		}).addToScreen();
-		
+
 		byte line = 1;
 		byte pos = 0;
 		short[] offset = {30, 70, 120};
@@ -91,7 +91,7 @@ public class Submit extends Screen {
 				line++;
 				pos = 0;
 			} else {
-				new Text().setText(""+key).setSize(50).setAlign(Align.CENTER).setMouseDownEvent(new MouseCallback() {
+				new Text().setText("" + key).setSize(50).setAlign(Align.CENTER).setMouseDownEvent(new MouseCallback() {
 					@Override
 					public boolean sendCallback(int x, int y) {
 						if (name.length() < 30 && nameText.getHitBox().width() < 700) {
@@ -100,7 +100,7 @@ public class Submit extends Screen {
 						nameText.setText(name);
 						return false;
 					}
-				}).setX(offset[line - 1]  + 80 * pos++).setY(130 + 70 * line).setHitPadding(new Rect(0, 0, 40, 22)).addToScreen();
+				}).setX(offset[line - 1] + 80 * pos++).setY(130 + 70 * line).setHitPadding(new Rect(0, 0, 40, 22)).addToScreen();
 			}
 		}
 		new Text().setText("←").setSize(50).setX(720).setY(340).setMouseDownEvent(new MouseCallback() {
@@ -124,12 +124,12 @@ public class Submit extends Screen {
 			}
 		}).setHitPadding(new Rect(0, 0, 70, 20)).addToScreen();
 	}
-	
+
 	public void failSubmit() {
 		ajaxGif.setAlpha(0);
 		submitRes.setAlpha(255);
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -137,5 +137,5 @@ public class Submit extends Screen {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 }

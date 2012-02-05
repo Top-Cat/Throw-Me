@@ -106,7 +106,7 @@ public abstract class Character extends DispObj {
 				if (getMainBody().getPosition().y < -500 && getMainBody().getLinearVelocity().y < 0) {
 					applyImpulse(new Vec2(0, 3));
 				}
-				
+
 				if (balloonPre > 0) {
 					balloonPre--;
 				}
@@ -119,7 +119,7 @@ public abstract class Character extends DispObj {
 			camera.setCameraXY(nx, ny);
 		}
 	}
-	
+
 	public void setBalloonPre(int balloonPre) {
 		this.balloonPre = balloonPre;
 	}

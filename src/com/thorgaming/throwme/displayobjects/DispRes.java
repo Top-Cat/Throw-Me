@@ -38,16 +38,11 @@ public class DispRes extends DispObj {
 		this.angle = angle;
 		return this;
 	}
-	
-	@Override
-	public boolean checkPress(int x, int y) {
-		return super.checkPress(x, y);
-	}
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
 		hitBox.set(camera.transformX(getX()), camera.transformY(getY()), camera.transformX(getX() + getWidth()), camera.transformY(getY() + getHeight()));
-		
+
 		canvas.save();
 		canvas.rotate(angle, hitBox.exactCenterX(), hitBox.exactCenterY());
 		drawable.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
