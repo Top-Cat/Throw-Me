@@ -58,8 +58,8 @@ public class BillingService extends Service implements ServiceConnection {
 
 	private void attachService() {
 		try {
-			boolean bindResult = activity.bindService(new Intent("com.android.vending.billing.MarketBillingService.BIND"), this, Context.BIND_AUTO_CREATE);
 			activity.startService(new Intent("com.android.vending.billing.MarketBillingService.BIND"));
+			boolean bindResult = activity.bindService(new Intent("com.android.vending.billing.MarketBillingService.BIND"), this, Context.BIND_AUTO_CREATE);
 			if (!bindResult) {
 				System.out.println("Could not bind to the MarketBillingService.");
 			}

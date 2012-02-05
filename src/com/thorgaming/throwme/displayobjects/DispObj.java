@@ -9,7 +9,6 @@ import android.graphics.Rect;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.Anim;
 import com.thorgaming.throwme.callback.MouseCallback;
-import com.thorgaming.throwme.displayobjects.shape.Text;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.RenderPriority;
 

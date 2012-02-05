@@ -157,7 +157,21 @@ public class Game extends Screen {
 			@Override
 			public void sendCallback() {
 				if (character != null && character.getGameState() == GameState.END && !ended) {
-					ThrowMe.getInstance().stage.drawThread.returnHighs(Game.this.activity);
+					ThrowMe.getInstance().stage.drawThread.runOnUi(new Runnable() {
+						@Override
+						public void run() {
+							final Activity act = ThrowMe.getInstance();
+							int check = Screen.checkCount;
+							act.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									new Submit(act, new Object[] {ThrowMe.getInstance().stage.camera.getX() / 10});
+								}
+							});
+							while (check == Screen.checkCount) {
+							}
+						}
+					});
 					ended = true;
 				}
 				if (!ended) {
@@ -247,7 +261,21 @@ public class Game extends Screen {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			ThrowMe.getInstance().stage.drawThread.returnMain(activity);
+			ThrowMe.getInstance().stage.drawThread.runOnUi(new Runnable() {
+				@Override
+				public void run() {
+					final Activity act = ThrowMe.getInstance();
+					int check = Screen.checkCount;
+					act.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							new Main(act, new Object[] {true});
+						}
+					});
+					while (check == Screen.checkCount) {
+					}
+				}
+			});
 		}
 		return super.onKeyDown(keyCode, event);
 	}

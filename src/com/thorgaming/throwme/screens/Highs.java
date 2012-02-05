@@ -3,11 +3,8 @@ package com.thorgaming.throwme.screens;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,9 +15,6 @@ import java.util.UUID;
 import org.yaml.snakeyaml.Yaml;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
@@ -28,7 +22,6 @@ import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.widget.EditText;
 
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.ThrowMe;
@@ -39,7 +32,6 @@ import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.scores.ScoreRow;
 import com.thorgaming.throwme.displayobjects.shape.RoundRect;
-import com.thorgaming.throwme.drawing.DrawThread;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
 public class Highs extends Screen {
@@ -55,7 +47,6 @@ public class Highs extends Screen {
 	private DispObj timeC;
 
 	private RoundRect roundedBorderBackground, roundedBorder;
-	public static final String PREFS_NAME = "throwmedevicekey";
 	private String deviceid = "";
 
 	private int mouseY;
@@ -72,13 +63,11 @@ public class Highs extends Screen {
 	public Highs(Activity activity, Object[] data) {
 		super(activity, data);
 
-		SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences settings = activity.getSharedPreferences("throwmedevicekey", 0);
 		deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
 		Editor editor = settings.edit();
 		editor.putString("deviceid", deviceid);
 		editor.commit();
-
-		DrawThread.resetGradient();
 
 		RoundRect rr = (RoundRect) new RoundRect(20).setHeight(480).setWidth(550).setAlpha(50).setX(40).addToScreen(RenderPriority.High);
 		rr.paint.setARGB(50, 0, 0, 0);
@@ -157,71 +146,7 @@ public class Highs extends Screen {
 		monthC = new DispRes(R.drawable.month).setWidth(184).setHeight(40).setX(608).setY(214).setAlpha(0).addToScreen();
 		timeC = new DispRes(R.drawable.time).setWidth(184).setHeight(31).setX(608).setY(297).setAlpha(0).addToScreen();
 
-		boolean send = data != null && data[0] != null ? (Boolean) data[0] : false;
-		final int score = data != null && data[1] != null ? (Integer) data[1] : 0;
-		if (send) {
-			final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-			final EditText input = new EditText(activity);
-			alert.setView(input);
-			alert.setMessage("Enter name:");
-			alert.setPositiveButton("Submit score", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int whichButton) {
-					String value = input.getText().toString().trim();
-					System.out.println(value + " scored " + score);
-					MessageDigest digest;
-
-					try {
-						digest = java.security.MessageDigest.getInstance("MD5");
-						digest.update((value + score + "ZDbVEKAx5PAEe5Z" + deviceid).getBytes());
-						byte[] messageDigest = digest.digest();
-						StringBuffer hexString = new StringBuffer();
-						for (byte element : messageDigest) {
-							int j = 0xFF & element;
-							if (j < 16) {
-								hexString.append("0");
-							}
-							hexString.append(Integer.toHexString(j));
-						}
-						try {
-							URL url = new URL("http://thomasc.co.uk/throwme/api.php?action=submit&score=" + score + "&name=" + value + "&deviceid=" + deviceid + "&checkstring=" + hexString);
-							System.out.println("http://thomasc.co.uk/throwme/api.php?action=submit&score=" + score + "&name=" + value + "&deviceid=" + deviceid + "&checkstring=" + hexString); //TODO: Check this
-							HttpURLConnection con = (HttpURLConnection) url.openConnection();
-							BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-							while (in.readLine() != null) {
-								;
-							}
-							in.close();
-						} catch (MalformedURLException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						dayBW.getMouseDownEvent().sendCallback();
-					} catch (NoSuchAlgorithmException e) {
-						e.printStackTrace();
-					}
-				}
-			});
-
-			alert.setNegativeButton("Discard score", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int whichButton) {
-					dialog.cancel();
-				}
-			});
-			alert.setOnCancelListener(new OnCancelListener() {
-
-				@Override
-				public void onCancel(DialogInterface arg0) {
-					dayBW.getMouseDownEvent().sendCallback();
-				}
-
-			});
-			alert.show();
-		} else {
-			dayBW.getMouseDownEvent().sendCallback();
-		}
+		dayBW.getMouseDownEvent().sendCallback();
 	}
 
 	public void resetOptions() {

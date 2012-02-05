@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,21 +16,20 @@ import com.thorgaming.throwme.MotionEventStore;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.Anim;
 import com.thorgaming.throwme.displayobjects.DispObj;
-import com.thorgaming.throwme.screens.Highs;
-import com.thorgaming.throwme.screens.Main;
 
 public class DrawThread extends Thread {
 
 	private static int[] gradient = {Color.rgb(0, 0, 0), Color.rgb(0, 0, 0)};
 	private SurfaceHolder surfaceHolder;
 	private boolean doRun = false;
-	private Activity goMain = null;
-	private boolean activityRet = false;
 	private boolean doPhysics = true;
 	public Integer physicsSync = 0;
 	public static Set<DispObj> toRemove = new HashSet<DispObj>();
 	private boolean paused = false;
 	private boolean pausedInternal = false;
+	
+	private List<Runnable> onUi = new ArrayList<Runnable>();
+	private boolean onUiLock = false;
 
 	public DrawThread(SurfaceHolder surfaceHolder, Context context) {
 		this.surfaceHolder = surfaceHolder;
@@ -71,17 +69,11 @@ public class DrawThread extends Thread {
 		DrawThread.gradient = gradient;
 	}
 
-	public void returnMain(Activity activity) {
-		returnAct(activity, false);
-	}
-
-	public void returnHighs(Activity activity) {
-		returnAct(activity, true);
-	}
-
-	private void returnAct(Activity activity, boolean a) {
-		goMain = activity;
-		activityRet = a;
+	public void runOnUi(Runnable run) {
+		while (onUiLock) {}
+		onUiLock = true;
+		onUi.add(run);
+		onUiLock = false;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -134,25 +126,13 @@ public class DrawThread extends Thread {
 
 					}
 
-					if (goMain != null) {
-						if (activityRet) {
-							goMain.runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									new Highs(goMain, new Object[] {true, ThrowMe.getInstance().stage.camera.getX() / 10});
-								}
-							});
-						} else {
-							goMain.runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									new Main(goMain, new Object[] {true});
-								}
-							});
-						}
-						while (goMain != null) {
-						}
+					while (onUiLock) {}
+					onUiLock = true;
+					for (Runnable run : onUi) {
+						run.run();
 					}
+					onUi.clear();
+					onUiLock = false;
 
 					pausedInternal = paused;
 				}

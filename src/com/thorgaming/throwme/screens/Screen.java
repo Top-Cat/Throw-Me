@@ -9,11 +9,12 @@ import com.thorgaming.throwme.ThrowMe;
 public class Screen {
 
 	protected ThrowMe activity;
+	public static int checkCount = 0;
 
 	public Screen(Activity activity, Object[] data) {
 		ThrowMe.getInstance().stage.clear();
 		ThrowMe.getInstance().stage.draw = null;
-		ThrowMe.getInstance().stage.drawThread.returnMain(null);
+		checkCount++;
 		ThrowMe.getInstance().stage.drawThread.setPaused(false);
 		this.activity = (ThrowMe) activity;
 		this.activity.screen = this;
