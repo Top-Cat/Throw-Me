@@ -46,7 +46,7 @@ public class Rect extends DispObj {
 		actualY = camera.transformY(getY());
 
 		paint.setAlpha(getAlpha());
-		canvas.drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), paint);
+		canvas.drawRect(actualX, actualY, camera.transformX(getX() + getWidth()), camera.transformY(getY() + getHeight()), paint);
 	}
 
 }

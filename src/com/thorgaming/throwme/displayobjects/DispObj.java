@@ -150,7 +150,7 @@ public abstract class DispObj {
 
 	public boolean checkPress(int x, int y) {
 		hitRegion.offsetTo(x - hitRegion.width() / 2, y - hitRegion.height() / 2);
-		return hitBox.intersect(hitRegion);
+		return Rect.intersects(hitRegion, hitBox);
 	}
 
 }
