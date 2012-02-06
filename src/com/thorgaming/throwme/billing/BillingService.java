@@ -113,92 +113,94 @@ public class BillingService extends Service implements ServiceConnection {
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-		String action = intent.getAction();
-		System.out.println("RESPONSE! " + action);
-		if ("com.thorgaming.throwme.GET_PURCHASE_INFORMATION".equals(action)) {
-			String notifyId = intent.getStringExtra("notification_id");
+		if (intent != null) {
+			String action = intent.getAction();
+			System.out.println("RESPONSE! " + action);
+			if ("com.thorgaming.throwme.GET_PURCHASE_INFORMATION".equals(action)) {
+				String notifyId = intent.getStringExtra("notification_id");
 
-			long rand = random.nextLong();
-			knownOnce.add(rand);
+				long rand = random.nextLong();
+				knownOnce.add(rand);
 
-			Bundle request = makeRequestBundle("GET_PURCHASE_INFORMATION");
-			request.putLong("NONCE", rand);
+				Bundle request = makeRequestBundle("GET_PURCHASE_INFORMATION");
+				request.putLong("NONCE", rand);
 
-			request.putStringArray("NOTIFY_IDS", new String[] {notifyId});
-			try {
-				mService.sendBillingRequest(request);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		} else if ("com.thorgaming.throwme.ACTION_PURCHASE_STATE_CHANGED".equals(action)) {
-			String signedData = intent.getStringExtra("inapp_signed_data");
-			String signature = intent.getStringExtra("inapp_signature");
-
-			boolean verified = false;
-			if (signature.length() > 0) {
-				String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GbR3FqjQIqFkxFBWoKqCmIXAEMwdK8E13+AQuMU4i0fVw8kLMFZbk7T1YPezQnBm6ozwJSBrQA+M4HOdKguqnGE+hDtFzWCq5/mZh7VM8/9Sow7EFvlbQll2DR/8OQE1aXGcRKEf51H9a7i5VswOsqwiTAP7BqtbGo/aujo1NxtwX/OYDGIIEx/V7r1lBQCfgNEM9+dn6Ahr4ETPVU9QLhyP2F99vKBhgJ4euQj0/zpaA0jjItMhrfTRAwPXVvWnh65+ECOlpQ6WNZZF2kHBjr5ocHH+zEJDGKrs0DOQ3WDiraoaqmBXRB85vHtQQRV/8KxJHpjtWC2k0eLrfoH4wIDAQAB";
-
-				PublicKey key = generatePublicKey(base64EncodedPublicKey);
-				verified = verify(key, signedData, signature);
-				if (!verified) {
-					System.out.println("Could not verify!");
+				request.putStringArray("NOTIFY_IDS", new String[] {notifyId});
+				try {
+					mService.sendBillingRequest(request);
+				} catch (RemoteException e) {
+					e.printStackTrace();
 				}
-			}
+			} else if ("com.thorgaming.throwme.ACTION_PURCHASE_STATE_CHANGED".equals(action)) {
+				String signedData = intent.getStringExtra("inapp_signed_data");
+				String signature = intent.getStringExtra("inapp_signature");
 
-			JSONObject jObject;
-			JSONArray jTransactionsArray = null;
-			int numTransactions = 0;
-			long nonce = 0L;
-			try {
-				jObject = new JSONObject(signedData);
+				boolean verified = false;
+				if (signature.length() > 0) {
+					String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GbR3FqjQIqFkxFBWoKqCmIXAEMwdK8E13+AQuMU4i0fVw8kLMFZbk7T1YPezQnBm6ozwJSBrQA+M4HOdKguqnGE+hDtFzWCq5/mZh7VM8/9Sow7EFvlbQll2DR/8OQE1aXGcRKEf51H9a7i5VswOsqwiTAP7BqtbGo/aujo1NxtwX/OYDGIIEx/V7r1lBQCfgNEM9+dn6Ahr4ETPVU9QLhyP2F99vKBhgJ4euQj0/zpaA0jjItMhrfTRAwPXVvWnh65+ECOlpQ6WNZZF2kHBjr5ocHH+zEJDGKrs0DOQ3WDiraoaqmBXRB85vHtQQRV/8KxJHpjtWC2k0eLrfoH4wIDAQAB";
 
-				nonce = jObject.optLong("nonce");
-				if (knownOnce.contains(nonce)) {
-					jTransactionsArray = jObject.optJSONArray("orders");
-					if (jTransactionsArray != null) {
-						numTransactions = jTransactionsArray.length();
+					PublicKey key = generatePublicKey(base64EncodedPublicKey);
+					verified = verify(key, signedData, signature);
+					if (!verified) {
+						System.out.println("Could not verify!");
 					}
+				}
 
-					for (int i = 0; i < numTransactions; i++) {
-						JSONObject jElement = jTransactionsArray.getJSONObject(i);
-						int response = jElement.getInt("purchaseState");
+				JSONObject jObject;
+				JSONArray jTransactionsArray = null;
+				int numTransactions = 0;
+				long nonce = 0L;
+				try {
+					jObject = new JSONObject(signedData);
 
-						String productId = jElement.getString("productId");
-						//String packageName = jElement.getString("packageName");
-						long purchaseTime = jElement.getLong("purchaseTime");
-						String orderId = jElement.optString("orderId", "");
-						String notifyId = null;
-						if (jElement.has("notificationId")) {
-							notifyId = jElement.getString("notificationId");
+					nonce = jObject.optLong("nonce");
+					if (knownOnce.contains(nonce)) {
+						jTransactionsArray = jObject.optJSONArray("orders");
+						if (jTransactionsArray != null) {
+							numTransactions = jTransactionsArray.length();
+						}
 
-							Bundle request = makeRequestBundle("CONFIRM_NOTIFICATIONS");
-							request.putStringArray("NOTIFY_IDS", new String[] {notifyId});
-							try {
-								mService.sendBillingRequest(request);
-							} catch (RemoteException e) {
-								e.printStackTrace();
+						for (int i = 0; i < numTransactions; i++) {
+							JSONObject jElement = jTransactionsArray.getJSONObject(i);
+							int response = jElement.getInt("purchaseState");
+
+							String productId = jElement.getString("productId");
+							//String packageName = jElement.getString("packageName");
+							long purchaseTime = jElement.getLong("purchaseTime");
+							String orderId = jElement.optString("orderId", "");
+							String notifyId = null;
+							if (jElement.has("notificationId")) {
+								notifyId = jElement.getString("notificationId");
+
+								Bundle request = makeRequestBundle("CONFIRM_NOTIFICATIONS");
+								request.putStringArray("NOTIFY_IDS", new String[] {notifyId});
+								try {
+									mService.sendBillingRequest(request);
+								} catch (RemoteException e) {
+									e.printStackTrace();
+								}
 							}
-						}
-						String developerPayload = jElement.optString("developerPayload", null);
+							String developerPayload = jElement.optString("developerPayload", null);
 
-						if (response == 0 && !verified) {
-							continue;
+							if (response == 0 && !verified) {
+								continue;
+							}
+							purchases.updatePurchase(orderId, productId, response, purchaseTime, developerPayload);
+							ThrowMe.getInstance().billingDirty = true;
 						}
-						purchases.updatePurchase(orderId, productId, response, purchaseTime, developerPayload);
-						ThrowMe.getInstance().billingDirty = true;
 					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			knownOnce.remove(nonce);
-		} else if ("com.android.vending.billing.RESPONSE_CODE".equals(action)) {
-			long requestId = intent.getLongExtra("request_id", -1);
-			if (requestId == restoreId && restoreId > 0) {
-				SharedPreferences prefs = activity.getPreferences(Context.MODE_PRIVATE);
-				Editor edit = prefs.edit();
-				edit.putBoolean("dbINIT", true);
-				edit.commit();
+				knownOnce.remove(nonce);
+			} else if ("com.android.vending.billing.RESPONSE_CODE".equals(action)) {
+				long requestId = intent.getLongExtra("request_id", -1);
+				if (requestId == restoreId && restoreId > 0) {
+					SharedPreferences prefs = activity.getPreferences(Context.MODE_PRIVATE);
+					Editor edit = prefs.edit();
+					edit.putBoolean("dbINIT", true);
+					edit.commit();
+				}
 			}
 		}
 	}
