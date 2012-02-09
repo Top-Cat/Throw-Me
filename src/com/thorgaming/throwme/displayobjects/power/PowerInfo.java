@@ -15,6 +15,10 @@ import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.game.characters.Characters;
 import com.thorgaming.throwme.drawing.Camera;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class PowerInfo extends DispObj {
 
 	private Characters thisInfo;

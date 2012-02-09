@@ -10,6 +10,10 @@ import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.DrawThread;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class DispGif extends DispRes {
 
 	public Paint paint = new Paint();

@@ -1,6 +1,5 @@
 package com.thorgaming.throwme.screens;
 
-import android.app.Activity;
 import android.view.KeyEvent;
 
 import com.thorgaming.throwme.R;
@@ -11,19 +10,23 @@ import com.thorgaming.throwme.displayobjects.power.PowerInfo;
 import com.thorgaming.throwme.displayobjects.shape.RoundRect;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Power extends Screen {
 
 	private final DispRes charButton;
 	private int enum_index = 0;
 	private PowerInfo powInfo;
 
-	public Power(Activity activity, Object[] data) {
-		super(activity, data);
+	public Power(Object[] data) {
+		super(data);
 
 		new DispRes(R.drawable.back).setHitPadding(16).setWidth(48).setHeight(48).setX(736).setY(416).setMouseDownEvent(new MouseCallback() {
 			@Override
 			public boolean sendCallback(int x, int y) {
-				new Main(Power.this.activity, new Object[] {true});
+				new Main(new Object[] {true});
 				return true;
 			}
 		}).addToScreen();
@@ -69,7 +72,7 @@ public class Power extends Screen {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			new Main(activity, new Object[] {true});
+			new Main(new Object[] {true});
 		}
 		return super.onKeyDown(keyCode, event);
 	}

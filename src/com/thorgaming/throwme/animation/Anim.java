@@ -5,6 +5,10 @@ import java.util.List;
 import com.thorgaming.throwme.callback.Callback;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public abstract class Anim {
 
 	protected DispObj obj;

@@ -6,6 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class PurchaseDatabase {
 
 	private SQLiteDatabase mDb;

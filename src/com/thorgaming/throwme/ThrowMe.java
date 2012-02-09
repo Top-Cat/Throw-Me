@@ -14,6 +14,10 @@ import com.thorgaming.throwme.drawing.Stage;
 import com.thorgaming.throwme.screens.Main;
 import com.thorgaming.throwme.screens.Screen;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class ThrowMe extends Activity {
 
 	public Stage stage = null;
@@ -23,12 +27,17 @@ public class ThrowMe extends Activity {
 	public Screen screen;
 	public boolean billingDirty = false;
 
+	/**
+	 * Gets an instance of the activity. This doesn't make one if there isn't one as android has to.
+	 * @return An instance of this activity
+	 */
 	public static ThrowMe getInstance() {
-		/* Android has to make this :/ */
 		return activity;
 	}
 
-	/** Called when the activity is first created. */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,17 +50,12 @@ public class ThrowMe extends Activity {
 		stage = (Stage) findViewById(R.id.menu);
 		billingService = new BillingService(this);
 
-		new Main(this, null);
+		new Main(null);
 	}
 
-	public static void waiting(int n) {
-		long t0, t1;
-		t0 = System.currentTimeMillis();
-		do {
-			t1 = System.currentTimeMillis();
-		} while (t1 - t0 < n);
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (!isFinishing()) {
@@ -60,17 +64,26 @@ public class ThrowMe extends Activity {
 		return screen.onTouch(event);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		return screen.onKeyDown(keyCode, event);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		stopService(new Intent("com.android.vending.billing.MarketBillingService.BIND"));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();

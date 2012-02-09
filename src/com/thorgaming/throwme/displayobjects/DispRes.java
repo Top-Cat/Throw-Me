@@ -8,6 +8,10 @@ import android.graphics.drawable.Drawable;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.drawing.Camera;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class DispRes extends DispObj {
 
 	protected Drawable drawable;

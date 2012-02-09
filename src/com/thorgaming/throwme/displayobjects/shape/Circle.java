@@ -9,6 +9,10 @@ import android.graphics.Paint;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.drawing.Camera;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Circle extends DispObj {
 
 	private int radius = 0;

@@ -2,6 +2,10 @@ package com.thorgaming.throwme.displayobjects;
 
 import org.jbox2d.collision.Shape;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public interface Sensor {
 
 	public void hit(Shape otherShape);

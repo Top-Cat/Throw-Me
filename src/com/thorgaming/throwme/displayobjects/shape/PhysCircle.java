@@ -11,6 +11,10 @@ import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.drawing.Stage;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class PhysCircle extends Circle {
 
 	private Body physicsBody;

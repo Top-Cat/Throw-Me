@@ -14,6 +14,10 @@ import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.Stage;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public abstract class Character extends DispObj {
 
 	private GameState state = GameState.ON_SPRING;

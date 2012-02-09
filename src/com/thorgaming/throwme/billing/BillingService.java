@@ -33,6 +33,10 @@ import android.util.Base64;
 import com.android.vending.billing.IMarketBillingService;
 import com.thorgaming.throwme.ThrowMe;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class BillingService extends Service implements ServiceConnection {
 
 	private static IMarketBillingService mService;

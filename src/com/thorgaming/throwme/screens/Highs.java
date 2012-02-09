@@ -14,7 +14,6 @@ import java.util.UUID;
 
 import org.yaml.snakeyaml.Yaml;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
@@ -34,6 +33,10 @@ import com.thorgaming.throwme.displayobjects.scores.ScoreRow;
 import com.thorgaming.throwme.displayobjects.shape.RoundRect;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Highs extends Screen {
 
 	private DispObj loader;
@@ -60,10 +63,10 @@ public class Highs extends Screen {
 
 	private List<ScoreRow> highScores = new ArrayList<ScoreRow>();
 
-	public Highs(Activity activity, Object[] data) {
-		super(activity, data);
+	public Highs(Object[] data) {
+		super(data);
 
-		SharedPreferences settings = activity.getSharedPreferences("throwmedevicekey", 0);
+		SharedPreferences settings = ThrowMe.getInstance().getSharedPreferences("throwmedevicekey", 0);
 		deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
 		Editor editor = settings.edit();
 		editor.putString("deviceid", deviceid);
@@ -84,7 +87,7 @@ public class Highs extends Screen {
 		new DispRes(R.drawable.back).setHitPadding(16).setWidth(48).setHeight(48).setX(736).setY(416).setMouseDownEvent(new MouseCallback() {
 			@Override
 			public boolean sendCallback(int x, int y) {
-				new Main(Highs.this.activity, new Object[] {true});
+				new Main(new Object[] {true});
 				return true;
 			}
 		}).addToScreen();
@@ -190,7 +193,7 @@ public class Highs extends Screen {
 					Object yamlObj = yaml.load(reader);
 					reader.close();
 
-					if (activity.screen == Highs.this) {
+					if (ThrowMe.getInstance().screen == Highs.this) {
 						if (yamlObj instanceof ArrayList<?>) {
 							ArrayList<Map<String, Object>> list = (ArrayList<Map<String, Object>>) yamlObj;
 
@@ -283,15 +286,16 @@ public class Highs extends Screen {
 					}
 				}
 			}.start();
+		} else {
+			return false;
 		}
-
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			new Main(activity, new Object[] {true});
+			new Main(new Object[] {true});
 		}
 		return super.onKeyDown(keyCode, event);
 	}

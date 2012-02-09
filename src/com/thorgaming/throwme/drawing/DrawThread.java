@@ -19,6 +19,10 @@ import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.Anim;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class DrawThread extends Thread {
 
 	private static int[] gradient = {Color.rgb(0, 0, 0), Color.rgb(0, 0, 0)};

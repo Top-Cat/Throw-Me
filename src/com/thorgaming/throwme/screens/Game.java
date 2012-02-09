@@ -32,6 +32,10 @@ import com.thorgaming.throwme.drawing.DrawThread;
 import com.thorgaming.throwme.drawing.HitListener;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Game extends Screen {
 
 	static {
@@ -48,6 +52,7 @@ public class Game extends Screen {
 	private int lastCrane = 6;
 	private boolean ended = false;
 	private Random random = new Random();
+	private PauseMenu pauseMenu;
 
 	private int cameraX;
 	private int cameraY;
@@ -58,8 +63,8 @@ public class Game extends Screen {
 
 	private Characters currentChar;
 
-	public Game(Activity activity, Object[] data) {
-		super(activity, data);
+	public Game(Object[] data) {
+		super(data);
 
 		currentChar = Characters.getFromId(ThrowMe.getInstance().customisationSettings.getInt("char", 0));
 		if (!BillingService.purchases.isPurchased(currentChar.getMarketId())) { // Make sure we bought that :P
@@ -118,7 +123,7 @@ public class Game extends Screen {
 
 		DrawThread.setgrad(ng);
 
-		new PauseMenu(activity);
+		pauseMenu = new PauseMenu();
 
 		hills1 = (DispRes) new DispRes_Rel(R.drawable.bg).setWidth(879).setHeight(240).setY(300).addToScreen(RenderPriority.Highest);
 		hills2 = (DispRes) new DispRes_Rel(R.drawable.bg).setWidth(879).setHeight(240).setX(800).setY(300).addToScreen(RenderPriority.Highest);
@@ -172,7 +177,7 @@ public class Game extends Screen {
 							act.runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
-									new Submit(act, new Object[] {ThrowMe.getInstance().stage.camera.getX() / 10});
+									new Submit(new Object[] {ThrowMe.getInstance().stage.camera.getX() / 10});
 								}
 							});
 							while (check == Screen.checkCount) {
@@ -260,31 +265,19 @@ public class Game extends Screen {
 			if (character != null && character.getGameState() == GameState.ON_SPRING && character.throwTimeout <= 0) {
 				character.setGameState(GameState.LOOSE);
 			}
+		} else {
+			return false;
 		}
-
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			ThrowMe.getInstance().stage.drawThread.runOnUi(new Runnable() {
-				@Override
-				public void run() {
-					final Activity act = ThrowMe.getInstance();
-					int check = Screen.checkCount;
-					act.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							new Main(act, new Object[] {true});
-						}
-					});
-					while (check == Screen.checkCount) {
-					}
-				}
-			});
+			pauseMenu.toggle();
+			return true;
 		}
-		return super.onKeyDown(keyCode, event);
+		return false;
 	}
 
 }

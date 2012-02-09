@@ -6,6 +6,10 @@ import java.util.HashMap;
 
 import com.thorgaming.throwme.R;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public enum Characters {
 	GUY(0, "Throw Me Guy", R.drawable.ss0, Guy.class, ""),
 	SNAKE(1, "Snake", R.drawable.ss1, Snake.class, "char_snake"),

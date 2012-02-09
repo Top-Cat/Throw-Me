@@ -7,6 +7,10 @@ import android.graphics.RectF;
 
 import com.thorgaming.throwme.drawing.Camera;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class RoundRect extends Rect {
 
 	public Paint stroke = new Paint();

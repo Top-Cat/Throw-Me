@@ -21,6 +21,10 @@ import com.thorgaming.throwme.displayobjects.shape.Text;
 import com.thorgaming.throwme.drawing.DrawThread;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Submit extends Screen {
 
 	private String keyboard = "QWERTYUIOP ASDFGHJKL ZXCVBNM";
@@ -29,8 +33,8 @@ public class Submit extends Screen {
 	private DispObj ajaxGif;
 	private final DispObj submitRes;
 
-	public Submit(Activity activity, Object[] data) {
-		super(activity, data);
+	public Submit(Object[] data) {
+		super(data);
 
 		DrawThread.resetGradient();
 
@@ -50,7 +54,7 @@ public class Submit extends Screen {
 				submitRes.setAlpha(0);
 				ajaxGif.setAlpha(255);
 
-				SharedPreferences settings = Submit.this.activity.getSharedPreferences("throwmedevicekey", 0);
+				SharedPreferences settings = ThrowMe.getInstance().getSharedPreferences("throwmedevicekey", 0);
 				String deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
 				Editor editor = settings.edit();
 				editor.putString("deviceid", deviceid);
@@ -72,7 +76,7 @@ public class Submit extends Screen {
 						act.runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								new Highs(act, null);
+								new Highs(null);
 							}
 						});
 						while (check == Screen.checkCount) {
@@ -103,7 +107,7 @@ public class Submit extends Screen {
 				}).setX(offset[line - 1] + 80 * pos++).setY(130 + 70 * line).setHitPadding(new Rect(0, 0, 40, 22)).addToScreen();
 			}
 		}
-		new Text().setText("←").setSize(50).setX(720).setY(340).setMouseDownEvent(new MouseCallback() {
+		new Text().setText(String.valueOf(Character.toChars(8592))).setSize(50).setX(720).setY(340).setMouseDownEvent(new MouseCallback() {
 			@Override
 			public boolean sendCallback(int x, int y) {
 				if (name.length() > 0) {
@@ -133,7 +137,7 @@ public class Submit extends Screen {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			new Highs(activity, null);
+			new Highs(null);
 		}
 		return super.onKeyDown(keyCode, event);
 	}

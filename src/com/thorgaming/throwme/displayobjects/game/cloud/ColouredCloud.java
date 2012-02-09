@@ -12,6 +12,10 @@ import com.thorgaming.throwme.displayobjects.game.Launcher;
 import com.thorgaming.throwme.displayobjects.game.characters.Character;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class ColouredCloud extends Cloud {
 
 	private Random random = new Random();

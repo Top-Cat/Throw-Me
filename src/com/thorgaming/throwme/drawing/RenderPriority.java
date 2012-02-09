@@ -1,5 +1,9 @@
 package com.thorgaming.throwme.drawing;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public enum RenderPriority {
 
 	/**

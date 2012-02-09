@@ -22,6 +22,10 @@ import com.thorgaming.throwme.drawing.DrawThread;
 import com.thorgaming.throwme.drawing.RenderPriority;
 import com.thorgaming.throwme.drawing.Stage;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Crane extends DispRes_Rel implements Sensor {
 
 	private Drawable notes;

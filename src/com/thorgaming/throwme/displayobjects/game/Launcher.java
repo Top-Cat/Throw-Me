@@ -14,6 +14,10 @@ import com.thorgaming.throwme.displayobjects.game.characters.Character;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.DrawThread;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Launcher extends DispObj {
 
 	private double step = 0;
@@ -24,10 +28,10 @@ public class Launcher extends DispObj {
 
 	public Launcher(Character character) {
 		this(character, 1);
-		lastTime = System.currentTimeMillis();
 	}
 
 	public Launcher(final Character character, final float multiplier) {
+		lastTime = System.currentTimeMillis();
 		ThrowMe.getInstance().stage.drawThread.setPhysics(false);
 		paint.setColor(Color.rgb(255, 32, 20));
 		paintStroke.setColor(Color.rgb(220, 220, 220));

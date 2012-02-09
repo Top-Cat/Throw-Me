@@ -12,6 +12,10 @@ import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public abstract class DispObj {
 
 	private int width = 0;

@@ -3,8 +3,6 @@ package com.thorgaming.throwme.screens;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.Activity;
-
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.AlphaAnim;
@@ -14,14 +12,27 @@ import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.drawing.DrawThread;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Main extends Screen {
 
+	/**
+	 * Stores the cards that appear fullscreen when the activity starts
+	 */
 	private DispObj thorcard;
+	/**
+	 * Schedules the next card to appear and then the menu
+	 */
 	private Timer timer = new Timer();
+	/**
+	 * Stores the value passed from other screens to skip the cards if not first launch
+	 */
 	private boolean skipIntro;
 
-	public Main(Activity activity, Object[] data) {
-		super(activity, data);
+	public Main(Object[] data) {
+		super(data);
 
 		skipIntro = data != null && data[0] != null ? (Boolean) data[0] : false;
 		thorcard = new DispRes(R.drawable.thorgamingcard).setWidth(800).setHeight(480).setAlpha(0).addToScreen();
@@ -55,7 +66,7 @@ public class Main extends Screen {
 			play.setMouseUpEvent(new MouseCallback() {
 				@Override
 				public boolean sendCallback(int x, int y) {
-					new Game(activity, null);
+					new Game(null);
 					return true;
 				}
 			});
@@ -64,7 +75,7 @@ public class Main extends Screen {
 			highs.setMouseUpEvent(new MouseCallback() {
 				@Override
 				public boolean sendCallback(int x, int y) {
-					new Highs(activity, null);
+					new Highs(null);
 					return true;
 				}
 			});
@@ -73,7 +84,7 @@ public class Main extends Screen {
 			power.setMouseUpEvent(new MouseCallback() {
 				@Override
 				public boolean sendCallback(int x, int y) {
-					new Power(activity, null);
+					new Power(null);
 					return true;
 				}
 			});

@@ -5,6 +5,10 @@ import android.graphics.ColorMatrixColorFilter;
 
 import com.thorgaming.throwme.drawing.Camera;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class DispRes_Rel extends DispRes {
 
 	public DispRes_Rel(int drawableId) {

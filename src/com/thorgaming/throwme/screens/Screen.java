@@ -1,24 +1,32 @@
 package com.thorgaming.throwme.screens;
 
-import android.app.Activity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
 import com.thorgaming.throwme.ThrowMe;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Screen {
 
-	protected ThrowMe activity;
+	/**
+	 * Allows things to check when a screen has been constructed and wait for it
+	 */
 	public static int checkCount = 0;
 
-	public Screen(Activity activity, Object[] data) {
+	/**
+	 * Constructs the screen
+	 * @param data Data passed by other screens
+	 */
+	public Screen(Object[] data) {
 		ThrowMe.getInstance().stage.clear();
 		ThrowMe.getInstance().stage.draw = null;
 		checkCount++;
 		ThrowMe.getInstance().stage.drawThread.setPaused(false);
-		this.activity = (ThrowMe) activity;
-		this.activity.screen = this;
+		ThrowMe.getInstance().screen = this;
 		ThrowMe.getInstance().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -27,12 +35,23 @@ public class Screen {
 		});
 	}
 
+	/**
+	 * Called when user touches the screen
+	 * @param event MotionEvent created by android
+	 * @return True if event was handled
+	 */
 	public boolean onTouch(MotionEvent event) {
 		return false;
 	};
 
+	/**
+	 * Called when a key is pressed on the phone
+	 * @param keyCode A key code that represents the button pressed, from {@link KeyEvent}
+	 * @param event The KeyEvent object that defines the button action.
+	 * @return True if event was handled
+	 */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		return true;
+		return false;
 	};
 
 }

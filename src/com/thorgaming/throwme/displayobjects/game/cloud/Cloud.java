@@ -16,6 +16,10 @@ import com.thorgaming.throwme.displayobjects.Sensor;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.Stage;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Cloud extends DispRes_Rel implements Sensor {
 
 	private World world;

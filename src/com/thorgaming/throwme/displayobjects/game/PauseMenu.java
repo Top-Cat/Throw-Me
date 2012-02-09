@@ -1,7 +1,5 @@
 package com.thorgaming.throwme.displayobjects.game;
 
-import android.app.Activity;
-
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.callback.MouseCallback;
@@ -11,6 +9,10 @@ import com.thorgaming.throwme.displayobjects.shape.Rect;
 import com.thorgaming.throwme.drawing.RenderPriority;
 import com.thorgaming.throwme.screens.Main;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class PauseMenu {
 
 	private final DispObj pauseButton;
@@ -18,7 +20,23 @@ public class PauseMenu {
 	private final DispObj resumeButton;
 	private final DispObj mainMenuButton;
 
-	public PauseMenu(final Activity activity) {
+	public void toggle() {
+		if (pauseButton.getAlpha() > 0) {
+			ThrowMe.getInstance().stage.drawThread.setPaused(true);
+			pauseBg.setAlpha(180);
+			resumeButton.setAlpha(255);
+			mainMenuButton.setAlpha(255);
+			pauseButton.setAlpha(0);
+		} else {
+			ThrowMe.getInstance().stage.drawThread.setPaused(false);
+			pauseBg.setAlpha(0);
+			resumeButton.setAlpha(0);
+			mainMenuButton.setAlpha(0);
+			pauseButton.setAlpha(255);
+		}
+	}
+	
+	public PauseMenu() {
 		pauseButton = new DispRes(R.drawable.pause).setWidth(48).setHeight(48).setX(736).setY(416).setMouseDownEvent(new MouseCallback() {
 			@Override
 			public boolean sendCallback(int x, int y) {
@@ -54,7 +72,7 @@ public class PauseMenu {
 			@Override
 			public boolean sendCallback(int x, int y) {
 				if (mainMenuButton.getAlpha() > 0) {
-					new Main(activity, new Object[] {true});
+					new Main(new Object[] {true});
 					return true;
 				}
 				return false;

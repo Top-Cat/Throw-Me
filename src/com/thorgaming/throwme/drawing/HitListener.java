@@ -8,6 +8,10 @@ import org.jbox2d.dynamics.contacts.ContactResult;
 import com.thorgaming.throwme.displayobjects.Sensor;
 import com.thorgaming.throwme.displayobjects.game.characters.Character;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class HitListener implements ContactListener {
 
 	@Override

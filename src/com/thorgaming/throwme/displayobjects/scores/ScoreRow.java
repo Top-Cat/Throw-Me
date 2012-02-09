@@ -12,6 +12,10 @@ import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.screens.Highs;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class ScoreRow extends DispObj {
 
 	private String name;

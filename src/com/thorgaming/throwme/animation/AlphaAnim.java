@@ -6,6 +6,10 @@ import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.callback.Callback;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class AlphaAnim extends Anim {
 
 	private int unit;

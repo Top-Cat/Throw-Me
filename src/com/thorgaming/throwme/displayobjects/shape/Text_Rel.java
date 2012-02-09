@@ -6,6 +6,10 @@ import android.graphics.Rect;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.DrawThread;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Text_Rel extends Text {
 
 	@Override

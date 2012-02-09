@@ -23,6 +23,10 @@ import com.thorgaming.throwme.callback.Callback;
 import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Stage extends SurfaceView implements SurfaceHolder.Callback {
 
 	public Camera camera = new Camera();

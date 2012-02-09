@@ -5,6 +5,10 @@ import org.jbox2d.common.Vec2;
 
 import com.thorgaming.throwme.R;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class LightningCloud extends Cloud {
 
 	public LightningCloud() {

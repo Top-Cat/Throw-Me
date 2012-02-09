@@ -8,6 +8,10 @@ import android.graphics.Rect;
 import com.thorgaming.throwme.displayobjects.DispObj;
 import com.thorgaming.throwme.drawing.Camera;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Text extends DispObj {
 
 	private String text = "";

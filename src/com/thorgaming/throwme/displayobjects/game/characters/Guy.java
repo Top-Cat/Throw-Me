@@ -19,6 +19,10 @@ import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.Stage;
 
+/**
+ * @author Thomas Cheyney
+ * @version 1.0
+ */
 public class Guy extends Character {
 
 	private World world;
