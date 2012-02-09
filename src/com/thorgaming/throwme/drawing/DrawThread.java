@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -29,7 +31,7 @@ public class DrawThread extends Thread {
 	private boolean pausedInternal = false;
 
 	private List<Runnable> onUi = new ArrayList<Runnable>();
-	private boolean onUiLock = false;
+	private Lock onUiLock = new ReentrantLock();
 
 	public DrawThread(SurfaceHolder surfaceHolder, Context context) {
 		this.surfaceHolder = surfaceHolder;
@@ -70,11 +72,12 @@ public class DrawThread extends Thread {
 	}
 
 	public void runOnUi(Runnable run) {
-		while (onUiLock) {
+		onUiLock.lock();
+		try {
+			onUi.add(run);
+		} finally {
+			onUiLock.unlock();
 		}
-		onUiLock = true;
-		onUi.add(run);
-		onUiLock = false;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -124,17 +127,18 @@ public class DrawThread extends Thread {
 						for (DispObj obj : toRemove) {
 							obj.destroy();
 						}
-
+						toRemove.clear();
 					}
 
-					while (onUiLock) {
+					onUiLock.lock();
+					try {
+						for (Runnable run : onUi) {
+							run.run();
+						}
+						onUi.clear();
+					} finally {
+						onUiLock.unlock();
 					}
-					onUiLock = true;
-					for (Runnable run : onUi) {
-						run.run();
-					}
-					onUi.clear();
-					onUiLock = false;
 
 					pausedInternal = paused;
 				}

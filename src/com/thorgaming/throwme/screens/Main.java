@@ -24,7 +24,6 @@ public class Main extends Screen {
 		super(activity, data);
 
 		skipIntro = data != null && data[0] != null ? (Boolean) data[0] : false;
-		skipIntro = true; //for debugging
 		thorcard = new DispRes(R.drawable.thorgamingcard).setWidth(800).setHeight(480).setAlpha(0).addToScreen();
 		timer.schedule(new WaitForScreen(), 500);
 	}

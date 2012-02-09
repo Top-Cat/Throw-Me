@@ -81,14 +81,12 @@ public abstract class Character extends DispObj {
 			Vec2 world2 = new Vec2(mouseX / Stage.ratio, mouseY / Stage.ratio);
 			Vec2 d = world2.sub(world1);
 			float dlen = d.normalize();
-			Vec2 springForce = d.clone();
-			springForce = springForce.mul((dlen - length) * k);
+			Vec2 springForce = d.clone().mul((dlen - length) * k);
 			getMainBody().applyForce(springForce, world1);
 			Vec2 v1 = getMainBody().getLinearVelocityFromWorldPoint(world1);
 			Vec2 v2 = new Vec2(0, 0);
 			Vec2 v = v2.sub(v1);
-			Vec2 dampingForce = d.clone();
-			dampingForce = dampingForce.mul((float) (Vec2.dot(v, d) * damping));
+			Vec2 dampingForce = d.clone().mul((float) (Vec2.dot(v, d) * damping));
 			getMainBody().applyForce(dampingForce, world1);
 			canvas.drawLine(camera.transformX((int) (getMainBody().getPosition().x * Stage.ratio)), camera.transformY((int) (getMainBody().getPosition().y * Stage.ratio)), camera.transformX((int) mouseX), camera.transformY((int) mouseY), paint);
 		} else {
@@ -112,7 +110,7 @@ public abstract class Character extends DispObj {
 				}
 			}
 
-			int nx = (int) (camera.getX() - (camera.getX() + (-Stage.ratio * getMainBody().getPosition().x + camera.getScreenWidth() / 2)) / 10);
+			int nx = (int) (camera.getX() - (camera.getX() + (-Stage.ratio * getMainBody().getPosition().x + camera.getScreenWidth() / 2)) / 9);
 			int ny = (int) (camera.getY() - (camera.getY() - (-Stage.ratio * getMainBody().getPosition().y + camera.getScreenHeight() / 2)) / 10);
 			ny = ny < 0 ? camera.getY() : ny;
 			nx = nx < camera.getX() ? camera.getX() : nx;

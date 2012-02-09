@@ -18,6 +18,7 @@ import com.thorgaming.throwme.displayobjects.DispRes_Rel;
 import com.thorgaming.throwme.displayobjects.Sensor;
 import com.thorgaming.throwme.displayobjects.game.characters.Character;
 import com.thorgaming.throwme.drawing.Camera;
+import com.thorgaming.throwme.drawing.DrawThread;
 import com.thorgaming.throwme.drawing.RenderPriority;
 import com.thorgaming.throwme.drawing.Stage;
 
@@ -56,6 +57,9 @@ public class Crane extends DispRes_Rel implements Sensor {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
+		if (camera.transformRelativeX(getX() - 67) < -266) {
+			DrawThread.toRemove.add(this);
+		}
 		super.draw(canvas, camera);
 		canvas.save();
 		float angle = (float) (40 * Math.sin(Math.toRadians(time)));

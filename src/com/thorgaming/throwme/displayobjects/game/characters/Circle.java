@@ -80,7 +80,7 @@ public class Circle extends Character {
 			drawableBalloons.draw(canvas);
 			canvas.restore();
 
-			applyImpulse(new Vec2(0.02F, -0.13F));
+			applyImpulse(new Vec2(0.025F, -0.14F));
 		}
 	}
 

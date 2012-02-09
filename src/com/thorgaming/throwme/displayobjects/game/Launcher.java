@@ -20,9 +20,11 @@ public class Launcher extends DispObj {
 	private double bar = 0;
 	private Paint paint = new Paint();
 	private Paint paintStroke = new Paint();
+	private long lastTime = 0;
 
 	public Launcher(Character character) {
 		this(character, 1);
+		lastTime = System.currentTimeMillis();
 	}
 
 	public Launcher(final Character character, final float multiplier) {
@@ -47,7 +49,8 @@ public class Launcher extends DispObj {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		step += 0.15;
+		step += (System.currentTimeMillis() - lastTime) / 140f;
+		lastTime = System.currentTimeMillis();
 		bar = Math.abs(Math.sin(step) / Math.pow(1.12, step / 2.2));
 
 		canvas.drawRect(10, (float) (400 - bar * 300), 50, 400, paint);
