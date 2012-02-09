@@ -57,7 +57,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		if (camera.transformRelativeX(getX() - 67) < -266) {
+		if (camera.transformRelativeX(getX() - 67) < -350) {
 			DrawThread.toRemove.add(this);
 		}
 		super.draw(canvas, camera);
