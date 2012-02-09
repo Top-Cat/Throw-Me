@@ -28,11 +28,10 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Base64;
 
 import com.android.vending.billing.IMarketBillingService;
 import com.thorgaming.throwme.ThrowMe;
-import com.thorgaming.throwme.billing.util.Base64;
-import com.thorgaming.throwme.billing.util.Base64DecoderException;
 
 public class BillingService extends Service implements ServiceConnection {
 
@@ -165,7 +164,6 @@ public class BillingService extends Service implements ServiceConnection {
 							int response = jElement.getInt("purchaseState");
 
 							String productId = jElement.getString("productId");
-							//String packageName = jElement.getString("packageName");
 							long purchaseTime = jElement.getLong("purchaseTime");
 							String orderId = jElement.optString("orderId", "");
 							String notifyId = null;
@@ -210,7 +208,6 @@ public class BillingService extends Service implements ServiceConnection {
 			if (supported) {
 				Bundle request = makeRequestBundle("REQUEST_PURCHASE");
 				request.putString("ITEM_ID", marketId);
-				//request.putString("ITEM_ID", "android.test.refunded");
 				try {
 					Bundle response = mService.sendBillingRequest(request);
 					PendingIntent pendingIntent = response.getParcelable("PURCHASE_INTENT");
@@ -248,35 +245,29 @@ public class BillingService extends Service implements ServiceConnection {
 
 	public static PublicKey generatePublicKey(String encodedPublicKey) {
 		try {
-			byte[] decodedKey = Base64.decode(encodedPublicKey);
+			byte[] decodedKey = Base64.decode(encodedPublicKey, Base64.DEFAULT);
 			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 			return keyFactory.generatePublic(new X509EncodedKeySpec(decodedKey));
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		} catch (InvalidKeySpecException e) {
 			throw new IllegalArgumentException(e);
-		} catch (Base64DecoderException e) {
-			throw new IllegalArgumentException(e);
 		}
 	}
 
 	public static boolean verify(PublicKey publicKey, String signedData, String signature) {
-		Signature sig;
 		try {
-			sig = Signature.getInstance("SHA1withRSA");
+			Signature sig = Signature.getInstance("SHA1withRSA");
 			sig.initVerify(publicKey);
 			sig.update(signedData.getBytes());
-			if (!sig.verify(Base64.decode(signature))) {
-				return false;
+			if (sig.verify(Base64.decode(signature, Base64.DEFAULT))) {
+				return true;
 			}
-			return true;
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		} catch (SignatureException e) {
-			e.printStackTrace();
-		} catch (Base64DecoderException e) {
 			e.printStackTrace();
 		}
 		return false;
