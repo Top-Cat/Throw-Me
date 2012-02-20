@@ -19,8 +19,17 @@ import com.thorgaming.throwme.drawing.Stage;
  */
 public class BoostCloud extends Cloud {
 
+	/**
+	 * Used to read the resource
+	 */
 	private InputStream inputStream = null;
+	/**
+	 * Represents the gif movie
+	 */
 	private Movie movie;
+	/**
+	 * The time the gif started playing, used to generate the current frame to be displayed
+	 */
 	private long moviestart;
 
 	public BoostCloud() {

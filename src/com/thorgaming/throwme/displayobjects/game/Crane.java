@@ -7,7 +7,6 @@ import org.jbox2d.collision.Shape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.World;
 
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -28,20 +27,36 @@ import com.thorgaming.throwme.drawing.Stage;
  */
 public class Crane extends DispRes_Rel implements Sensor {
 
+	/**
+	 * Music notes drawable that hang from the crane
+	 */
 	private Drawable notes;
+	/**
+	 * Random generator used to generate initial position and speed
+	 */
 	private Random random = new Random();
+	/**
+	 * Position in the motion of the notes from the crane, angle = 40sin(time)
+	 * Initial position is randomly generated
+	 */
 	private float time = random.nextInt(360);
+	/**
+	 * Speed at which time increases
+	 */
 	private float speed = random.nextFloat() * 2 + 1;
-	private World world;
+	/**
+	 * Used for hit detection with the character, not drawn
+	 */
 	protected Body physicsBody;
+	/**
+	 * Prevents launcher from triggering twice
+	 */
 	private boolean hit = false;
 
 	public Crane() {
 		super(R.drawable.crane);
 		setWidth(200);
 		setHeight(292);
-
-		world = ThrowMe.getInstance().stage.world;
 
 		CircleDef wreckingBall = new CircleDef();
 		wreckingBall.isSensor = true;
@@ -52,7 +67,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 		BodyDef wreckingBallBodyDef = new BodyDef();
 		wreckingBallBodyDef.position.set(new Vec2(getX() / Stage.ratio, getY() / Stage.ratio));
 
-		physicsBody = world.createBody(wreckingBallBodyDef);
+		physicsBody = ThrowMe.getInstance().stage.world.createBody(wreckingBallBodyDef);
 		physicsBody.createShape(wreckingBall);
 		physicsBody.setMassFromShapes();
 
@@ -103,7 +118,7 @@ public class Crane extends DispRes_Rel implements Sensor {
 	@Override
 	public void destroy() {
 		super.destroy();
-		world.destroyBody(physicsBody);
+		ThrowMe.getInstance().stage.world.destroyBody(physicsBody);
 	}
 
 }

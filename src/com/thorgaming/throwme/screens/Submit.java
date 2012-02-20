@@ -27,10 +27,25 @@ import com.thorgaming.throwme.drawing.RenderPriority;
  */
 public class Submit extends Screen {
 
+	/**
+	 * Keyboard layout used to make text objects
+	 */
 	private String keyboard = "QWERTYUIOP ASDFGHJKL ZXCVBNM";
+	/**
+	 * Stores the currently entered name
+	 */
 	private String name = "";
+	/**
+	 * Object used to display currently entered name
+	 */
 	private Text nameText;
+	/**
+	 * Object used to show spinning ticker while trying to submit the score
+	 */
 	private DispObj ajaxGif;
+	/**
+	 * Submit button, when pressed score will be submitted
+	 */
 	private final DispObj submitRes;
 
 	public Submit(Object[] data) {
@@ -129,6 +144,9 @@ public class Submit extends Screen {
 		}).setHitPadding(new Rect(0, 0, 70, 20)).addToScreen();
 	}
 
+	/**
+	 * Called on a submission failure to reset the screen
+	 */
 	public void failSubmit() {
 		ajaxGif.setAlpha(0);
 		submitRes.setAlpha(255);

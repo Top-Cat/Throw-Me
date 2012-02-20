@@ -14,33 +14,67 @@ import com.thorgaming.throwme.drawing.Camera;
  */
 public class Text extends DispObj {
 
+	/**
+	 * Text to be displayed
+	 */
 	private String text = "";
+	/**
+	 * Paint used to display the text
+	 */
 	protected Paint paint = new Paint();
+	/**
+	 * Alignment for text
+	 */
 	private Align align = Align.LEFT;
 
 	public Text() {
 		paint.setSubpixelText(true);
 	}
 
+	/**
+	 * Set the text to be displayed by this object 
+	 * 
+	 * @param text Text to be displayed
+	 * @return This object
+	 */
 	public Text setText(String text) {
 		this.text = text;
 		return this;
 	}
 
+	/**
+	 * Get the text being displayed by this object
+	 */
 	public String getText() {
 		return text;
 	}
 
+	/**
+	 * Set the text size of this object
+	 * 
+	 * @param size Text size
+	 * @return This object
+	 */
 	public Text setSize(float size) {
 		paint.setTextSize(size);
 		return this;
 	}
 
+	/**
+	 * Set the alignment of this object 
+	 * 
+	 * @param align Text alignment
+	 * @return This object
+	 */
 	public Text setAlign(Align align) {
 		this.align = align;
 		return this;
 	}
 
+	/**
+	 * Get the paint object used by this object when displaying text
+	 * @return
+	 */
 	public Paint getPaint() {
 		return paint;
 	}

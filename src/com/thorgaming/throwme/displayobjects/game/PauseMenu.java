@@ -20,6 +20,9 @@ public class PauseMenu {
 	private final DispObj resumeButton;
 	private final DispObj mainMenuButton;
 
+	/**
+	 * Toggle the visibility of the pause screen
+	 */
 	public void toggle() {
 		if (pauseButton.getAlpha() > 0) {
 			ThrowMe.getInstance().stage.drawThread.setPaused(true);
