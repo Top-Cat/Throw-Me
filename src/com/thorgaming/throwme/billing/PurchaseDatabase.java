@@ -42,7 +42,7 @@ public class PurchaseDatabase {
 		ContentValues values = new ContentValues();
 		values.put("_id", productId);
 		values.put("quantity", quantity);
-		mDb.replace("throwmePurchased", null /* nullColumnHack */, values);
+		mDb.replace("throwmePurchased", null, values);
 	}
 
 	public int updatePurchase(String orderId, String productId, int purchaseState, long purchaseTime, String developerPayload) {

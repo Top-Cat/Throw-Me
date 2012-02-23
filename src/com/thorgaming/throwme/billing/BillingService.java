@@ -39,12 +39,29 @@ import com.thorgaming.throwme.ThrowMe;
  */
 public class BillingService extends Service implements ServiceConnection {
 
+	/**
+	 * An instance of the billing service with the android system to call to initate purchases/queries
+	 */
 	private static IMarketBillingService mService;
+	/**
+	 * Stores whether the device supports billing 
+	 */
 	private boolean supported = false;
-	private static Activity activity;
+	/**
+	 * Random used to generate knownOnces
+	 */
 	private Random random = new Random();
+	/**
+	 * List of knownOnces, these verify responses are a result of requests made by this device
+	 */
 	public static HashSet<Long> knownOnce = new HashSet<Long>();
+	/**
+	 * Database handler where past purchases are stored
+	 */
 	public static PurchaseDatabase purchases;
+	/**
+	 * Id of restore request
+	 */
 	public static long restoreId = 0;
 
 	public BillingService() {
@@ -53,16 +70,18 @@ public class BillingService extends Service implements ServiceConnection {
 
 	public BillingService(Activity activity) {
 		super();
-		BillingService.activity = activity;
-		attachBaseContext(activity);
+		attachBaseContext(ThrowMe.getInstance());
 		purchases = new PurchaseDatabase(this);
 		attachService();
 	}
 
+	/**
+	 * Attaches this service to the main activity
+	 */
 	private void attachService() {
 		try {
-			activity.startService(new Intent("com.android.vending.billing.MarketBillingService.BIND"));
-			boolean bindResult = activity.bindService(new Intent("com.android.vending.billing.MarketBillingService.BIND"), this, Context.BIND_AUTO_CREATE);
+			ThrowMe.getInstance().startService(new Intent("com.android.vending.billing.MarketBillingService.BIND"));
+			boolean bindResult = ThrowMe.getInstance().bindService(new Intent("com.android.vending.billing.MarketBillingService.BIND"), this, Context.BIND_AUTO_CREATE);
 			if (!bindResult) {
 				System.out.println("Could not bind to the MarketBillingService.");
 			}
@@ -76,7 +95,7 @@ public class BillingService extends Service implements ServiceConnection {
 		mService = IMarketBillingService.Stub.asInterface(service);
 		if (checkBillingSupported()) {
 			supported = true;
-			SharedPreferences prefs = activity.getPreferences(Context.MODE_PRIVATE);
+			SharedPreferences prefs = ThrowMe.getInstance().getPreferences(Context.MODE_PRIVATE);
 			boolean initialized = prefs.getBoolean("dbINIT", false);
 			if (!initialized) {
 				long rand = random.nextLong();
@@ -93,6 +112,12 @@ public class BillingService extends Service implements ServiceConnection {
 		}
 	}
 
+	/**
+	 * Constructs bundles for requests
+	 * 
+	 * @param method Billing request method
+	 * @return A bundle to be used in a request
+	 */
 	private Bundle makeRequestBundle(String method) {
 		Bundle request = new Bundle();
 		request.putString("BILLING_REQUEST", method);
@@ -101,6 +126,11 @@ public class BillingService extends Service implements ServiceConnection {
 		return request;
 	}
 
+	/**
+	 * Checks if the device supports in-app billing
+	 * 
+	 * @return True if the device supports in-app billing, false otherwise
+	 */
 	private boolean checkBillingSupported() {
 		Bundle request = makeRequestBundle("CHECK_BILLING_SUPPORTED");
 		try {
@@ -114,99 +144,113 @@ public class BillingService extends Service implements ServiceConnection {
 		return false;
 	}
 
-	@Override
-	public void onStart(Intent intent, int startId) {
-		if (intent != null) {
-			String action = intent.getAction();
-			System.out.println("RESPONSE! " + action);
-			if ("com.thorgaming.throwme.GET_PURCHASE_INFORMATION".equals(action)) {
-				String notifyId = intent.getStringExtra("notification_id");
+	/**
+	 * Handles change of purchase information, detailed information about transactions is passed via JSON.
+	 * 
+	 * @param signedData A signed JSON string
+	 * @param signature The signature used
+	 */
+	public void purchaseStateChanged(String signedData, String signature) {
+		boolean verified = false;
+		if (signature.length() > 0) {
+			String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GbR3FqjQIqFkxFBWoKqCmIXAEMwdK8E13+AQuMU4i0fVw8kLMFZbk7T1YPezQnBm6ozwJSBrQA+M4HOdKguqnGE+hDtFzWCq5/mZh7VM8/9Sow7EFvlbQll2DR/8OQE1aXGcRKEf51H9a7i5VswOsqwiTAP7BqtbGo/aujo1NxtwX/OYDGIIEx/V7r1lBQCfgNEM9+dn6Ahr4ETPVU9QLhyP2F99vKBhgJ4euQj0/zpaA0jjItMhrfTRAwPXVvWnh65+ECOlpQ6WNZZF2kHBjr5ocHH+zEJDGKrs0DOQ3WDiraoaqmBXRB85vHtQQRV/8KxJHpjtWC2k0eLrfoH4wIDAQAB";
 
-				long rand = random.nextLong();
-				knownOnce.add(rand);
+			PublicKey key = generatePublicKey(base64EncodedPublicKey);
+			verified = verify(key, signedData, signature);
+			if (!verified) {
+				System.out.println("Could not verify!");
+			}
+		}
 
-				Bundle request = makeRequestBundle("GET_PURCHASE_INFORMATION");
-				request.putLong("NONCE", rand);
+		JSONObject jObject;
+		JSONArray jTransactionsArray = null;
+		int numTransactions = 0;
+		long nonce = 0L;
+		try {
+			jObject = new JSONObject(signedData);
 
-				request.putStringArray("NOTIFY_IDS", new String[] {notifyId});
-				try {
-					mService.sendBillingRequest(request);
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-			} else if ("com.thorgaming.throwme.ACTION_PURCHASE_STATE_CHANGED".equals(action)) {
-				String signedData = intent.getStringExtra("inapp_signed_data");
-				String signature = intent.getStringExtra("inapp_signature");
-
-				boolean verified = false;
-				if (signature.length() > 0) {
-					String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4GbR3FqjQIqFkxFBWoKqCmIXAEMwdK8E13+AQuMU4i0fVw8kLMFZbk7T1YPezQnBm6ozwJSBrQA+M4HOdKguqnGE+hDtFzWCq5/mZh7VM8/9Sow7EFvlbQll2DR/8OQE1aXGcRKEf51H9a7i5VswOsqwiTAP7BqtbGo/aujo1NxtwX/OYDGIIEx/V7r1lBQCfgNEM9+dn6Ahr4ETPVU9QLhyP2F99vKBhgJ4euQj0/zpaA0jjItMhrfTRAwPXVvWnh65+ECOlpQ6WNZZF2kHBjr5ocHH+zEJDGKrs0DOQ3WDiraoaqmBXRB85vHtQQRV/8KxJHpjtWC2k0eLrfoH4wIDAQAB";
-
-					PublicKey key = generatePublicKey(base64EncodedPublicKey);
-					verified = verify(key, signedData, signature);
-					if (!verified) {
-						System.out.println("Could not verify!");
-					}
+			nonce = jObject.optLong("nonce");
+			if (knownOnce.contains(nonce)) {
+				jTransactionsArray = jObject.optJSONArray("orders");
+				if (jTransactionsArray != null) {
+					numTransactions = jTransactionsArray.length();
 				}
 
-				JSONObject jObject;
-				JSONArray jTransactionsArray = null;
-				int numTransactions = 0;
-				long nonce = 0L;
-				try {
-					jObject = new JSONObject(signedData);
+				for (int i = 0; i < numTransactions; i++) {
+					JSONObject jElement = jTransactionsArray.getJSONObject(i);
+					int response = jElement.getInt("purchaseState");
 
-					nonce = jObject.optLong("nonce");
-					if (knownOnce.contains(nonce)) {
-						jTransactionsArray = jObject.optJSONArray("orders");
-						if (jTransactionsArray != null) {
-							numTransactions = jTransactionsArray.length();
-						}
+					String productId = jElement.getString("productId");
+					long purchaseTime = jElement.getLong("purchaseTime");
+					String orderId = jElement.optString("orderId", "");
+					String notifyId = null;
+					if (jElement.has("notificationId")) {
+						notifyId = jElement.getString("notificationId");
 
-						for (int i = 0; i < numTransactions; i++) {
-							JSONObject jElement = jTransactionsArray.getJSONObject(i);
-							int response = jElement.getInt("purchaseState");
-
-							String productId = jElement.getString("productId");
-							long purchaseTime = jElement.getLong("purchaseTime");
-							String orderId = jElement.optString("orderId", "");
-							String notifyId = null;
-							if (jElement.has("notificationId")) {
-								notifyId = jElement.getString("notificationId");
-
-								Bundle request = makeRequestBundle("CONFIRM_NOTIFICATIONS");
-								request.putStringArray("NOTIFY_IDS", new String[] {notifyId});
-								try {
-									mService.sendBillingRequest(request);
-								} catch (RemoteException e) {
-									e.printStackTrace();
-								}
-							}
-							String developerPayload = jElement.optString("developerPayload", null);
-
-							if (response == 0 && !verified) {
-								continue;
-							}
-							purchases.updatePurchase(orderId, productId, response, purchaseTime, developerPayload);
-							ThrowMe.getInstance().billingDirty = true;
+						Bundle request = makeRequestBundle("CONFIRM_NOTIFICATIONS");
+						request.putStringArray("NOTIFY_IDS", new String[] {notifyId});
+						try {
+							mService.sendBillingRequest(request);
+						} catch (RemoteException e) {
+							e.printStackTrace();
 						}
 					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				knownOnce.remove(nonce);
-			} else if ("com.android.vending.billing.RESPONSE_CODE".equals(action)) {
-				long requestId = intent.getLongExtra("request_id", -1);
-				if (requestId == restoreId && restoreId > 0) {
-					SharedPreferences prefs = activity.getPreferences(Context.MODE_PRIVATE);
-					Editor edit = prefs.edit();
-					edit.putBoolean("dbINIT", true);
-					edit.commit();
+					String developerPayload = jElement.optString("developerPayload", null);
+
+					if (response == 0 && !verified) {
+						continue;
+					}
+					purchases.updatePurchase(orderId, productId, response, purchaseTime, developerPayload);
+					ThrowMe.getInstance().billingDirty = true;
 				}
 			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		knownOnce.remove(nonce);
+	}
+	
+	/**
+	 * Called when a transaction changes state, then sends a GET_PURCHASE_INFORMATION request to get the data about the transaction
+	 * 
+	 * @param notifyId Id to query to get information about this transaction
+	 */
+	public void notify(String notifyId) {
+		long rand = random.nextLong();
+		knownOnce.add(rand);
+
+		Bundle request = makeRequestBundle("GET_PURCHASE_INFORMATION");
+		request.putLong("NONCE", rand);
+
+		request.putStringArray("NOTIFY_IDS", new String[] {notifyId});
+		try {
+			mService.sendBillingRequest(request);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Triggered when a market request completes with a response code indicating if it was successful
+	 * This checks if the request to initialise the database is attempted
+	 * 
+	 * @param requestId
+	 * @param responseCodeIndex
+	 */
+	public void checkResponseCode(long requestId, int responseCodeIndex) {
+		if (requestId == restoreId && restoreId > 0) {
+			SharedPreferences prefs = ThrowMe.getInstance().getPreferences(Context.MODE_PRIVATE);
+			Editor edit = prefs.edit();
+			edit.putBoolean("dbINIT", true);
+			edit.commit();
 		}
 	}
 
+	/**
+	 * Calls the market service to start a purchase given the id of an item
+	 * 
+	 * @param marketId Id of the item to be sold
+	 */
 	public void startPurchase(String marketId) {
 		if (mService != null) {
 			if (supported) {
@@ -220,7 +264,7 @@ public class BillingService extends Service implements ServiceConnection {
 						System.out.println("Error in response!");
 					} else {
 						try {
-							activity.startIntentSender(pendingIntent.getIntentSender(), intent, 0, 0, 0);
+							ThrowMe.getInstance().startIntentSender(pendingIntent.getIntentSender(), intent, 0, 0, 0);
 						} catch (SendIntentException e) {
 							e.printStackTrace();
 						}
@@ -247,6 +291,12 @@ public class BillingService extends Service implements ServiceConnection {
 		return null;
 	}
 
+	/**
+	 * Decodes the base-64 key for use
+	 * 
+	 * @param encodedPublicKey The encoded public key
+	 * @return The decoded public key
+	 */
 	public static PublicKey generatePublicKey(String encodedPublicKey) {
 		try {
 			byte[] decodedKey = Base64.decode(encodedPublicKey, Base64.DEFAULT);
@@ -259,6 +309,14 @@ public class BillingService extends Service implements ServiceConnection {
 		}
 	}
 
+	/**
+	 * Logic to check signed data with public key
+	 * 
+	 * @param publicKey The decoded public key
+	 * @param signedData JSON data about transactions
+	 * @param signature Signature on data
+	 * @return True if response verified from android market
+	 */
 	public static boolean verify(PublicKey publicKey, String signedData, String signature) {
 		try {
 			Signature sig = Signature.getInstance("SHA1withRSA");

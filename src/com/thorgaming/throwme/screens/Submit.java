@@ -58,10 +58,13 @@ public class Submit extends Screen {
 		rr.stroke.setARGB(150, 0, 0, 0);
 
 		final int score = data != null && data[0] != null ? (Integer) data[0] : 0;
+		final SharedPreferences settings = ThrowMe.getInstance().getSharedPreferences("throwmedevicekey", 0);
 		new Text().setText("Score: " + score).setSize(40).setX(30).setY(20).addToScreen();
 
-		nameText = (Text) new Text().setSize(40).setX(30).setY(115).addToScreen();
+		nameText = (Text) new Text().setText(settings.getString("userName", "")).setSize(40).setX(30).setY(115).addToScreen();
 		nameText.getPaint().setARGB(255, 255, 255, 255);
+		
+		name = settings.getString("userName", "");
 
 		submitRes = new DispRes(R.drawable.submit).setWidth(222).setHeight(60).setX(350).setY(20).setMouseDownEvent(new MouseCallback() {
 			@Override
@@ -69,10 +72,10 @@ public class Submit extends Screen {
 				submitRes.setAlpha(0);
 				ajaxGif.setAlpha(255);
 
-				SharedPreferences settings = ThrowMe.getInstance().getSharedPreferences("throwmedevicekey", 0);
 				String deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
 				Editor editor = settings.edit();
 				editor.putString("deviceid", deviceid);
+				editor.putString("userName", nameText.getText());
 				editor.commit();
 
 				new ScoreSubmitThread(nameText.getText(), score, deviceid).start();
