@@ -6,6 +6,9 @@ package com.thorgaming.throwme.callback;
  */
 public interface Callback {
 
+	/**
+	 * Allows simple storage of a method to call when a task is completed
+	 */
 	public void sendCallback();
 
 }

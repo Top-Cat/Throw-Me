@@ -2,7 +2,6 @@ package com.thorgaming.throwme.animation;
 
 import java.util.List;
 
-import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.callback.Callback;
 import com.thorgaming.throwme.displayobjects.DispObj;
 
@@ -12,21 +11,10 @@ import com.thorgaming.throwme.displayobjects.DispObj;
  */
 public class XAnim extends Anim {
 
-	private int unit;
-	private int start;
-	private int end;
-
 	public XAnim(DispObj obj, int start, int end, Callback callback, long time) {
-		super(callback);
-		unit = (int) (Math.abs(start - end) / (time / 10));
-		setObject(obj);
-		obj.setX(start);
-		this.start = start;
-		this.end = end;
-
-		ThrowMe.getInstance().stage.animations.add(this);
+		super(obj, start, end, callback, time);
 	}
-
+	
 	@Override
 	public void process(List<Anim> over) {
 		int j = start > end ? -1 : 1;
