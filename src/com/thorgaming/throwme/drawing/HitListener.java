@@ -14,6 +14,9 @@ import com.thorgaming.throwme.displayobjects.game.characters.Character;
  */
 public class HitListener implements ContactListener {
 
+	/**
+	 * New collision	
+	 */
 	@Override
 	public void add(ContactPoint arg0) {
 		Shape i = arg0.shape1;
@@ -29,6 +32,10 @@ public class HitListener implements ContactListener {
 		}
 	}
 
+	/**
+	 * Past collision that still has intersecting shapes
+	 * Called before the solver has started
+	 */
 	@Override
 	public void persist(ContactPoint arg0) {
 		Shape i = arg0.shape1;
@@ -44,11 +51,18 @@ public class HitListener implements ContactListener {
 		}
 	}
 
+	/**
+	 * Collision finished, no longer touching
+	 */
 	@Override
 	public void remove(ContactPoint arg0) {
 
 	}
 
+	/**
+	 * Past collision that still has intersecting shapes
+	 * Called after the solver has finished
+	 */
 	@Override
 	public void result(ContactResult arg0) {
 

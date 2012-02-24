@@ -13,11 +13,16 @@ import com.thorgaming.throwme.drawing.Camera;
  */
 public class RoundRect extends Rect {
 
+	/**
+	 * Paint used to outline the rectangle
+	 */
 	public Paint stroke = new Paint();
+	/**
+	 * How round the corners are
+	 */
 	private int cornerRadius = 20;
 
 	public RoundRect(int cornerRadius) {
-		super();
 		this.cornerRadius = cornerRadius;
 		stroke.setStyle(Style.STROKE);
 	}

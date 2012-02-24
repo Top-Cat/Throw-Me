@@ -1,9 +1,6 @@
 package com.thorgaming.throwme.displayobjects.shape;
 
-import java.util.Random;
-
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.thorgaming.throwme.displayobjects.DispObj;
@@ -16,24 +13,31 @@ import com.thorgaming.throwme.drawing.Camera;
 public class Rect extends DispObj {
 
 	public Paint paint = new Paint();
+	/**
+	 * Screen X location of rectangle
+	 */
 	protected int actualX;
+	/**
+	 * Screen Y location of rectangle
+	 */
 	protected int actualY;
-	private Random random = new Random();
 
-	public Rect() {
-		randomiseColor();
-	}
-
+	/**
+	 * Get screen Y location of rectangle
+	 * 
+	 * @return Screen Y
+	 */
 	public int getScreenX() {
 		return actualX;
 	}
 
+	/**
+	 * Get screen Y location of rectangle
+	 * 
+	 * @return Screen Y
+	 */
 	public int getScreenY() {
 		return actualY;
-	}
-
-	public void randomiseColor() {
-		paint.setColor(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
 	}
 
 	@Override

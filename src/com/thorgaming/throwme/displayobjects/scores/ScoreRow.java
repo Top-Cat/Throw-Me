@@ -18,23 +18,50 @@ import com.thorgaming.throwme.screens.Highs;
  */
 public class ScoreRow extends DispObj {
 
+	/**
+	 * Name of the user who got the score
+	 */
 	private String name;
-	private int score, position;
-	private Date date;
+	/**
+	 * Score the user got
+	 */
+	private int score;
+	/**
+	 * Position in the rankings this user is
+	 */
+	private int position;
+	/**
+	 * Date the score was submitted, in a string to be displayed
+	 */
+	private String date;
+	/**
+	 * Paint used for text in the row
+	 */
 	private Paint paint = new Paint();
+	/**
+	 * Paint used for line below the row
+	 */
 	private Paint lpaint = new Paint();
+	/**
+	 * Paint used for background if the row belongs to this phone
+	 */
 	private Paint bgpaint = new Paint();
-	private Highs screen;
+	/**
+	 * Formatter for outputting the date
+	 */
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	/**
+	 * Does the score belong to this phone?
+	 */
 	private boolean isOwn = false;
 
 	public ScoreRow(Highs screen, int position, String name, int score, Date date, boolean isOwn) {
 		this.name = name;
 		this.score = score;
-		this.date = date;
-		this.screen = screen;
 		this.position = position;
 		this.isOwn = isOwn;
+		
+		this.date = dateFormat.format(date);
 
 		paint.setColor(Color.rgb(255, 255, 255));
 		paint.setTextSize(ThrowMe.getInstance().stage.camera.transformY(30));
@@ -49,7 +76,7 @@ public class ScoreRow extends DispObj {
 
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
-		int scroll = camera.transformY(screen.scrollDraw);
+		int scroll = camera.transformY(((Highs) ThrowMe.getInstance().screen).scrollDraw);
 
 		if (isOwn) {
 			canvas.drawRect(camera.transformX(40), scroll + camera.transformY(getY() + 3), camera.transformX(590), scroll + camera.transformY(getY() + 63), bgpaint);
@@ -57,7 +84,7 @@ public class ScoreRow extends DispObj {
 		canvas.drawText(name, camera.transformX(90), scroll + camera.transformY(getY() + 30), paint);
 		canvas.drawText(Integer.toString(score), camera.transformX(90), scroll + camera.transformY(getY() + 60), paint);
 		canvas.drawText(Integer.toString(position), camera.transformX(45), scroll + camera.transformY(getY() + 30), paint);
-		canvas.drawText(dateFormat.format(date), camera.transformX(430), scroll + camera.transformY(getY() + 30), paint);
+		canvas.drawText(date, camera.transformX(430), scroll + camera.transformY(getY() + 30), paint);
 		canvas.drawLine(camera.transformX(40), scroll + camera.transformY(getY() + 63), camera.transformX(590), scroll + camera.transformY(getY() + 63), lpaint);
 	}
 

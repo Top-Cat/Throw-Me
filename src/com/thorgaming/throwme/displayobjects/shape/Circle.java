@@ -15,29 +15,63 @@ import com.thorgaming.throwme.drawing.Camera;
  */
 public class Circle extends DispObj {
 
+	/**
+	 * Radius of the circle
+	 */
 	private int radius = 0;
+	/**
+	 * Paint used to draw the circle
+	 */
 	public Paint paint = new Paint();
+	/**
+	 * Screen X location of circle
+	 */
 	private int actualX;
+	/**
+	 * Screen Y location of circle
+	 */
 	private int actualY;
+	/**
+	 * Random used to randomise the colour
+	 */
 	private Random random = new Random();
 
 	public Circle() {
 		randomiseColor();
 	}
 
+	/**
+	 * Get screen X location of circle
+	 * 
+	 * @return Screen X
+	 */
 	public int getScreenX() {
 		return actualX;
 	}
 
+	/**
+	 * Get screen Y location of circle
+	 * 
+	 * @return Screen Y
+	 */
 	public int getScreenY() {
 		return actualY;
 	}
 
+	/**
+	 * Sets the radius of the circle
+	 * 
+	 * @param radius New circle radius
+	 * @return This object
+	 */
 	public Circle setRadius(int radius) {
 		this.radius = radius;
 		return this;
 	}
 
+	/**
+	 * Makes the circle draw a random colour
+	 */
 	public void randomiseColor() {
 		paint.setColor(Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
 	}
