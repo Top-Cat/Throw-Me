@@ -16,14 +16,33 @@ import com.thorgaming.throwme.drawing.DrawThread;
  */
 public class DispGif extends DispRes {
 
+	/**
+	 * Paint used to set transparency
+	 */
 	public Paint paint = new Paint();
-
-	private InputStream is = null;
+	/**
+	 * The gif's frames to be displayed
+	 */
 	private Movie movie;
+	/**
+	 * Time the first frame was displayed, used to calculate which frame to display at a certain time
+	 */
 	private long movieStart;
+	/**
+	 * How many times to repeat the sequence, -1 for no limit
+	 */
 	private int repetitions = -1;
+	/**
+	 * Repetitions so far, used to check against max repetitions
+	 */
 	private int totalRepetitions = 0;
+	/**
+	 * How fast to go through frames
+	 */
 	private double speed = 1;
+	/**
+	 * Used to check if we're on a new repetition
+	 */
 	private int previousTime = 0;
 
 	public DispGif(int drawableId, int repetitions, double speed) {
@@ -31,7 +50,7 @@ public class DispGif extends DispRes {
 
 		this.repetitions = repetitions;
 		this.speed = speed;
-		is = ThrowMe.getInstance().stage.getResources().openRawResource(drawableId);
+		InputStream is = ThrowMe.getInstance().stage.getResources().openRawResource(drawableId);
 		movie = Movie.decodeStream(is);
 	}
 
