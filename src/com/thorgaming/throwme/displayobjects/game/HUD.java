@@ -16,16 +16,38 @@ import com.thorgaming.throwme.displayobjects.game.characters.Character;
 import com.thorgaming.throwme.drawing.Camera;
 
 /**
+ * Contains the objects displayed on the screen while the
+ * game is being played to inform the user about progress
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
 public class HUD extends DispObj {
 
+	/**
+	 * Paint used to draw the center of the balloon bar
+	 */
 	private Paint barPaint = new Paint();
+	/**
+	 * Paint used for the balloon bar border
+	 */
 	private Paint barSurroundPaint = new Paint();
+	/**
+	 * Remaining value of the balloon bar
+	 */
 	private short balloonBar = 500;
+	/**
+	 * The character on screen
+	 */
 	private Character character;
+	/**
+	 * Cool down, used to prevent the balloons being used
+	 * by presses doing other actions such as launching
+	 */
 	private byte coolDown = 0;
+	/**
+	 * Paint used for drawing the altitude and distance texts on the screen
+	 */
 	private Paint paint = new Paint();
 
 	public HUD(Character character) {

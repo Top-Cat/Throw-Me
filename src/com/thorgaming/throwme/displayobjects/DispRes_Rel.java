@@ -6,6 +6,8 @@ import android.graphics.ColorMatrixColorFilter;
 import com.thorgaming.throwme.drawing.Camera;
 
 /**
+ * Resource display at a relative position to the camera
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
