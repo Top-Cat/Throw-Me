@@ -1,0 +1,14 @@
+com.android.vending.billing
+com.thorgaming.throwme
+com.thorgaming.throwme.animation
+com.thorgaming.throwme.billing
+com.thorgaming.throwme.callback
+com.thorgaming.throwme.displayobjects
+com.thorgaming.throwme.displayobjects.game
+com.thorgaming.throwme.displayobjects.game.characters
+com.thorgaming.throwme.displayobjects.game.cloud
+com.thorgaming.throwme.displayobjects.power
+com.thorgaming.throwme.displayobjects.scores
+com.thorgaming.throwme.displayobjects.shape
+com.thorgaming.throwme.drawing
+com.thorgaming.throwme.screens
