@@ -5,7 +5,6 @@ import org.jbox2d.collision.Shape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.World;
 
 import android.graphics.Canvas;
 
@@ -17,18 +16,20 @@ import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.Stage;
 
 /**
+ * Represents a cloud that tiles and interacts with the character
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
 public class Cloud extends DispRes_Rel implements Sensor {
-
-	private World world;
+	
+	/**
+	 * Used for hit detection with the character, not drawn
+	 */
 	protected Body physicsBody;
 
 	public Cloud(int drawableid) {
 		super(drawableid);
-
-		world = ThrowMe.getInstance().stage.world;
 
 		CircleDef cloud = new CircleDef();
 		cloud.isSensor = true;
@@ -40,7 +41,7 @@ public class Cloud extends DispRes_Rel implements Sensor {
 		BodyDef headBodyDef = new BodyDef();
 		headBodyDef.position.set(new Vec2(getX() / Stage.ratio, getY() / Stage.ratio));
 
-		physicsBody = world.createBody(headBodyDef);
+		physicsBody = ThrowMe.getInstance().stage.world.createBody(headBodyDef);
 		physicsBody.createShape(cloud);
 		cloud.localPosition = new Vec2(100 / Stage.ratio, 19 / Stage.ratio);
 		physicsBody.createShape(cloud);
@@ -64,6 +65,9 @@ public class Cloud extends DispRes_Rel implements Sensor {
 		physicsBody.setXForm(new Vec2(x / Stage.ratio, y / Stage.ratio), 0);
 	}
 
+	/**
+	 * Method that tiles the cloud, separated so that implementations can change their spread
+	 */
 	protected void scrollMove() {
 		setX(getX() + 1000);
 	}
@@ -81,17 +85,15 @@ public class Cloud extends DispRes_Rel implements Sensor {
 	@Override
 	public void destroy() {
 		super.destroy();
-		world.destroyBody(physicsBody);
+		ThrowMe.getInstance().stage.world.destroyBody(physicsBody);
 	}
 
 	@Override
 	public void hit(Shape otherShape) {
-
 	}
 
 	@Override
 	public void persistContact(Shape otherShape) {
-
 	}
 
 }

@@ -13,12 +13,20 @@ import com.thorgaming.throwme.displayobjects.game.characters.Character;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
 /**
+ * Cloud that has colour and causes a launch to being on contact
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
 public class ColouredCloud extends Cloud {
 
+	/**
+	 * Random used to generate colour
+	 */
 	private Random random = new Random();
+	/**
+	 * Prevents launcher from triggering twice
+	 */
 	private boolean hit = false;
 
 	public ColouredCloud() {
@@ -33,6 +41,9 @@ public class ColouredCloud extends Cloud {
 		randomiseColor();
 	}
 
+	/**
+	 * Randomises the colour, uses HSV to ensure vibrant colours
+	 */
 	private void randomiseColor() {
 		int color = Color.HSVToColor(new float[] {random.nextInt(360), 1, 0.75f + random.nextFloat() / 4});
 		float r = Color.red(color) / 255f;

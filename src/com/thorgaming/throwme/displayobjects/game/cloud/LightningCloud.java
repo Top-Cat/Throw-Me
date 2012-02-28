@@ -6,6 +6,8 @@ import org.jbox2d.common.Vec2;
 import com.thorgaming.throwme.R;
 
 /**
+ * Cloud that causes a negative effect on the character, pushing them down
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */

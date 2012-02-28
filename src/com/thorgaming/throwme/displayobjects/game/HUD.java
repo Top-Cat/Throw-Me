@@ -41,8 +41,8 @@ public class HUD extends DispObj {
 	 */
 	private Character character;
 	/**
-	 * Cool down, used to prevent the balloons being used
-	 * by presses doing other actions such as launching
+	 * Cool down, when first using the balloons you are given
+	 * an impulse and this cool down prevents it's misuse
 	 */
 	private byte coolDown = 0;
 	/**
@@ -55,7 +55,7 @@ public class HUD extends DispObj {
 			@Override
 			public boolean sendCallback(int x, int y) {
 				if (HUD.this.character.getGameState() == GameState.LOOSE && balloonBar > 0) {
-					HUD.this.character.setBalloonbar(balloonBar);
+					HUD.this.character.setBalloonBar(balloonBar);
 					HUD.this.character.setBoost(true);
 				}
 				return false;

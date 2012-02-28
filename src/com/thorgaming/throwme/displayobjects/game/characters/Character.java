@@ -15,28 +15,69 @@ import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.Stage;
 
 /**
+ * Abstract class that characters extend
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
 public abstract class Character extends DispObj {
 
+	/**
+	 * The game state of the character
+	 */
 	private GameState state = GameState.ON_SPRING;
+	/**
+	 * Last mouse X position, used to calculate spring
+	 */
 	protected float mouseX = 400;
+	/**
+	 * Last mouse Y position, used to calculate spring
+	 */
 	protected float mouseY = 100;
+	/**
+	 * Prevents the character from just falling if you tap the screen at the start of the game
+	 */
 	public float throwTimeout = 5;
-
+	/**
+	 * Paint used to draw the "spring" line
+	 */
 	protected Paint paint = new Paint();
-
-	private int k = 16; // Spring constant
+	/**
+	 * Spring constant
+	 */
+	private int k = 16;
+	/**
+	 * Damping on the spring
+	 */
 	private double damping = 2;
+	/**
+	 * Length of the spring
+	 */
 	private int length = 1;
-
+	/**
+	 * Previous X location of the character, used to calculate speed
+	 */
 	private float previousHeadX = 0;
+	/**
+	 * Previous Y location of the character, used to calculate speed
+	 */
 	private float previousHeadY = 0;
+	/**
+	 * Current average speed
+	 */
 	private double avgSpeed = 1;
-
+	/**
+	 * If the balloon bar is currently being used, this will be true
+	 */
 	private boolean boost = false;
+	/**
+	 * The current value of the balloon bar, used to generate
+	 * positions for the balloons above the character
+	 */
 	protected short balloonBar = 0;
+	/**
+	 * Prevents balloons being used briefly after being launched or similar
+	 */
 	private int balloonPre = 20;
 
 	public Character() {
@@ -66,16 +107,38 @@ public abstract class Character extends DispObj {
 		return this;
 	}
 
+	/**
+	 * Set the current game state
+	 * 
+	 * @param state New state of the game
+	 */
 	public void setGameState(GameState state) {
 		this.state = state;
 	}
 
+	/**
+	 * Gets the current game state
+	 * 
+	 * @return The state of the game
+	 */
 	public GameState getGameState() {
 		return state;
 	}
 
+	/**
+	 * Gets the body of the character that can be thought
+	 * to represent it's position and can have forces or
+	 * impulses applied
+	 * 
+	 * @return Physics body
+	 */
 	public abstract Body getMainBody();
 
+	/**
+	 * Allows impulses to be applied to the character
+	 * 
+	 * @param impulse Impulse to be applied
+	 */
 	public abstract void applyImpulse(Vec2 impulse);
 
 	@Override
@@ -122,19 +185,41 @@ public abstract class Character extends DispObj {
 		}
 	}
 
+	/**
+	 * Sets the time before balloons can be used,
+	 * called by the launcher etc.
+	 * 
+	 * @param balloonPre Time before balloons can be used
+	 */
 	public void setBalloonPre(int balloonPre) {
 		this.balloonPre = balloonPre;
 	}
 
+	/**
+	 * Sets if the balloon bar is currently being used
+	 * 
+	 * @param boost True if balloon bar in use
+	 */
 	public void setBoost(boolean boost) {
 		this.boost = boost && balloonPre == 0;
 	}
 
+	/**
+	 * Gets if boost is being applied, ie balloon bar
+	 * in use and no time before balloons can be used
+	 * 
+	 * @return True if boost is being applied
+	 */
 	public boolean getBoost() {
 		return boost;
 	}
 
-	public void setBalloonbar(short balloonBar) {
+	/**
+	 * Set the value remaining on the balloon bar
+	 * 
+	 * @param balloonBar New value of the balloon bar
+	 */
+	public void setBalloonBar(short balloonBar) {
 		this.balloonBar = balloonBar;
 	}
 
