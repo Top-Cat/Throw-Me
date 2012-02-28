@@ -13,7 +13,6 @@ import org.jbox2d.dynamics.joints.RevoluteJointDef;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
-import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.Stage;
@@ -24,14 +23,12 @@ import com.thorgaming.throwme.drawing.Stage;
  */
 public class Snake extends Character {
 
-	private World world;
 	private Body bodyHead;
 	private Body bodySeg1;
 	private Body bodySeg2;
 	private Body bodySeg3;
 	private Body bodySeg4;
 	private Drawable drawableEye;
-	private Drawable drawableBalloons;
 
 	private Joint joint1;
 	private Joint joint2;
@@ -42,10 +39,7 @@ public class Snake extends Character {
 
 	public Snake() {
 		super();
-		drawableEye = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.eye);
-		drawableBalloons = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.balloon);
-
-		world = ThrowMe.getInstance().stage.world;
+		World world = ThrowMe.getInstance().stage.world;
 
 		CircleDef head = new CircleDef();
 		head.radius = 20 / Stage.ratio;
@@ -119,6 +113,8 @@ public class Snake extends Character {
 	@Override
 	public void destroy() {
 		super.destroy();
+		World world = ThrowMe.getInstance().stage.world;
+		
 		world.destroyJoint(joint1);
 		world.destroyJoint(joint2);
 		world.destroyJoint(joint3);

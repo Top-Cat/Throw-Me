@@ -18,29 +18,51 @@ import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.Stage;
 
 /**
+ * The car character, nice complex shape
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
 public class Car extends Character {
-
-	private World world;
+	
+	/**
+	 * Physics object for the main body of the car
+	 */
 	private Body bodyBody;
+	/**
+	 * Physics object for the top half of the car
+	 */
 	private Body bodyTop;
+	/**
+	 * Physics object for the two wheels
+	 */
 	private Body bodyWheels;
-	private Drawable drawableBalloons;
+	/**
+	 * Drawable of the car
+	 */
 	private Drawable drawableCar;
-
+	/**
+	 * Joint connecting bodyBody and bodyTop on the left
+	 */
 	private Joint joint1;
+	/**
+	 * Joint connecting bodyBody and bodyTop on the right
+	 */
 	private Joint joint2;
+	/**
+	 * Joint connecting the left wheel and the body
+	 */
 	private Joint joint3;
+	/**
+	 * Joint connecting the right wheel and the body
+	 */
 	private Joint joint4;
 
 	public Car() {
 		super();
-		drawableBalloons = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.balloon);
 		drawableCar = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.car);
 
-		world = ThrowMe.getInstance().stage.world;
+		World world = ThrowMe.getInstance().stage.world;
 
 		PolygonDef base = new PolygonDef();
 		base.setAsBox(50 / Stage.ratio, 20 / Stage.ratio);
@@ -113,6 +135,8 @@ public class Car extends Character {
 	@Override
 	public void destroy() {
 		super.destroy();
+		World world = ThrowMe.getInstance().stage.world;
+		
 		world.destroyJoint(joint1);
 		world.destroyJoint(joint2);
 		world.destroyJoint(joint3);

@@ -6,8 +6,10 @@ import org.jbox2d.dynamics.Body;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.GameState;
+import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.callback.MouseCallback;
 import com.thorgaming.throwme.displayobjects.DispObj;
@@ -79,6 +81,10 @@ public abstract class Character extends DispObj {
 	 * Prevents balloons being used briefly after being launched or similar
 	 */
 	private int balloonPre = 20;
+	/**
+	 * Drawable used by implementations to display balloons
+	 */
+	protected Drawable drawableBalloons;
 
 	public Character() {
 		setMouseMoveEvent(new MouseCallback() {
@@ -90,7 +96,9 @@ public abstract class Character extends DispObj {
 				return false;
 			}
 		});
-
+		
+		drawableBalloons = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.balloon);
+		
 		paint.setColor(Color.rgb(255, 153, 0));
 		paint.setStrokeWidth(1.2f);
 	}

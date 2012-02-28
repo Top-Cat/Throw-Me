@@ -4,31 +4,28 @@ import org.jbox2d.collision.CircleDef;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.World;
 
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 
-import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.Stage;
 
 /**
+ * Very simple shape
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
 public class Circle extends Character {
 
-	private World world;
+	/**
+	 * Main physics body
+	 */
 	private Body bodyBody;
-	private Drawable drawableBalloons;
 
 	public Circle() {
 		super();
-		drawableBalloons = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.balloon);
-
-		world = ThrowMe.getInstance().stage.world;
 
 		CircleDef head = new CircleDef();
 		head.radius = 40 / Stage.ratio;
@@ -41,7 +38,7 @@ public class Circle extends Character {
 		BodyDef headBodyDef = new BodyDef();
 		headBodyDef.position.set(new Vec2(0, 0));
 
-		bodyBody = world.createBody(headBodyDef);
+		bodyBody = ThrowMe.getInstance().stage.world.createBody(headBodyDef);
 		bodyBody.createShape(head);
 		bodyBody.setMassFromShapes();
 		bodyBody.m_angularDamping = 0.7F;
@@ -55,7 +52,7 @@ public class Circle extends Character {
 	@Override
 	public void destroy() {
 		super.destroy();
-		world.destroyBody(bodyBody);
+		ThrowMe.getInstance().stage.world.destroyBody(bodyBody);
 	}
 
 	@Override

@@ -25,7 +25,6 @@ import com.thorgaming.throwme.drawing.Stage;
  */
 public class Guy extends Character {
 
-	private World world;
 	private Body bodyBody;
 	private Body bodyHead;
 	private Body bodyRightElbow;
@@ -55,14 +54,12 @@ public class Guy extends Character {
 
 	private HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
 	private Drawable drawableEye;
-	private Drawable drawableBalloons;
 
 	public Guy() {
 		super();
 		drawableEye = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.eye);
-		drawableBalloons = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.balloon);
 
-		world = ThrowMe.getInstance().stage.world;
+		World world = ThrowMe.getInstance().stage.world;
 
 		CircleDef head = new CircleDef();
 		head.radius = 20 / Stage.ratio;
@@ -232,6 +229,8 @@ public class Guy extends Character {
 	@Override
 	public void destroy() {
 		super.destroy();
+		World world = ThrowMe.getInstance().stage.world;
+		
 		world.destroyJoint(jointNeck);
 		world.destroyJoint(jointUpperRightArm);
 		world.destroyJoint(jointLowerRightArm);

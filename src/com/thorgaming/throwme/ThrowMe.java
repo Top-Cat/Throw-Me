@@ -15,6 +15,8 @@ import com.thorgaming.throwme.screens.Main;
 import com.thorgaming.throwme.screens.Screen;
 
 /**
+ * The main activity of the application
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
@@ -35,9 +37,6 @@ public class ThrowMe extends Activity {
 		return activity;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,9 +52,6 @@ public class ThrowMe extends Activity {
 		new Main(null);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (!isFinishing()) {
@@ -64,26 +60,17 @@ public class ThrowMe extends Activity {
 		return screen.onTouch(event);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		return screen.onKeyDown(keyCode, event);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		stopService(new Intent("com.android.vending.billing.MarketBillingService.BIND"));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
