@@ -25,34 +25,83 @@ import com.thorgaming.throwme.displayobjects.DispObj;
  */
 public class DrawThread extends Thread {
 
+	/**
+	 * Background gradient to draw
+	 */
 	private static int[] gradient = {Color.rgb(0, 0, 0), Color.rgb(0, 0, 0)};
+	/**
+	 * We're holding the display surface
+	 */
 	private SurfaceHolder surfaceHolder;
+	/**
+	 * If the thread should run, can be used to stop it
+	 */
 	private boolean doRun = false;
+	/**
+	 * Should physics updates be calculated this tick?
+	 */
 	private boolean doPhysics = true;
+	/**
+	 * Used to prevent changes to the world during physics updates
+	 */
 	public Integer physicsSync = 0;
+	/**
+	 * Display objects to remove at the end of the tick
+	 */
 	public static Set<DispObj> toRemove = new HashSet<DispObj>();
+	/**
+	 * Stops ticks being sent to objects while the game is paused
+	 */
 	private boolean paused = false;
+	/**
+	 * Internal variable to remember paused status
+	 */
 	private boolean pausedInternal = false;
-
+	/**
+	 * Runnables to run on the draw thread
+	 */
 	private List<Runnable> onUi = new ArrayList<Runnable>();
+	/**
+	 * Lock to the onUi list
+	 */
 	private Lock onUiLock = new ReentrantLock();
 
 	public DrawThread(SurfaceHolder surfaceHolder, Context context) {
 		this.surfaceHolder = surfaceHolder;
 	}
 
+	/**
+	 * Sets if the thread should run
+	 * 
+	 * @param running If the thread should run
+	 */
 	public void setRunning(boolean running) {
 		doRun = running;
 	}
 
+	/**
+	 * Sets if physics updates should be calculated this tick?
+	 * 
+	 * @param physics If physics updates should be calculated this tick?
+	 */
 	public void setPhysics(boolean physics) {
 		doPhysics = physics;
 	}
 
+	/**
+	 * Gets if physics updates are being calculated this tick
+	 * 
+	 * @return If physics updates are being calculated this tick
+	 */
 	public boolean isPhysicsRunning() {
 		return doPhysics;
 	}
 
+	/**
+	 * Sets if the the game is paused
+	 * 
+	 * @param paused If the game should be paused
+	 */
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 		if (!paused) {
@@ -60,10 +109,18 @@ public class DrawThread extends Thread {
 		}
 	}
 
+	/**
+	 * Gets if the game is paused
+	 * 
+	 * @return If the game is paused
+	 */
 	public boolean getPaused() {
 		return paused;
 	}
 
+	/**
+	 * Resets the background gradient to the default
+	 */
 	public static void resetGradient() {
 		int[] gr = new int[2];
 		gr[0] = Color.rgb(0, 102, 204);
@@ -71,10 +128,19 @@ public class DrawThread extends Thread {
 		setgrad(gr);
 	}
 
+	/**
+	 * Sets the background gradient
+	 * @param gradient
+	 */
 	public static void setgrad(int[] gradient) {
 		DrawThread.gradient = gradient;
 	}
 
+	/**
+	 * Add a runnable to be run on the ui thread
+	 * 
+	 * @param run Runnable to be run
+	 */
 	public void runOnUi(Runnable run) {
 		onUiLock.lock();
 		try {

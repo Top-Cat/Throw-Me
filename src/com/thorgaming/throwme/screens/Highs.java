@@ -39,28 +39,77 @@ import com.thorgaming.throwme.drawing.RenderPriority;
  */
 public class Highs extends Screen {
 
+	/**
+	 * Object representing spinning loading wheel
+	 */
 	private DispObj loader;
+	/**
+	 * Object representing unselected day button
+	 */
 	private DispObj dayBW;
+	/**
+	 * Object representing unselected week button
+	 */
 	private DispObj weekBW;
+	/**
+	 * Object representing unselected month button
+	 */
 	private DispObj monthBW;
+	/**
+	 * Object representing unselected all time button
+	 */
 	private DispObj timeBW;
+	/**
+	 * Object representing selected day button
+	 */
 	private DispObj dayC;
+	/**
+	 * Object representing selected week button
+	 */
 	private DispObj weekC;
+	/**
+	 * Object representing selected month button
+	 */
 	private DispObj monthC;
+	/**
+	 * Object representing selected all time button
+	 */
 	private DispObj timeC;
-
+	/**
+	 * Background behind the scores
+	 */
 	private RoundRect roundedBorderBackground, roundedBorder;
+	/**
+	 * Stores the device's uniqueid to be checked against records to tell if they belong to this phone
+	 */
 	private String deviceid = "";
-
-	private int mouseY;
+	/**
+	 * Where the mouse was at the start of the scroll, used to calculate difference
+	 */
 	private int downY;
+	/**
+	 * How far was scrolled at the start of the scroll
+	 */
 	private int scrollStart;
+	/**
+	 * How far has been moved from the start of the scroll already
+	 */
 	private int previousMovement;
+	/**
+	 * How fast is the scroll happening, used to slow down the scroll when the user has released
+	 */
 	private int movement;
-
+	/**
+	 * Distance of scroll to draw, used to make sure all the scores are drawn with the same value instead of one that changes during the draw
+	 */
 	public int scrollDraw = 0;
+	/**
+	 * Current scroll value
+	 */
 	private int scroll = 0;
-
+	/**
+	 * List of high score rows
+	 */
 	private List<ScoreRow> highScores = new ArrayList<ScoreRow>();
 
 	public Highs(Object[] data) {
@@ -164,6 +213,9 @@ public class Highs extends Screen {
 		timeBW.setAlpha(255);
 	}
 
+	/**
+	 * Prevents another load being started while one is taking place
+	 */
 	boolean loading = false;
 
 	private class loader extends Thread {
@@ -234,6 +286,12 @@ public class Highs extends Screen {
 		}
 	}
 
+	/**
+	 * Prevents scrolling outside the bounds
+	 * 
+	 * @param scroll Proposed scroll value
+	 * @return Corrected scroll value
+	 */
 	private int scrollBound(int scroll) {
 		if (scroll > 0) {
 			scroll = 0;
@@ -250,7 +308,7 @@ public class Highs extends Screen {
 
 	@Override
 	public boolean onTouch(MotionEvent event) {
-		mouseY = ThrowMe.getInstance().stage.camera.rTransformY((int) event.getY());
+		int mouseY = ThrowMe.getInstance().stage.camera.rTransformY((int) event.getY());
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			downY = mouseY;

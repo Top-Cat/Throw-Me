@@ -11,13 +11,25 @@ import com.thorgaming.throwme.displayobjects.shape.RoundRect;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
 /**
+ * Power-up selection and purchase screen
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
 public class Power extends Screen {
 
+	/**
+	 * Button to view character power-ups
+	 * Currently the only power-ups
+	 */
 	private final DispRes charButton;
+	/**
+	 * Index of the current character so we can go to the previous and next
+	 */
 	private int enum_index = 0;
+	/**
+	 * Displays information on the currently selected power-up
+	 */
 	private PowerInfo powInfo;
 
 	public Power(Object[] data) {

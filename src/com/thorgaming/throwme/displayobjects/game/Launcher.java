@@ -15,15 +15,32 @@ import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.DrawThread;
 
 /**
+ * Controls the launch bar and launching the character
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
 public class Launcher extends DispObj {
 
+	/**
+	 * Used to calculate the current value of the boost bar
+	 */
 	private double step = 0;
+	/**
+	 * Current bar value
+	 */
 	private double bar = 0;
+	/**
+	 * Paint used to draw the bar
+	 */
 	private Paint paint = new Paint();
+	/**
+	 * Paint used to draw the border around the bar
+	 */
 	private Paint paintStroke = new Paint();
+	/**
+	 * Used to make the speed the same on any device
+	 */
 	private long lastTime = 0;
 
 	public Launcher(Character character) {

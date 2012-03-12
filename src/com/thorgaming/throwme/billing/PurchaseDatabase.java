@@ -70,7 +70,7 @@ public class PurchaseDatabase {
 	 * 
 	 * @param orderId Id of the order from the android market
 	 * @param productId Id of the product in the android market
-	 * @param state State of the transaction, purchase, return etc.
+	 * @param purchaseState State of the transaction, purchase, return etc.
 	 * @param purchaseTime When did the transaction occur
 	 * @param developerPayload Return value specified by us
 	 * @return New total purchased quantity of item

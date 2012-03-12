@@ -153,8 +153,8 @@ public class Camera {
 	 * 
 	 * @param y Y draw location
 	 */
-	public int rTransformY(int x) {
-		return x * 480 / getScreenHeight();
+	public int rTransformY(int y) {
+		return y * 480 / getScreenHeight();
 	}
 
 	/**

@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
 import com.thorgaming.throwme.R;
@@ -16,21 +15,45 @@ import com.thorgaming.throwme.displayobjects.game.characters.Characters;
 import com.thorgaming.throwme.drawing.Camera;
 
 /**
+ * Display object that shows information
+ * about power-ups and allows selection
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
 public class PowerInfo extends DispObj {
 
+	/**
+	 * Character currently being displayed
+	 */
 	private Characters thisInfo;
+	/**
+	 * Paint to draw the title
+	 */
 	private Paint paint = new Paint();
-
+	/**
+	 * Drawable to show the selected power-up
+	 */
 	private Drawable preview;
+	/**
+	 * Drawable to show on unpurchased power-ups
+	 */
 	private Drawable purchaseD;
+	/**
+	 * Drawable to show on the selected power-up
+	 */
 	private Drawable selectedD;
+	/**
+	 * Drawable to show on purchased but unselected power-ups
+	 */
 	private Drawable unselectedD;
-
+	/**
+	 * If the current power-up has been purchased
+	 */
 	private boolean purchased = false;
-	private Rect hitBox = new Rect();
+	/**
+	 * If the current power-up is selected
+	 */
 	private boolean selected = false;
 
 	public PowerInfo(Characters thisInfo) {
@@ -57,14 +80,24 @@ public class PowerInfo extends DispObj {
 				return false;
 			}
 		});
+		
+		setHitPadding(6);
 	}
 
+	/**
+	 * Sets the currently displayed power-up
+	 * 
+	 * @param thisInfo New power-up to display
+	 */
 	public void setInfo(Characters thisInfo) {
 		this.thisInfo = thisInfo;
 		preview = ThrowMe.getInstance().stage.getResources().getDrawable(thisInfo.getDrawableId());
 		update();
 	}
 
+	/**
+	 * Update purchased and selected booleans by querying the market
+	 */
 	public void update() {
 		purchased = thisInfo.getMarketId().length() == 0 || BillingService.purchases.isPurchased(thisInfo.getMarketId());
 		selected = Characters.getFromId(ThrowMe.getInstance().customisationSettings.getInt("char", 0)) == thisInfo;
@@ -98,10 +131,5 @@ public class PowerInfo extends DispObj {
 			unselectedD.setBounds(hitBox);
 			unselectedD.draw(canvas);
 		}
-	}
-
-	@Override
-	public boolean checkPress(int x, int y) {
-		return hitBox.intersects(x - 3, y - 3, x + 3, y + 3);
 	}
 }

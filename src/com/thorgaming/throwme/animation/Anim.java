@@ -17,11 +17,11 @@ public abstract class Anim {
 	 */
 	protected int unit;
 	/**
-	 * The initial alpha value
+	 * The initial value
 	 */
 	protected int start;
 	/**
-	 * The desired alpha value
+	 * The desired value
 	 */
 	protected int end;
 	/**
@@ -37,7 +37,6 @@ public abstract class Anim {
 		setCallback(callback);
 		unit = (int) (Math.abs(start - end) / (time / 10));
 		setObject(obj);
-		obj.setAlpha(start);
 		this.start = start;
 		this.end = end;
 

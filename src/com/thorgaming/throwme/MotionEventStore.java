@@ -24,9 +24,9 @@ public class MotionEventStore {
 
 	/**
 	 * Constructs an event store with values
-	 * @param x {@see #x}
-	 * @param y {@see #y}
-	 * @param action {@see #action}
+	 * @param x X position on the screen that the user touched
+	 * @param y Y position on the screen that the user touched
+	 * @param action The action being performed e.g. up, down, move
 	 */
 	public MotionEventStore(float x, float y, int action) {
 		this.x = x;

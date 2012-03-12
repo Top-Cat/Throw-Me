@@ -51,10 +51,13 @@ public class Guy extends Character {
 	private Joint jointUpperLeftLeg;
 	private Joint jointLowerLeftLeg;
 	private Joint jointLeftLeg;
-
+	
+	/**
+	 * List of shapes to draw and their size
+	 */
 	private HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
 	private Drawable drawableEye;
-
+	
 	public Guy() {
 		super();
 		drawableEye = ThrowMe.getInstance().stage.getResources().getDrawable(R.drawable.eye);

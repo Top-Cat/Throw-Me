@@ -13,6 +13,7 @@ public class XAnim extends Anim {
 
 	public XAnim(DispObj obj, int start, int end, Callback callback, long time) {
 		super(obj, start, end, callback, time);
+		obj.setX(start);
 	}
 	
 	@Override

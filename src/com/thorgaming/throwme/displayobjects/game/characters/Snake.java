@@ -1,6 +1,7 @@
 package com.thorgaming.throwme.displayobjects.game.characters;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jbox2d.collision.CircleDef;
 import org.jbox2d.common.Vec2;
@@ -18,24 +19,57 @@ import com.thorgaming.throwme.drawing.Camera;
 import com.thorgaming.throwme.drawing.Stage;
 
 /**
+ * Throwable snake character
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
 public class Snake extends Character {
 
+	/**
+	 * Head of the snake
+	 */
 	private Body bodyHead;
+	/**
+	 * First body segment
+	 */
 	private Body bodySeg1;
+	/**
+	 * Second body segment
+	 */
 	private Body bodySeg2;
+	/**
+	 * Third body segment
+	 */
 	private Body bodySeg3;
+	/**
+	 * Fourth body segment
+	 */
 	private Body bodySeg4;
+	/**
+	 * Drawable used to display the head of the snake as en eye
+	 */
 	private Drawable drawableEye;
-
+	/**
+	 * Joint connecting the head and the first body segment
+	 */
 	private Joint joint1;
+	/**
+	 * Joint connecting the first and second body segment
+	 */
 	private Joint joint2;
+	/**
+	 * Joint connecting the second and third body segment
+	 */
 	private Joint joint3;
+	/**
+	 * Joint connecting the third and fourth body segment
+	 */
 	private Joint joint4;
-
-	private HashMap<Body, Integer> bodies = new HashMap<Body, Integer>();
+	/**
+	 * List of shapes to draw
+	 */
+	private List<Body> bodies = new ArrayList<Body>();
 
 	public Snake() {
 		super();
@@ -56,7 +90,6 @@ public class Snake extends Character {
 		bodyHead.createShape(head);
 		bodyHead.setMassFromShapes();
 		bodyHead.m_angularDamping = 0.7F;
-		//bodies.put(bodyHead, 20);
 
 		head.radius = 15 / Stage.ratio;
 
@@ -64,25 +97,25 @@ public class Snake extends Character {
 		bodySeg1 = world.createBody(headBodyDef);
 		bodySeg1.createShape(head);
 		bodySeg1.setMassFromShapes();
-		bodies.put(bodySeg1, 15);
+		bodies.add(bodySeg1);
 
 		headBodyDef.position.set(new Vec2(0, 66 / Stage.ratio));
 		bodySeg2 = world.createBody(headBodyDef);
 		bodySeg2.createShape(head);
 		bodySeg2.setMassFromShapes();
-		bodies.put(bodySeg2, 15);
+		bodies.add(bodySeg2);
 
 		headBodyDef.position.set(new Vec2(0, 99 / Stage.ratio));
 		bodySeg3 = world.createBody(headBodyDef);
 		bodySeg3.createShape(head);
 		bodySeg3.setMassFromShapes();
-		bodies.put(bodySeg3, 15);
+		bodies.add(bodySeg3);
 
 		headBodyDef.position.set(new Vec2(0, 132 / Stage.ratio));
 		bodySeg4 = world.createBody(headBodyDef);
 		bodySeg4.createShape(head);
 		bodySeg4.setMassFromShapes();
-		bodies.put(bodySeg4, 15);
+		bodies.add(bodySeg4);
 
 		RevoluteJointDef jointDef1 = new RevoluteJointDef();
 		jointDef1.initialize(bodyHead, bodySeg1, new Vec2(0, 19 / Stage.ratio));
@@ -130,9 +163,9 @@ public class Snake extends Character {
 	@Override
 	public void draw(Canvas canvas, Camera camera) {
 		super.draw(canvas, camera);
-		for (Body i : bodies.keySet()) {
+		for (Body i : bodies) {
 			Vec2 p = i.getPosition();
-			canvas.drawCircle(camera.transformRelativeX((int) (p.x * Stage.ratio)), camera.transformRelativeY((int) (p.y * Stage.ratio)), bodies.get(i), paint);
+			canvas.drawCircle(camera.transformRelativeX((int) (p.x * Stage.ratio)), camera.transformRelativeY((int) (p.y * Stage.ratio)), 15, paint);
 		}
 
 		Vec2 p = getMainBody().getPosition();

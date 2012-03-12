@@ -73,7 +73,7 @@ public class Text extends DispObj {
 
 	/**
 	 * Get the paint object used by this object when displaying text
-	 * @return
+	 * @return The paint used by this object
 	 */
 	public Paint getPaint() {
 		return paint;

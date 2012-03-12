@@ -13,6 +13,7 @@ public class AlphaAnim extends Anim {
 
 	public AlphaAnim(DispObj obj, int start, int end, Callback callback, long time) {
 		super(obj, start, end, callback, time);
+		obj.setAlpha(start);
 	}
 	
 	@Override

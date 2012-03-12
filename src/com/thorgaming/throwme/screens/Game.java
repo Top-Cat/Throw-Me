@@ -33,6 +33,8 @@ import com.thorgaming.throwme.drawing.HitListener;
 import com.thorgaming.throwme.drawing.RenderPriority;
 
 /**
+ * Game screen
+ * 
  * @author Thomas Cheyney
  * @version 1.0
  */
@@ -42,24 +44,46 @@ public class Game extends Screen {
 		@SuppressWarnings("unused")
 		byte dummy[] = new byte[9 * 1024 * 1024];
 	}
+	/**
+	 * The background gradient used to calculate the gradient to show to the user
+	 */
 	private int gradient[][] = new int[9][3];
-
+	/**
+	 * Hill backdrops
+	 */
 	private DispRes hills1, hills2;
+	/**
+	 * Box the character starts in
+	 */
 	private DispRes_Rel box;
+	/**
+	 * Physics hills at the bottom of the world
+	 */
 	private PhysCircle[] randomHills = new PhysCircle[7];
+	/**
+	 * The player's character
+	 */
 	private Character character;
+	/**
+	 * Used to calculate where to position the next hill
+	 */
 	private int hillDistance = 6;
+	/**
+	 * Limits how often cranes can be generated
+	 */
 	private int lastCrane = 6;
+	/**
+	 * Stores if the game has been lost yet
+	 */
 	private boolean ended = false;
+	/**
+	 * Random used to generate the size and frequency of cranes and hills
+	 */
 	private Random random = new Random();
+	/**
+	 * Menu displayed when the game is paused
+	 */
 	private PauseMenu pauseMenu;
-
-	private int cameraX;
-	private int cameraY;
-	private int downX;
-	private int downY;
-	private int mouseX;
-	private int mouseY;
 
 	private Characters currentChar;
 
@@ -234,6 +258,14 @@ public class Game extends Screen {
 		};
 	}
 
+	/**
+	 * Blends two colours together to get the colour midway through a gradient
+	 * 
+	 * @param rgb1 Colour one
+	 * @param rgb2 Colour Two
+	 * @param ratio Ratio of each colour to mix
+	 * @return The colour achieved by mixing the two input colours
+	 */
 	public static int blend(int[] rgb1, int[] rgb2, double ratio) {
 		float r = (float) ratio / 1000;
 		float ir = (float) 1.0 - r;
@@ -244,31 +276,13 @@ public class Game extends Screen {
 
 	@Override
 	public boolean onTouch(MotionEvent event) {
-		mouseX = ThrowMe.getInstance().stage.camera.rTransformX((int) event.getX());
-		mouseY = ThrowMe.getInstance().stage.camera.rTransformY((int) event.getY());
-
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			downX = mouseX;
-			downY = mouseY;
-			cameraX = ThrowMe.getInstance().stage.camera.getX();
-			cameraY = ThrowMe.getInstance().stage.camera.getY();
-		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			int newX = cameraX + downX - mouseX;
-			int newY = cameraY + mouseY - downY;
-			if (newY < 0) {
-				newY = 0;
-			}
-			if (newX < ThrowMe.getInstance().stage.camera.getX()) {
-				newX = ThrowMe.getInstance().stage.camera.getX();
-			}
-		} else if (event.getAction() == MotionEvent.ACTION_UP) {
+		if (event.getAction() == MotionEvent.ACTION_UP) {
 			if (character != null && character.getGameState() == GameState.ON_SPRING && character.throwTimeout <= 0) {
 				character.setGameState(GameState.LOOSE);
 			}
-		} else {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

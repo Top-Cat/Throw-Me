@@ -286,7 +286,7 @@ public abstract class DispObj {
 	/**
 	 * Set the hit padding by value
 	 * 
-	 * @param hitPadding 2*padding on each side
+	 * @param hitPadding hitPadding/2 on each side
 	 * @return This object
 	 */
 	public DispObj setHitPadding(int hitPadding) {
