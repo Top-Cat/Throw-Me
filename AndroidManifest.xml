@@ -3,11 +3,11 @@
 	package="com.thorgaming.throwme"
 	android:versionCode="7"
 	android:versionName="1.4" android:installLocation="preferExternal"><uses-sdk android:minSdkVersion="10" />
-    
+
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="com.android.vending.BILLING" />
-
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
+	
+	<application android:icon="@drawable/icon" android:label="@string/app_name">
 		<activity android:name=".ThrowMe"
 			android:label="@string/app_name" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:screenOrientation="landscape">
 			<intent-filter>
@@ -24,7 +24,7 @@
 				<action android:name="com.android.vending.billing.RESPONSE_CODE" />
 				<action android:name="com.android.vending.billing.PURCHASE_STATE_CHANGED" />
 			</intent-filter>
-		</receiver>				
+		</receiver>
 		
-    </application>
+	</application>
 </manifest>
