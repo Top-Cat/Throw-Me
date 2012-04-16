@@ -127,4 +127,8 @@ public class PurchaseDatabase {
 		Cursor cursor = mDb.query("throwmePurchased", new String[] {"_id", "quantity"}, "_id=?", new String[] {productId}, null, null, null);
 		return cursor.getCount() > 0;
 	}
+
+	public void close() {
+		mDatabaseHelper.close();
+	}
 }

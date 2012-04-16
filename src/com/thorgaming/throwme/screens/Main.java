@@ -3,6 +3,8 @@ package com.thorgaming.throwme.screens;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.view.KeyEvent;
+
 import com.thorgaming.throwme.R;
 import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.animation.AlphaAnim;
@@ -99,6 +101,15 @@ public class Main extends Screen {
 
 			timer.schedule(new ShowMenu2(), 4000);
 		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			ThrowMe.getInstance().finish();
+			return true;
+		}
+		return false;
 	}
 
 }

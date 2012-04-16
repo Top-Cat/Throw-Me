@@ -40,6 +40,7 @@ public class ThrowMe extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		activity = this;
 		customisationSettings = getSharedPreferences("customisation", 0);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -49,7 +50,17 @@ public class ThrowMe extends Activity {
 		stage = (Stage) findViewById(R.id.menu);
 		billingService = new BillingService(this);
 
-		new Main(null);
+		if (savedInstanceState == null || !savedInstanceState.getBoolean("alreadyRunning", false)) {
+			new Main(null);
+		} else {
+			new Main(new Object[] {true});
+		}
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putBoolean("alreadyRunning", true);
+		super.onSaveInstanceState(outState);
 	}
 
 	@Override
@@ -57,18 +68,25 @@ public class ThrowMe extends Activity {
 		if (!isFinishing()) {
 			stage.sendtouch(event);
 		}
-		return screen.onTouch(event);
+		if (screen != null) {
+			return screen.onTouch(event);
+		}
+		return false;
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		return screen.onKeyDown(keyCode, event);
+		if (screen != null) {
+			return screen.onKeyDown(keyCode, event);
+		}
+		return false;
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		stopService(new Intent("com.android.vending.billing.MarketBillingService.BIND"));
+		BillingService.purchases.close();
+		stopService(new Intent(this, BillingService.class));
 	}
 
 	@Override
