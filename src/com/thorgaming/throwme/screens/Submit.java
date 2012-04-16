@@ -69,16 +69,18 @@ public class Submit extends Screen {
 		submitRes = new DispRes(R.drawable.submit).setWidth(222).setHeight(60).setX(350).setY(20).setMouseDownEvent(new MouseCallback() {
 			@Override
 			public boolean sendCallback(int x, int y) {
-				submitRes.setAlpha(0);
-				ajaxGif.setAlpha(255);
+				if (nameText.getText().length() > 0) {
+					submitRes.setAlpha(0);
+					ajaxGif.setAlpha(255);
 
-				String deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
-				Editor editor = settings.edit();
-				editor.putString("deviceid", deviceid);
-				editor.putString("userName", nameText.getText());
-				editor.commit();
+					String deviceid = settings.getString("deviceid", UUID.randomUUID().toString());
+					Editor editor = settings.edit();
+					editor.putString("deviceid", deviceid);
+					editor.putString("userName", nameText.getText());
+					editor.commit();
 
-				new ScoreSubmitThread(nameText.getText(), score, deviceid).start();
+					new ScoreSubmitThread(nameText.getText(), score, deviceid).start();
+				}
 				return false;
 			}
 		}).addToScreen();
