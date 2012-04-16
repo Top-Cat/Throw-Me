@@ -1,5 +1,6 @@
 package com.thorgaming.throwme.displayobjects;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import android.graphics.Canvas;
@@ -52,6 +53,9 @@ public class DispGif extends DispRes {
 		this.speed = speed;
 		InputStream is = ThrowMe.getInstance().stage.getResources().openRawResource(drawableId);
 		movie = Movie.decodeStream(is);
+		try {
+			is.close();
+		} catch (IOException e) {}
 	}
 
 	@Override

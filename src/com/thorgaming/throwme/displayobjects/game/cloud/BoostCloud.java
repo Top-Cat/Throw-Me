@@ -1,5 +1,6 @@
 package com.thorgaming.throwme.displayobjects.game.cloud;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.jbox2d.collision.Shape;
@@ -22,20 +23,26 @@ public class BoostCloud extends Cloud {
 	/**
 	 * Used to read the resource
 	 */
-	private InputStream inputStream = null;
+	private static InputStream inputStream = null;
 	/**
 	 * Represents the gif movie
 	 */
-	private Movie movie;
+	private static Movie movie;
 	/**
 	 * The time the gif started playing, used to generate the current frame to be displayed
 	 */
 	private long moviestart;
 
-	public BoostCloud() {
-		super(R.drawable.cloud);
+	static {
 		inputStream = ThrowMe.getInstance().stage.getResources().openRawResource(R.drawable.cloud);
 		movie = Movie.decodeStream(inputStream);
+		try {
+			inputStream.close();
+		} catch (IOException e) {}
+	}
+	
+	public BoostCloud() {
+		super(R.drawable.cloud);
 	}
 
 	@Override
