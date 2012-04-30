@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Creates and updates if neccessary the database used to store transactions locally
+ * Creates and updates if necessary the database used to store transactions locally
  * 
  * @author Thomas Cheyney
  * @version 1.4

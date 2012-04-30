@@ -3,7 +3,9 @@ package com.thorgaming.throwme;
 import android.view.MotionEvent;
 
 /**
- * Used to store the useful parameters from a motion event so they don't change before being processed later
+ * Used to store the useful parameters from
+ * a motion event so they don't change before
+ * being processed later
  * @author Thomas Cheyney
  * @version 1.0
  */

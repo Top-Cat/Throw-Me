@@ -40,7 +40,7 @@ import com.thorgaming.throwme.ThrowMe;
 public class BillingService extends Service implements ServiceConnection {
 
 	/**
-	 * An instance of the billing service with the android system to call to initate purchases/queries
+	 * An instance of the billing service with the android system to call to initiate purchases/queries
 	 */
 	private static IMarketBillingService mService;
 	/**
