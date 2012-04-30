@@ -1,7 +1,6 @@
 package com.thorgaming.throwme;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -86,7 +85,7 @@ public class ThrowMe extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		BillingService.purchases.close();
-		stopService(new Intent(this, BillingService.class));
+		billingService.detatchService();
 	}
 
 	@Override

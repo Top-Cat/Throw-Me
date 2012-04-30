@@ -80,10 +80,15 @@ public class BillingService extends Service implements ServiceConnection {
 	 */
 	private void attachService() {
 		try {
-			ThrowMe.getInstance().startService(new Intent(getBaseContext(), BillingService.class));
+			bindService(new Intent("com.android.vending.billing.MarketBillingService.BIND"), this, Context.BIND_AUTO_CREATE);
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void detatchService() {
+		unbindService(this);
+		mService = null;
 	}
 
 	@Override
