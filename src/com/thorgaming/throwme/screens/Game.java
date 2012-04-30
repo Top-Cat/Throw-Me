@@ -14,7 +14,6 @@ import com.thorgaming.throwme.ThrowMe;
 import com.thorgaming.throwme.billing.BillingService;
 import com.thorgaming.throwme.callback.Callback;
 import com.thorgaming.throwme.callback.MouseCallback;
-import com.thorgaming.throwme.displayobjects.DispGif;
 import com.thorgaming.throwme.displayobjects.DispRes;
 import com.thorgaming.throwme.displayobjects.DispRes_Rel;
 import com.thorgaming.throwme.displayobjects.game.Crane;
@@ -164,7 +163,7 @@ public class Game extends Screen {
 					box.destroy();
 					character = (Character) currentChar.createNew().setX(400).setY(240).addToScreen();
 					new HUD(character).addToScreen(RenderPriority.Low);
-					new DispGif(R.drawable.explosion, 1, 4).setWidth(764).setHeight(556).setX(18).setY(-38).addToScreen();
+					//new DispGif(R.drawable.explosion, 1, 4).setWidth(764).setHeight(556).setX(18).setY(-38).addToScreen(); This causes some phones to crash
 				}
 				return true;
 			}
