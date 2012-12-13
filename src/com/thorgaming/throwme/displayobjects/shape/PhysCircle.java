@@ -17,15 +17,22 @@ import com.thorgaming.throwme.drawing.Stage;
  */
 public class PhysCircle extends Circle {
 
+	/**
+	 * Physics body
+	 */
 	private Body physicsBody;
-	private World world;
+	/**
+	 * Circle definition, used to make new circles when the radius is changed
+	 */
 	private CircleDef circle;
+	/**
+	 * Destroyed when the radius is changed
+	 */
 	private Shape shape;
 
 	public PhysCircle(int density) {
 		super();
-
-		world = ThrowMe.getInstance().stage.world;
+		World world = ThrowMe.getInstance().stage.world;
 
 		circle = new CircleDef();
 		circle.radius = 1F;
@@ -74,6 +81,11 @@ public class PhysCircle extends Circle {
 		physicsBody.setXForm(new Vec2(x / Stage.ratio, y / Stage.ratio), 0);
 	}
 
+	/**
+	 * Get the physics body of this circle
+	 * 
+	 * @return The physics body
+	 */
 	public Body getBody() {
 		return physicsBody;
 	}
@@ -81,7 +93,7 @@ public class PhysCircle extends Circle {
 	@Override
 	public void destroy() {
 		super.destroy();
-		world.destroyBody(physicsBody);
+		ThrowMe.getInstance().stage.world.destroyBody(physicsBody);
 	}
 
 	@Override

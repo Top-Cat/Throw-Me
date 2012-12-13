@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -65,16 +66,10 @@ public class ScoreSubmitThread extends Thread {
 				hexString.append(Integer.toHexString(j));
 			}
 			try {
-				URL url = new URL("http://thomasc.co.uk/throwme/api.php?action=submit&score=" + score + "&name=" + name + "&deviceid=" + deviceId + "&checkstring=" + hexString);
+				URL url = new URL("http://thomasc.co.uk/throwme/api.php?action=submit&score=" + score + "&name=" + URLEncoder.encode(name) + "&deviceid=" + deviceId + "&checkstring=" + hexString);
 				HttpURLConnection con = (HttpURLConnection) url.openConnection();
 				BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-				String i = "";
-				String out = "";
-				while ((i = in.readLine()) != null) {
-					out += i;
-				}
-				in.close();
-				if (out.equals("k")) {
+				if ("k".equals(in.readLine())) {
 					ThrowMe.getInstance().stage.drawThread.runOnUi(new Runnable() {
 						@Override
 						public void run() {
@@ -92,6 +87,7 @@ public class ScoreSubmitThread extends Thread {
 					});
 					return;
 				}
+				in.close();
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
